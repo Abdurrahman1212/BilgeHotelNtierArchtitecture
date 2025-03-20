@@ -1,0 +1,156 @@
+﻿@model IEnumerable<Models.Entities.Room>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Dashboard/Views/Shared/_DashbooadLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Floor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomBreakfast)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerNight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasBalcony)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasMinibar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasAirConditioning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasTV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasHairDryer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasWiFi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataStasus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MasterId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EntryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SelectedStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdatedComputerName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Floor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomBreakfast)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerNight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasBalcony)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasMinibar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasAirConditioning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasTV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasHairDryer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasWiFi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataStasus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MasterId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelectedStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdatedComputerName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
