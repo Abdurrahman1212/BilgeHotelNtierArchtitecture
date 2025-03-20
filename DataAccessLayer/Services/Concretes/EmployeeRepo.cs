@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ExpenseRepo<T> : IExpenseRepo<T> where T : Expense
+    public class EmployeeRepo<T> : IEmployeeRepo<T> where T : Employee
     {
         public Task CreateAsync(T entity)
         {

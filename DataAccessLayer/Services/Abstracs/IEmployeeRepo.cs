@@ -9,10 +9,17 @@ namespace DataAccessLayer.Services.Abstracs
 {
     public interface IEmployeeRepo<T> where T : Employee
     {
-        Task<IEnumerable<T>> GetAllEmployees();
-        Task<T> GetEmployeeById(int id);
-        Task<T> CreateEmployee(T employee);
-        Task<T> UpdateEmployee(T employee);
-        Task<T> DeleteEmployee(int id);
+        T GetById(int id);
+        IQueryable<T> GetAll();
+        IQueryable<T> GetActives();
+        IQueryable<T> GetPassives();
+        Task CreateAsync(T entity);
+        Task CreateRangeAsync(List<T> entities);
+        Task UpdateAsync(T entity);
+        Task UpdateRangeAsync(List<T> entities);
+        Task DeleteAsync(T entity);
+        Task DeleteAllAsync(List<T> entities);
+        Task DestroyAsync(T entity);
+        Task DestroyRangeAsync(List<T> entities);
     }
 }

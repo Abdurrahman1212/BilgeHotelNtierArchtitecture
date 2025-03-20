@@ -9,10 +9,17 @@ namespace DataAccessLayer.Services.Abstracs
 {
     public interface IReservationsRepo<T> where T : Reservation
     {
-        Task<IEnumerable<T>> GetAllReservations();
-        Task<T> GetReservationById(int id);
-        Task<T> CreateReservation(T reservation);
-        Task<T> UpdateReservation(T reservation);
-        Task<T> DeleteReservation(int id);
+        T GetById(int id);
+        IQueryable<T> GetAll();
+        IQueryable<T> GetActives();
+        IQueryable<T> GetPassives();
+        Task CreateAsync(T entity);
+        Task CreateRangeAsync(List<T> entities);
+        Task UpdateAsync(T entity);
+        Task UpdateRangeAsync(List<T> entities);
+        Task DeleteAsync(T entity);
+        Task DeleteAllAsync(List<T> entities);
+        Task DestroyAsync(T entity);
+        Task DestroyRangeAsync(List<T> entities);
     }
 }

@@ -9,10 +9,17 @@ namespace DataAccessLayer.Services.Abstracs
 {
     public interface IShiftsRepo<T> where T : Shift
     {
-        Task<IEnumerable<T>> GetAllShifts();
-        Task<T> GetShiftById(int id);
-        Task<T> CreateShift(T shift);
-        Task<T> UpdateShift(T shift);
-        Task<T> DeleteShift(int id);
+        T GetById(int id);
+        IQueryable<T> GetAll();
+        IQueryable<T> GetActives();
+        IQueryable<T> GetPassives();
+        Task CreateAsync(T entity);
+        Task CreateRangeAsync(List<T> entities);
+        Task UpdateAsync(T entity);
+        Task UpdateRangeAsync(List<T> entities);
+        Task DeleteAsync(T entity);
+        Task DeleteAllAsync(List<T> entities);
+        Task DestroyAsync(T entity);
+        Task DestroyRangeAsync(List<T> entities);
     }
 }

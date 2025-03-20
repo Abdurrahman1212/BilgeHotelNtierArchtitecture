@@ -9,10 +9,17 @@ namespace DataAccessLayer.Services.Abstracs
 {
     public interface IRoomRepo<T> where T : Room
     {
-        Task<IEnumerable<T>> GetAllRooms();
-        Task<T> GetRoomById(int id);
-        Task<T> CreateRoom(T room);
-        Task<T> UpdateRoom(T room);
-        Task<T> DeleteRoom(int id);
+        T GetById(int id);
+        IQueryable<T> GetAll();
+        IQueryable<T> GetActives();
+        IQueryable<T> GetPassives();
+        Task CreateAsync(T entity);
+        Task CreateRangeAsync(List<T> entities);
+        Task UpdateAsync(T entity);
+        Task UpdateRangeAsync(List<T> entities);
+        Task DeleteAsync(T entity);
+        Task DeleteAllAsync(List<T> entities);
+        Task DestroyAsync(T entity);
+        Task DestroyRangeAsync(List<T> entities);
     }
 }
