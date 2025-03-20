@@ -1,0 +1,66 @@
+﻿@model List<Room>
+@{
+    ViewData["Title"] = "Oda Hizmetleri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int delay = 0;
+}
+<!-- Start main-content -->
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Oda Reservazyonu</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li>Oda Reservazyonu</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- end main-content -->
+<!-- Room-section two -->
+<section class="room-service-section pt-120 pb-60">
+    <div class="auto-container">
+        <div class="sec-title text-center">
+            <span class="sub-title">CUSTOMER SERVICES</span>
+            <h2>Book your stay and <br />relax in luxury</h2>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+               
+
+                <!-- News Block -->
+                <div class="room-service-block-one col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="@(delay)ms">
+                    <div class="inner-box">
+                        <div class="image-box">
+                            <figure class="image mb-0"><a href="@Url.Action("RoomDetail","Room",new{id=item.Id})"><img alt="" data-cfsrc="@item.ImageUrl" style="display:none;visibility:hidden;"><noscript><img src="@item.ImageUrl" alt=""></noscript></a></figure>
+                        </div>
+                        <div class="content-box">
+                            <div class="inner-box">
+                                <h4 class="title"><a href="@Url.Action("RoomDetail","Room",new{id=item.Id})">@item.PricePerNight</a></h4>
+                                <div class="price">@item.PricePerNight TL Gunluk</div>
+                            </div>
+                            <div class="facilities-box align-items-center d-flex justify-content-between">
+                                <ul class="facilities-list">
+                                    <li><i class="fal fa-circle-user me-2"></i>@item.RoomCapacity Kisi</li>
+                                    <li><i class="fal fa-bed me-2"></i>@item.RoomType Kısılık Yatak</li>
+                                </ul>
+                                <ul class="facilities-list">
+                                    <li><i class="fal fa-bath me-2"></i> @item.HasHairDryer</li>
+                                    <li><i class="fal fa-wifi me-2"></i> @item.HasWiFi</li>
+                                    <li> <i class="fal fa-television me-2"></i>@item.HasTV</li>
+                                    <li><i class="fal fa-street-view me-2"></i>@item.HasBalcony</li>
+                                    <li><i class="fal fa-glass-champagne me-2"></i>@item.HasMinibar</li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                delay = delay+300;
+            }
+       
+        </div>
+    </div>
+</section>
+<!-- End Room section -->

@@ -1,0 +1,266 @@
+﻿@model Room
+@{
+    ViewData["Title"] = "Oda Bilgisi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Start main-content -->
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Oda Reservazyonu</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li><a href="/Room">Odalar</a></li>
+                <li>@Model.Id Numaralı Oda</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- end main-content -->
+<!--Room Details Start-->
+<section class="blog-details pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-8 col-lg-7 product-details rd-page">
+                <div class="bxslider">
+                    <div class="slider-content">
+                        <figure class="image-box"><a href="../../images/resource/room-1.jpg" class="lightbox-image" data-fancybox="gallery"><img alt="" data-cfsrc="../../images/resource/room-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-1.jpg" alt=""></noscript></a></figure>
+                        <div class="slider-pager">
+                            <ul class="thumb-box">
+                                <li class="mb-0"><a class="active" data-slide-index="0" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-1.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="1" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="2" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-4.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-4.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="3" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slider-content">
+                        <figure class="image-box"><a href="../../images/resource/room-2.jpg" class="lightbox-image" data-fancybox="gallery"><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></a></figure>
+                        <div class="slider-pager">
+                            <ul class="thumb-box">
+                                <li class="mb-0"><a class="active" data-slide-index="0" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-1.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="1" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="2" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-4.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-4.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="3" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slider-content">
+                        <figure class="image-box"><a href="../../images/resource/room-4.jpg" class="lightbox-image" data-fancybox="gallery"><img alt="" data-cfsrc="../../images/resource/room-4.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-4.jpg" alt=""></noscript></a></figure>
+                        <div class="slider-pager">
+                            <ul class="thumb-box">
+                                <li class="mb-0"><a class="active" data-slide-index="0" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-1.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="1" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="2" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-4.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-4.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="3" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slider-content">
+                        <figure class="image-box"><a href="../../images/resource/room-2.jpg" class="lightbox-image" data-fancybox="gallery"><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></a></figure>
+                        <div class="slider-pager">
+                            <ul class="thumb-box">
+                                <li class="mb-0"><a class="active" data-slide-index="0" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-1.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="1" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="2" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-4.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-4.jpg" alt=""></noscript></figure></a></li>
+                                <li class="mb-0"><a data-slide-index="3" href="#"><figure><img alt="" data-cfsrc="../../images/resource/room-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/room-2.jpg" alt=""></noscript></figure></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="room-details__left">
+                    <div class="wrapper">
+                        <h3>Description of Room</h3>
+                        <p class="text">Mauris non dignissim purus, ac commodo diam. Donec sit amet lacinia nulla. Aliquam quis purus in justo pulvinar tempor. Aliquam tellus nulla, sollicitudin at euismod nec, feugiat at nisi. Quisque vitae odio nec lacus interdum tempus. Phasellus a rhoncus erat. Vivamus vel eros vitae est aliquet pellentesque vitae et nunc. Sed vitae leo vitae nisl pellentesque semper.</p>
+                        <div class="row justify-content-center">
+
+
+
+                            
+                            
+                                
+                                <div class="pricing-block-three">
+                                    <div class="inner-box">
+                                        <div class="row">
+                                            <div class="content-column col-lg-6 col-md-6">
+                                                <div class="inner-column wow fadeInLeft">
+                                                    <h3 class="pricing-title">@Model.RoomType</h3>
+                                                    <span class="pricing-amount">@Model.PricePerNight<span>/ Gunluk</span></span>
+                                                    <div class="list-box">
+                                                        <ul class="list-style-two">
+                                                            <li><figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> @Model.RoomCapacity</li>
+                                                            <li>
+                                                                <figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> @(Model.HasMinibar?"Minibar Var" :"Minibar Yok")
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="list-style-two">
+                                                            <li><figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> @(Model.HasBalcony ? "Balkon Var" : "Balkon Yok")</li>
+                                                            <li><figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> @(Model.HasWiFi ? "Wifi var" : "WifiYok")</li>
+                                                        </ul>
+                                                        <ul class="list-style-two">
+                                                            <li><figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> @(Model.RoomBreakfast?"Oda Kahvaltı ":" Kahvaltı Yok")</li>
+                                                            <li><figure class="image"><img alt="" data-cfsrc="../../images/icons/p-icon-man.png" style="display:none;visibility:hidden;"><noscript><img src="../../images/icons/p-icon-man.png" alt=""></noscript></figure> Kat : @Model.Floor</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="image-column col-lg-6 col-md-6">
+                                                <div class="image-box">
+                                                    <figure class="image wow fadeInUp"><img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;"><noscript><img src="@Model.ImageUrl" alt=""></noscript></figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+
+
+                        </div>
+
+
+                        <p class="text">Mauris non dignissim purus, ac commodo diam. Donec sit amet lacinia nulla. Aliquam quis purus in justo pulvinar tempor. Aliquam tellus nulla, sollicitudin at euismod nec, feugiat at nisi. Quisque vitae odio nec lacus interdum tempus. Phasellus a rhoncus erat. Vivamus vel eros vitae est aliquet pellentesque vitae et nunc. Sed vitae leo vitae nisl pellentesque semper.</p>
+                    </div>
+                    <div class="mt-40">
+                        <h4>Room Facilities</h4>
+                        <div class="row room-facility-list mb-40">
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4 mb-3">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="far fa-air-conditioner"></i></div>
+                                    <h6 class="title m-0">Air Conditionar</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4 mb-3">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="fas fa-swimming-pool"></i></div>
+                                    <h6 class="title m-0">Swiming Pool</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4 mb-3">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="fas fa-dumbbell"></i></div>
+                                    <h6 class="title m-0">Gymnasium</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4 mb-3">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="fas fa-parking-circle"></i></div>
+                                    <h6 class="title m-0">Parking</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4 mb-3">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="fas fa-shield-check"></i></div>
+                                    <h6 class="title m-0">Security</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-4">
+                                <div class="list-one d-flex align-items-center me-sm-4">
+                                    <div class="icon text-theme-color1 mr-10 flex-shrink-0"><i class="fas fa-child"></i></div>
+                                    <h6 class="title m-0">Playground</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-sm-flex align-items-sm-center justify-content-sm-between pt-40 pb-40 border-top">
+                        <h6 class="my-sm-0">Share Details</h6>
+                        <div class="blog-details__social-list"> <a href="room-details.html"><i class="fab fa-x-twitter"></i></a> <a href="room-details.html"><i class="fab fa-facebook"></i></a> <a href="room-details.html"><i class="fab fa-pinterest-p"></i></a> <a href="room-details.html"><i class="fab fa-instagram"></i></a> </div>
+                    </div>
+                    <div class="p-4 p-lg-5 bg-light">
+                        <h4 class="mt-0">Send Us Your Question</h4>
+                        <form id="contact_form" name="contact_form" class="" action="https://html.kodesolution.com/2025/hoteler-html/includes/sendmail.php" method="post">
+                            <div class="row">
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="mb-3">
+                                        <input name="form_name" class="form-control bg-white" type="text" placeholder="Enter Name">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="mb-3">
+                                        <input name="form_email" class="form-control bg-white required email" type="email" placeholder="Enter Email">
+                                    </div>
+                                </div>
+                                <div class="col-xl-4">
+                                    <div class="mb-3">
+                                        <input name="form_phone" class="form-control bg-white required phone" type="number" placeholder="Enter Phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <textarea name="form_message" class="form-control bg-white required" rows="5" placeholder="Enter Message"></textarea>
+                            </div>
+                            <div class="mb-0">
+                                <input name="form_botcheck" class="form-control" type="hidden" value="">
+                                <button type="submit" class="theme-btn btn-style-one" data-loading-text="Please wait..."><span class="btn-title">Submit Comment</span></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="sidebar">
+                    <div class="sidebar__post mb-30">
+                        <form id="contact_form2" name="contact_form" class="" action="https://html.kodesolution.com/2025/hoteler-html/includes/sendmail.php" method="post">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Check In</label>
+                                        <input name="form_name" class="form-control bg-white" type="text" placeholder="Arrive Date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Check Out</label>
+                                        <input name="form_name" class="form-control bg-white" type="text" placeholder="Departure Date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">Guests</label>
+                                        <select class="form-select form-control bg-white">
+                                            <option selected disabled value="">Select</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>More</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input name="form_botcheck" class="form-control" type="hidden" value="">
+                                <button type="submit" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..."><span class="btn-title">Book Now</span></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sidebar__single sidebar__post">
+                        <h3 class="sidebar__title">Compare Room</h3>
+                        <ul class="sidebar__post-list list-unstyled">
+                            <li>
+                                <div class="sidebar__post-image"> <img alt="" data-cfsrc="../../images/resource/news-info-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/news-info-1.jpg" alt=""></noscript> </div>
+                                <div class="sidebar__post-content">
+                                    <h3>
+                                        <span class="sidebar__post-content-meta"><i class="fas fa-door-open"></i>Economy Room</span> <a href="#">$175/Night</a>
+                                    </h3>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sidebar__post-image"> <img alt="" data-cfsrc="../../images/resource/news-info-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/news-info-2.jpg" alt=""></noscript> </div>
+                                <div class="sidebar__post-content">
+                                    <h3> <span class="sidebar__post-content-meta"><i class="fas fa-door-open"></i>Deluxe Room</span> <a href="#">$250</a> </h3>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="sidebar__post-image"> <img alt="" data-cfsrc="../../images/resource/news-info-1.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/news-info-1.jpg" alt=""></noscript> </div>
+                                <div class="sidebar__post-content">
+                                    <h3> <span class="sidebar__post-content-meta"><i class="fas fa-door-open"></i>Super Deluxe Room</span> <a href="#">$320</a> </h3>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Room Details End-->
