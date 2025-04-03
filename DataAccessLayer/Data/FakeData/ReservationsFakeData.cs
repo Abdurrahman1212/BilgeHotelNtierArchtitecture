@@ -32,7 +32,7 @@ namespace DataAccessLayer.Data.FakeData
                     status = (DataStasus)(i % Enum.GetValues(typeof(DataStasus)).Length),
                     CustomerId = faker.Random.Int(1, 10),
                     RoomId = faker.Random.Int(1, 50),
-                    Expenses=new List<Expense>()
+                    Expenses=new List<Expense>(),
                 };
                 ReservartionLists.Add(reservation);
             }

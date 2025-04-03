@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using Models.Entities;
 using BussinessLogicLayer.Services.Abstracs;
+using BussinessLogicLayer.Services.Concretes;
+using Bogus;
+using Microsoft.SqlServer.Server;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
@@ -24,11 +27,34 @@ namespace Presentation.Areas.Dashboard.Controllers
         }
 
         // GET: Dashboard/Rooms
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View( _roomService.GetAll().ToList());
-        }
+            var allRooms = _roomService.GetAll();
 
+            if (allRooms == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return Json(new { data = allRooms });
+            //return View();
+        }
+     
+
+        [HttpGet]
+        public async Task<IActionResult> AllRooms()
+        {
+            var allRooms = _roomService.GetAll();
+
+            if (allRooms == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return Json(new { data = allRooms });
+        }
+        public IActionResult RoomCount()
+        {
+            var roomCount = _context.Rooms.Count();
+            ViewBag.RoomCount = roomCount;
+            return View();
+        }
         // GET: Dashboard/Rooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -48,7 +74,8 @@ namespace Presentation.Areas.Dashboard.Controllers
         }
 
         // GET: Dashboard/Rooms/Create
-        public IActionResult Create()
+        public IActionResult Create
+            ()
         {
             return View();
         }
@@ -58,7 +85,7 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomNumber,Floor,Description,ImageUrl,RoomCapacity,RoomBreakfast,PricePerNight,HasBalcony,HasMinibar,RoomType,HasAirConditioning,HasTV,HasHairDryer,HasWiFi,DataStasus,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Room room)
+        public async Task<IActionResult> Create(Room room)
         {
             if (ModelState.IsValid)
             {

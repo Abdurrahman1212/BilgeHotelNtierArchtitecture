@@ -5,6 +5,7 @@ using DataAccessLayer.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Services.Concretes;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IRoomService,RoomService>();
 builder.Services.AddDbContext<ProjectDatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 

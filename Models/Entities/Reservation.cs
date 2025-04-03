@@ -22,6 +22,7 @@ namespace Models.Entities
         public Room Room { get; set; } // Navigation property
         public Customer Customer { get; set; } // Navigation property
         public int CustomerId { get; set; }
+     
         public List<Expense> Expenses { get; set; } // Navigation property (One-to-many relationship with Expense)
     }
 }

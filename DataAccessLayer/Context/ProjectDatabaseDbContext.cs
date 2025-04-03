@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Models.Entities;
 
 namespace DataAccessLayer.Context
@@ -21,7 +22,7 @@ namespace DataAccessLayer.Context
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Employee> Employees { get; set; }
-
+        public DbSet<User> Users { get; set; }
         // OnConfiguring method for setting up the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

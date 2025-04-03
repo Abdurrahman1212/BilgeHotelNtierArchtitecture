@@ -33,10 +33,11 @@ namespace Presentation.Controllers
        
         public async Task <List<Room>> GetRooms(int? id)
         {
+            
             var room = new List<Room>();
             if (id==null)
             {
-               room = _roomService.GetAll().ToList();
+                room = _roomService.GetAll().ToList();
 
             }
             else

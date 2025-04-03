@@ -1,5 +1,8 @@
-﻿using DataAccessLayer.Services.Abstracs;
+﻿using DataAccessLayer.Context;
+using DataAccessLayer.Services.Abstracs;
+using Microsoft.EntityFrameworkCore;
 using Models.Entities;
+using Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,54 +13,96 @@ namespace DataAccessLayer.Services.Concretes
 {
     public class ReservationRepo<T> : IReservationsRepo<T> where T : Reservation
     {
-        public Task CreateAsync(T entity)
+        private readonly ProjectDatabaseContext _context;
+        private readonly DbSet<T> _reservations;
+        public ReservationRepo(ProjectDatabaseContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _reservations = _context.Set<T>();
         }
 
-        public Task CreateRangeAsync(List<T> entities)
+        public async Task CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _reservations.Add(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAllAsync(List<T> entities)
+        public async Task CreateRangeAsync(List<T> entities)
         {
-            throw new NotImplementedException();
+            _reservations.AddRange(entities);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task DeleteAllAsync(List<T> entities)
         {
-            throw new NotImplementedException();
+            foreach (var entity in entities)
+            {
+                entity.SelectedStatus = Models.Enums.DataStasus.Passive;
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdatedComputerName = System.Environment.MachineName;
+            }
+            _reservations.UpdateRange(entities);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DestroyAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
-            throw new NotImplementedException();
+            entity.SelectedStatus = Models.Enums.DataStasus.Passive;
+            entity.UpdatedDate = DateTime.Now;
+            entity.UpdatedComputerName = System.Environment.MachineName;
+            await _context.SaveChangesAsync();
         }
 
-        public Task DestroyRangeAsync(List<T> entities)
+        public async Task DestroyAsync(T entity)
         {
-            throw new NotImplementedException();
+            _reservations.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DestroyRangeAsync(List<T> entities)
+        {
+            _reservations.RemoveRange(entities);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                var entries = ex.Entries;
+                var databaseValues = await entries[0].GetDatabaseValuesAsync();
+                if (databaseValues == null)
+                {
+                    Console.WriteLine("The entity deleted by another user..");
+                }
+                else
+                {
+                    Console.WriteLine("The entity updated by another user..");
+                    foreach (var entry in entries)
+                    {
+                        entry.OriginalValues.SetValues(databaseValues);
+                    }
+                }
+            }
         }
 
         public IQueryable<T> GetActives()
         {
-            throw new NotImplementedException();
+            return _reservations.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Active);
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetAll()   
         {
-            throw new NotImplementedException();
+            return _reservations;
         }
 
         public T GetById(int id)
         {
-            throw new NotImplementedException();
+            return _reservations.FirstOrDefault(x=>x.Id==id);
         }
 
         public IQueryable<T> GetPassives()
         {
-            throw new NotImplementedException();
+            return _reservations.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Passive);
         }
 
         public Task UpdateAsync(T entity)

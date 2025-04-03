@@ -53,6 +53,8 @@ namespace DataAccessLayer.Configurations
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+          
             builder.HasData(ReservationsFakeData.GetFakeReservations());
         }
     }

@@ -46,18 +46,17 @@
                                     <li><i class="fal fa-bed me-2"></i>@item.RoomType Kısılık Yatak</li>
                                 </ul>
                                 <ul class="facilities-list">
-                                    <li><i class="fal fa-bath me-2"></i> @item.HasHairDryer</li>
-                                    <li><i class="fal fa-wifi me-2"></i> @item.HasWiFi</li>
-                                    <li> <i class="fal fa-television me-2"></i>@item.HasTV</li>
-                                    <li><i class="fal fa-street-view me-2"></i>@item.HasBalcony</li>
-                                    <li><i class="fal fa-glass-champagne me-2"></i>@item.HasMinibar</li>
+                                    <li><i class="fal fa-wifi me-2"></i> @(item.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
+                                    <li> <i class="fal fa-television me-2"></i>@(item.HasTV ? "TV Var" : "TV Yok")</li>
+                                    <li><i class="fal fa-street-view me-2"></i>@(item.HasBalcony ? "Balkon Var " :"Balkon Yok")</li>
+                                    <li><i class="fal fa-glass-champagne me-2"></i>@(item.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
 
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-                delay = delay+300;
+                delay = delay+200;
             }
        
         </div>
