@@ -18,8 +18,9 @@ namespace Presentation.Controllers
 
         public IActionResult Index()
         {
-            return View(_roomService.GetAll().ToList());
-        }
+          
+            return View();
+            }
 
         public IActionResult About()
         {

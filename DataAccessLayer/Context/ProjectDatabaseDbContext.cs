@@ -1,19 +1,22 @@
 ﻿using DataAccessLayer.Configurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models.Entities;
 
 namespace DataAccessLayer.Context
 {
-    public class ProjectDatabaseContext : DbContext
+    public class ProjectDatabaseContext : IdentityDbContext<User, IdentityRole<int>,int>
     {
-        // Constructor for normal usage (dependency injection, etc.)
+        // Constructor for design-time DbContext creation
         public ProjectDatabaseContext(DbContextOptions<ProjectDatabaseContext> options) : base(options)
         {
         }
-
-        // Constructor for when setting up connection string manually (e.g., design-time or migrations)
-        public ProjectDatabaseContext() { }
+        public ProjectDatabaseContext()
+        {
+            
+        }
 
         // DbSets for the models
         public DbSet<Room>Rooms { get; set; }
@@ -26,11 +29,9 @@ namespace DataAccessLayer.Context
         // OnConfiguring method for setting up the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
+            if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer("Server=DESKTOP-BC8DJ2E\\SQLEXPRESS;Database=BilgeHotelDbNtier;Trusted_Connection=true;TrustServerCertificate=True;");
             {
-                // Set the connection string manually
-                string connectionString = "Server=DESKTOP-BC8DJ2E\\SQLEXPRESS;Database=BilgeHotelDbNtier;Trusted_Connection=True;TrustServerCertificate=true;";
-                optionsBuilder.UseSqlServer(connectionString);
+               
             }
 
             base.OnConfiguring(optionsBuilder);

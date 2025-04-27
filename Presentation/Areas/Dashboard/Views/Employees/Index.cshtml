@@ -10,9 +10,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="dtEmployees" class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model=>model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.EmployeeFirstName)
             </th>
@@ -65,6 +68,92 @@
         </tr>
     </thead>
     <tbody>
+        </table>
+<!--/ DataTable with Buttons -->
+@section Employee {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $("#dtEmployees").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/dashboard/Employees/AllEmployees",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        console.dir(object.data);
+                        return object.data;
+                    }
+                },
+                columns: [
+                    { 'data':'id'},
+                    { 'data': 'employeeFirstName'},
+                    { 'data': 'employeeLastName'},
+                    { 'data': 'employeePhoneNumber' },
+                    {'data':'email'},
+                    {'data': 'employeeAddres'},
+                    { 'data': 'city' },
+                    { 'data': 'country' },
+                    { 'data': 'postalCode' },
+                    { 'data': 'hourlyWage' },
+                    { 'data': 'status' },
+                    { 'data': 'masterId' },
+                    { 'data': 'createdDate' },
+                    { 'data': 'entryDate' },
+                    { 'data': 'updatedDate' },
+                    { 'data': 'selectedStatus' },
+                    { 'data': 'updatedComputerName' },
+                    {'data':'id'}
+                  
+                  
+
+                ],
+        columnDefs: [{
+                       target:-1,
+                       title: 'İşlemler',
+                       orderable: false,
+                       render: function (data, type, row) {
+                   var columnResult = `
+                       <div>
+                           <span>Güncelle</span><br>
+                           <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Employees/Edit/${data}">Güncelle</a>
+                       </div>
+                       <div style="margin-top: 5px;">
+                           <span>Sil</span><br>
+                           <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Employees/Delete/${data}">Sil</a>
+                       </div>
+                   `;
+                       return columnResult;
+                   },
+                   }],
+            });
+            /*GetRooms();*/
+        });
+
+        function DeleteRoom(id)
+        {
+            console.dir(id);
+        }
+
+        function GetRooms() {
+            $.ajax({
+                url: '/Dashboard/Employess/AllEmployees',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                       console.dir(result.data);
+                },
+                error: function (err) {
+                    console.dir(err.Message);
+                }
+            });
+        }
+    </script>
+    }
+@*         </table>
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -124,3 +213,4 @@
 }
     </tbody>
 </table>
+ *@

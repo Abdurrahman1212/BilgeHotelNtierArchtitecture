@@ -13,11 +13,13 @@ namespace Presentation.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
+
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole<int>> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
+            _roleManager = roleManager; 
+
         }
         public IActionResult Register()
         {
@@ -27,6 +29,7 @@ namespace Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel appUser)
         {
+            
             if (ModelState.IsValid)
             {
                 User user = new User
@@ -46,15 +49,15 @@ namespace Presentation.Controllers
                     //IdentityRole<int> role = new IdentityRole<int>();
                     //role.Name = "Admin";
 
-                    //IdentityResult  roleResult = await _roleManager.CreateAsync(role);
+                    //IdentityResult roleResult = await _roleManager.CreateAsync(role);
 
                     //await _userManager.AddToRoleAsync(user, "Admin");
 
-                    IdentityRole<int> appRole = await _roleManager.FindByNameAsync("Member");
-                    if (appRole == null) await _roleManager.CreateAsync(new() { Name = "Member" });
-                    await _userManager.AddToRoleAsync(user, "Member");
+                    //IdentityRole<int> appRole = await _roleManager.FindByNameAsync("Member");
+                    //if (appRole == null) await _roleManager.CreateAsync(new() { Name = "Member" });
+                    //await _userManager.AddToRoleAsync(user, "Member");
 
-                    string message = $"Hesabınız olusturulmustur...Üyeliginiz onaylamak icin lüfen http://localhost:5083/Account/ConfirmEmail?specId={user.ActivationCode}&id={user.Id} linkine  tıklayınız";
+                    string message = $"Hesabınız olusturulmustur...Üyeliginiz onaylamak icin lüfen http://localhost:5104/Account/ConfirmEmail?specId={user.ActivationCode}&id={user.Id} linkine  tıklayınız";
 
 
                     MailSender.Send(appUser.Email, body: message);
@@ -74,6 +77,7 @@ namespace Presentation.Controllers
             {
                 return View(appUser);
             }
+
         }
 
 
@@ -103,7 +107,7 @@ namespace Presentation.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel appUser)
-        {
+                {
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByNameAsync(appUser.UserName );
@@ -119,7 +123,7 @@ namespace Presentation.Controllers
 
                         if (roles.Contains("Admin"))
                         {
-                            return RedirectToAction("Index", "Category", new { Area = "Dashboard" });
+                            return RedirectToAction("Index", "Home", new { Area = "Dashboard" });
                         }
 
                         return RedirectToAction("Index", "Home");
@@ -127,6 +131,7 @@ namespace Presentation.Controllers
                 }
             }
             return View(appUser);
+           
         }
 
         public async Task<IActionResult> Logout()

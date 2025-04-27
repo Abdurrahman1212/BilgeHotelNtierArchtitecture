@@ -3,6 +3,46 @@
     ViewData["Title"] = "Oda Bilgisi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<section class="room-details">
+    <div class="container">
+        <h1>@Model.RoomType - @Model.RoomNumber</h1>
+        <p>@Model.Description</p>
+        <p>Fiyat: @Model.PricePerNight ₺ / Gece</p>
+
+        <!-- Reservation Form -->
+        <h3>Rezervasyon Yap</h3>
+        <form asp-action="CreateReservation" method="post">
+            <input type="hidden" name="RoomId" value="@Model.Id" />
+            <div class="mb-3">
+                <label for="CheckInDate">Giriş Tarihi</label>
+                <input type="date" id="CheckInDate" name="CheckInDate" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="CheckOutDate">Çıkış Tarihi</label>
+                <input type="date" id="CheckOutDate" name="CheckOutDate" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="CustomerId">Müşteri ID</label>
+                <input type="number" id="CustomerId" name="CustomerId" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Rezervasyon Yap</button>
+        </form>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+        }
+    </div>
+</section>
+@{
+    ViewData["Title"] = "Oda Bilgisi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 <!-- Start main-content -->
 <section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
     <div class="auto-container">
@@ -13,6 +53,7 @@
                 <li><a href="/Room">Odalar</a></li>
                 <li>@Model.Id Numaralı Oda</li>
             </ul>
+
         </div>
     </div>
 </section>
@@ -108,6 +149,7 @@
                                                 <div class="image-box">
                                                     <figure class="image wow fadeInUp"><img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;"><noscript><img src="@Model.ImageUrl" alt=""></noscript></figure>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -204,19 +246,19 @@
                                 <div class="col-sm-12">
                                     <div class="mb-3">
                                         <label class="form-label">Check In</label>
-                                        <input name="form_name" class="form-control bg-white" type="text" placeholder="Arrive Date">
+                                        <input name="check_in" class="form-control bg-white datepicker" type="text" placeholder="Arrive Date">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="mb-3">
                                         <label class="form-label">Check Out</label>
-                                        <input name="form_name" class="form-control bg-white" type="text" placeholder="Departure Date">
+                                        <input name="check_out" class="form-control bg-white datepicker" type="text" placeholder="Departure Date">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="mb-3">
                                         <label class="form-label">Guests</label>
-                                        <select class="form-select form-control bg-white">
+                                        <select name="guests" class="form-select form-control bg-white">
                                             <option selected disabled value="">Select</option>
                                             <option>1</option>
                                             <option>2</option>
@@ -224,14 +266,21 @@
                                             <option>4</option>
                                             <option>More</option>
                                         </select>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <input name="form_botcheck" class="form-control" type="hidden" value="">
-                                <button type="submit" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..."><span class="btn-title">Book Now</span></button>
+                                <button type="button" id="bookNowBtn" class="theme-btn btn-style-one w-100" data-loading-text="Please wait...">
+                                    <span class="btn-title">Book Now</span>
+                                </button>
                             </div>
+                            <div class="temp-message" id="tempMessage">Rezervasyonunuz oluşturuldu!</div>
                         </form>
+
+                  
+                     
                     </div>
                     <div class="sidebar__single sidebar__post">
                         <h3 class="sidebar__title">Compare Room</h3>
@@ -247,7 +296,7 @@
                             <li>
                                 <div class="sidebar__post-image"> <img alt="" data-cfsrc="../../images/resource/news-info-2.jpg" style="display:none;visibility:hidden;"><noscript><img src="../../images/resource/news-info-2.jpg" alt=""></noscript> </div>
                                 <div class="sidebar__post-content">
-                                    <h3> <span class="sidebar__post-content-meta"><i class="fas fa-door-open"></i>Deluxe Room</span> <a href="#">$250</a> </h3>
+                                    <h3> <span class="sidebar__post-content-meta"><i class="fas fa-door-o   pen"></i>Deluxe Room</span> <a href="#">$250</a> </h3>
                                 </div>
                             </li>
                             <li>

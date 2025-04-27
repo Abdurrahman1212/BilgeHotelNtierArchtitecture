@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Odalar";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
+
 }
 
 <!-- DataTable with Buttons -->
@@ -12,11 +13,11 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.RoomNumber) 
+                        @Html.DisplayNameFor(model => model.RoomNumber)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Floor)
-                    </th>   
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
@@ -138,6 +139,13 @@
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                    <a asp-action="Edit" asp-route-id="@Model.FirstOrDefault()?.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@Model.FirstOrDefault()?.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@Model.FirstOrDefault()?.Id">Delete</a>
+                </div>
             </div>
         </form>
 
@@ -145,7 +153,7 @@
 </div>
 
 <!--/ DataTable with Buttons -->
-@section Scripts {
+@section J {
     <script type="text/javascript">
         $(document).ready(function () {
            $("#dtRooms").DataTable({
@@ -163,6 +171,7 @@
                     }
                 },
                 columns: [
+                   
                     { 'data': 'roomNumber' },
                     { 'data': 'floor' },
                     { 'data': 'description' },
@@ -184,16 +193,25 @@
                     { 'data': 'updatedDate' },
                     { 'data': 'selectedStatus' },
                     { 'data': 'updatedComputerName' },
-                    { 'data':'id'},
+                     { 'data':'id'},
+                   
 
                 ],
-                    columnDefs: [{
+                     columnDefs: [{
                     target:-1,
                     title: 'İşlemler',
                     orderable: false,
                     render: function (data, type, row) {
-                    var columnResult = '';
-                        columnResult += '<a class="btn btn-danger btn-buy-now waves-effect waves-light"  title="Sil" onclick="DeleteCustomer(\'' + data + '\')"></a>';
+                var columnResult = `
+                    <div>
+                        <span>Güncelle</span><br>
+                        <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Rooms/Edit/${data}">Güncelle</a>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span>Sil</span><br>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Rooms/Delete/${data}">Sil</a>
+                    </div>
+                `;
                     return columnResult;
                 },
                 }],
@@ -201,14 +219,14 @@
             /*GetRooms();*/
         });
 
-        function DeleteCustomer(id)
+        function DeleteRoom(id)
         {
             console.dir(id);
         }
 
         function GetRooms() {
             $.ajax({
-                url: '/Dashboard/Rooms/GetNoteById',
+                url: '/Dashboard/Rooms/AllRooms',
                 type: "GET",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",

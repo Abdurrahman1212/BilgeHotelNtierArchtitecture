@@ -7,25 +7,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using Models.Entities;
+using BussinessLogicLayer.Services.Abstracs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
+
     public class EmployeesController : Controller
     {
         private readonly ProjectDatabaseContext _context;
+        private readonly IEmployeeService _employeeService;
 
-        public EmployeesController(ProjectDatabaseContext context)
+        public EmployeesController(ProjectDatabaseContext context,IEmployeeService employee)
         {
             _context = context;
+            _employeeService = employee;
         }
 
         // GET: Dashboard/Employees
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            return View(_employeeService.GetAll().ToList());    
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllEmployees()
+        {
+            var allEmployees = _employeeService.GetAll();
+
+            if (allEmployees == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return Json(new { data = allEmployees });
+        }
         // GET: Dashboard/Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {

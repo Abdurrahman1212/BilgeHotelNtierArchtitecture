@@ -1,0 +1,35 @@
+﻿@model Reservation
+@{
+    ViewData["Title"] = "CreateReservation";
+    Layout = "~/Areas/Dashboard/Views/Shared/_DashbooadLayout.cshtml";
+}
+
+<h1>CreateReservation</h1>
+
+<form asp-action="CreateReservation" method="post">
+    <input type="hidden" name="RoomId" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="CheckInDate">Giriş Tarihi</label>
+        <input type="date" id="CheckInDate" name="CheckInDate" class="form-control"  />
+    </div>
+    <div class="mb-3">
+        <label for="CheckOutDate">Çıkış Tarihi</label>
+        <input type="date" id="CheckOutDate" name="CheckOutDate" class="form-control"  />
+    </div>
+    <div class="mb-3">
+        <label for="Guest Number">Misafir Sayısı</label>
+        <input type="number" id="Guest Number" name="Guest Number" class="form-control"  />
+    </div>
+    <input type="hidden" name="CustomerId" value="@Model.CustomerId"/>
+    <div class="mb-3">
+        <label for="CustomerId">MusteriId</label>
+        <input type="text" id="CustomerId" name="CustomerId" class="form-control" />
+    </div>
+    <input type="hidden" name="PaymentVerification" value="@Model.PaymentVerification"/>
+    <div class="mb-3">
+        <label for="PaymentVerification">Ödeme Onayı</label>
+        <input type="text" id="PaymentVerification" name="PaymentVerification" class="form-control" />
+        </div>
+  
+    <button type="submit" class="btn btn-primary">Rezervasyon Yap</button>
+</form>

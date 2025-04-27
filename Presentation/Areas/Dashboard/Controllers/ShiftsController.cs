@@ -7,26 +7,42 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using Models.Entities;
+using BussinessLogicLayer.Services.Abstracs;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using BussinessLogicLayer.Services.Concretes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
+
     public class ShiftsController : Controller
     {
         private readonly ProjectDatabaseContext _context;
-
-        public ShiftsController(ProjectDatabaseContext context)
+        private readonly IShiftService _shiftService;
+        public ShiftsController(ProjectDatabaseContext context,IShiftService Shiftservice)
         {
             _context = context;
+            _shiftService = Shiftservice;
         }
 
         // GET: Dashboard/Shifts
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            var projectDatabaseContext = _context.Shifts.Include(s => s.Employee);
-            return View(await projectDatabaseContext.ToListAsync());
+            return View(_shiftService.GetAll().ToList());
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AllShifts()
+        {
+            var allShifts = _shiftService.GetAll();
+
+            if (allShifts == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return  Json(new { data = allShifts });
+        }
         // GET: Dashboard/Shifts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -124,22 +140,17 @@ namespace Presentation.Areas.Dashboard.Controllers
         }
 
         // GET: Dashboard/Shifts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var shift = await _context.Shifts
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var shift = _shiftService.GetById(id);
             if (shift == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Shift not found." });
             }
 
-            return View(shift);
+            _shiftService.DestroyAsync(shift);
+            return Json(new { success = true });
         }
 
         // POST: Dashboard/Shifts/Delete/5

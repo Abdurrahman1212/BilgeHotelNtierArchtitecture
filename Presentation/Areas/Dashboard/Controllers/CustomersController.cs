@@ -7,26 +7,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using Models.Entities;
+using BussinessLogicLayer.Services.Abstracs;
+using BussinessLogicLayer.Services.Concretes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
     public class CustomersController : Controller
     {
         private readonly ProjectDatabaseContext _context;
+        private readonly ICustomerService _customerService;
 
-        public CustomersController(ProjectDatabaseContext context)
+        public CustomersController(ProjectDatabaseContext context, ICustomerService customerService)
         {
+            _customerService = customerService;
             _context = context;
         }
 
         // GET: Dashboard/Customers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(_customerService.GetAll().ToList());
         }
 
+     
+        [HttpGet]
+        public async Task<IActionResult> AllCustomers()
+        {
+            var allCustomers = _customerService.GetAll();
+
+            if (allCustomers == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return Json(new { data = allCustomers });
+        }
         // GET: Dashboard/Customers/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

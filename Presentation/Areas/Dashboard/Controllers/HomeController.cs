@@ -1,5 +1,6 @@
 ﻿using BussinessLogicLayer.Services.Abstracs;
 using DataAccessLayer.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace Presentation.Areas.Dashboard.Controllers
             _controller = controller;
         }
         [Area("Dashboard")]
+        [Authorize(Roles = "Admin")]
+
         // GET: HomeController
         public ActionResult Index()
         {

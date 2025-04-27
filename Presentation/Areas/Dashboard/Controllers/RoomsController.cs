@@ -11,33 +11,31 @@ using BussinessLogicLayer.Services.Abstracs;
 using BussinessLogicLayer.Services.Concretes;
 using Bogus;
 using Microsoft.SqlServer.Server;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
+
     public class RoomsController : Controller
     {
         private readonly ProjectDatabaseContext _context;
         private readonly IRoomService _roomService;
 
-        public RoomsController(ProjectDatabaseContext context,IRoomService roomService)
+        public RoomsController(ProjectDatabaseContext context, IRoomService roomService)
         {
             _context = context;
-            _roomService= roomService;
+            _roomService = roomService;
         }
 
         // GET: Dashboard/Rooms
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var allRooms = _roomService.GetAll();
 
-            if (allRooms == null)
-                return Json(new { data = NotFound(), message = "Error while retrieving data." });
-
-            return Json(new { data = allRooms });
-            //return View();
+            return View(_roomService.GetAll().ToList());
         }
-     
+
 
         [HttpGet]
         public async Task<IActionResult> AllRooms()

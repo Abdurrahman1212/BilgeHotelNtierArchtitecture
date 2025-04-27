@@ -41,6 +41,28 @@
     <ul class="menu-inner py-1">
         <li class="menu-header mt-5">
             <span class="menu-header-text" data-i18n="Oda Hizmetleri">Oda Hizmetleri</span>
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> @User.Identity.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Register">Register</a>
+                    </li>
+                }
+            </ul>
         </li>
         <!-- Rooms -->
         <li class="menu-item active open">

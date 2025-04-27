@@ -5,14 +5,11 @@
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table id="dtCustomers" class="table">
     <thead>
         <tr>
+            
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -65,62 +62,87 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.County)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerIdentityNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerPaymentDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MasterId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SelectedStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedComputerName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
 </table>
+<!--/ DataTable with Buttons -->
+@section J {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $("#dtCustomers").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/Dashboard/Customers/AllCustomers",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        console.dir(object.data);
+                        return object.data;
+                    }
+                },
+                columns: [
+
+                    { 'data': 'firstName' },
+                    { 'data': 'lastName' },
+                    { 'data': 'email' },
+                    { 'data': 'city' },
+                    { 'data': 'county' },
+                    { 'data': 'postalCode' },
+                    { 'data': 'customerPhone' },
+                    { 'data': 'customerAddress' },
+                    { 'data': 'customerIdentityNumber' },
+                    { 'data': 'customerPaymentDetails' },
+                    { 'data': 'masterId' },
+                    { 'data': 'createdDate' },
+                    { 'data': 'entryDate' },
+                    { 'data': 'updatedDate' },
+                    { 'data': 'selectedStatus' },
+                    { 'data': 'updatedComputerName' },
+                     { 'data':'id'},
+
+
+                ],
+                    columnDefs: [{
+                    target:-1,
+                    title: 'İşlemler',
+                    orderable: false,
+                    render: function (data, type, row) {
+                var columnResult = `
+                    <div>
+                        <span>Güncelle</span><br>
+                        <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Customers/Edit/${data}">Güncelle</a>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span>Sil</span><br>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Customers/Delete/${data}">Sil</a>
+                    </div>
+                `;
+                    return columnResult;
+                },
+                }],
+            });
+            /*GetRooms();*/
+        });
+
+        function DeleteRoom(id)
+        {
+            console.dir(id);
+        }
+
+        function GetRooms() {
+            $.ajax({
+                url: '/Dashboard/Customers/AllCustomers',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                       console.dir(result.data);
+                },
+                error: function (err) {
+                    console.dir(err.Message);
+                }
+            });
+        }
+    </script>
+}

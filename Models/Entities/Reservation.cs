@@ -15,15 +15,15 @@ namespace Models.Entities
         public PackageType PackageType { get; set; }
         public decimal TotalAmount { get; set; }
 
-        public string PaymentVerification { get; set; }
+        public string? PaymentVerification { get; set; }
         public DataStasus status { get; set; }
         //Relational Properties
         public int RoomId { get; set; }
-        public Room Room { get; set; } // Navigation property
-        public Customer Customer { get; set; } // Navigation property
+        public Room? Room { get; set; } // Navigation property
+        public Customer? Customer { get; set; } // Navigation property
         public int CustomerId { get; set; }
      
-        public List<Expense> Expenses { get; set; } // Navigation property (One-to-many relationship with Expense)
+        public ICollection<Expense>? Expenses { get; set; } // Navigation property (One-to-many relationship with Expense)
     }
 }
 

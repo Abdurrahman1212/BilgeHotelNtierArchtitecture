@@ -1,32 +1,252 @@
-﻿@model IEnumerable<Models.Entities.Shift>
+﻿@model IEnumerable<Shift>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Vardiyalar";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
+
 }
 
-<h1>Index</h1>
+<!-- DataTable with Buttons -->
+<div class="card" id="roomList">
+    <div class="card-datatable table-responsive pt-0">
+        <table id="dtShifts" class="table table-bordered table-hover table-checkable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model=>model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ShiftType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StartTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EndTime)
+                    </th>
+                
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeId)
+                    </th>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+                    <th>
+                        @Html.DisplayNameFor(model => model.MasterId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EntryDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SelectedStatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdatedComputerName)
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<!-- Modal to add new record -->
+<div class="offcanvas offcanvas-end" id="add-new-record">
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title" id="exampleModalLabel">New Record</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body flex-grow-1">
+        <form class="add-new-record pt-0 row g-3" id="form-add-new-record" onsubmit="return false">
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span id="basicFullname2" class="input-group-text"><i class="ri-user-line ri-18px"></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="text" id="basicFullname" class="form-control dt-full-name" name="basicFullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basicFullname2" />
+                        <label for="basicFullname">Full Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span id="basicPost2" class="input-group-text"><i class='ri-briefcase-line ri-18px'></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="text" id="basicPost" name="basicPost" class="form-control dt-post" placeholder="Web Developer" aria-label="Web Developer" aria-describedby="basicPost2" />
+                        <label for="basicPost">Post</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="ri-mail-line ri-18px"></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="text" id="basicEmail" name="basicEmail" class="form-control dt-email" placeholder="john.doe@example.com" aria-label="john.doe@example.com" />
+                        <label for="basicEmail">Email</label>
+                    </div>
+                </div>
+                <div class="form-text">
+                    You can use letters, numbers & periods
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span id="basicDate2" class="input-group-text"><i class='ri-calendar-2-line ri-18px'></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="text" class="form-control dt-date" id="basicDate" name="basicDate" aria-describedby="basicDate2" placeholder="MM/DD/YYYY" aria-label="MM/DD/YYYY" />
+                        <label for="basicDate">Joining Date</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span id="basicSalary2" class="input-group-text"><i class='ri-money-dollar-circle-line ri-18px'></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="number" id="basicSalary" name="basicSalary" class="form-control dt-salary" placeholder="12000" aria-label="12000" aria-describedby="basicSalary2" />
+                        <label for="basicSalary">Salary</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                    <a asp-action="Edit" asp-route-id="@Model.FirstOrDefault()?.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@Model.FirstOrDefault()?.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@Model.FirstOrDefault()?.Id">Delete</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!--/ DataTable with Buttons -->
+@section Shift {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $("#dtShifts").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/dashboard/Shifts/AllShifts",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        console.dir(object.data);
+                        return object.data;
+                    }
+                },
+                columns: [
+                    { 'data':'id'},
+                    { 'data': 'shiftType'},
+                    { 'data': 'startTime'},
+                    { 'data': 'endTime' },
+                    { 'data': 'employeeId' },
+                    { 'data': 'masterId' },
+                    { 'data': 'createdDate' },
+                    { 'data': 'entryDate' },
+                    { 'data': 'updatedDate' },
+                    { 'data': 'selectedStatus' },
+                    { 'data': 'updatedComputerName' },
+                    
+
+                ],
+                   columnDefs: [{
+                    target:-1,
+                    title: 'İşlemler',
+                    orderable: false,
+                    render: function (data, type, row) {
+                var columnResult = `
+                    <div>
+                        <span>Güncelle</span><br>
+                        <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Shifts/Edit/${data}">Güncelle</a>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span>Sil</span><br>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Shifts/Delete/${data}">Sil</a>
+                    </div>
+                `;
+                    return columnResult;
+                },
+                }],
+            });
+            /*GetRooms();*/
+        });
+
+        function DeleteRoom(id)
+        {
+            console.dir(id);
+        }
+
+        function GetRooms() {
+            $.ajax({
+                url: '/Dashboard/Shifts/AllShift',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                       console.dir(result.data);
+                },
+                error: function (err) {
+                    console.dir(err.Message);
+                }
+            });
+        }
+    </script>
+}
+@* <table class="table table-responsive">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ShiftType)
+                @Html.DisplayNameFor(model => model.RoomNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartTime)
+                @Html.DisplayNameFor(model => model.Floor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndTime)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Employee)
+                @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeId)
+                @Html.DisplayNameFor(model => model.RoomCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomBreakfast)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PricePerNight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasBalcony)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasMinibar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasAirConditioning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasTV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasHairDryer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasWiFi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataStasus)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MasterId)
@@ -53,19 +273,49 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ShiftType)
+                @Html.DisplayFor(modelItem => item.RoomNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
+                @Html.DisplayFor(modelItem => item.Floor)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Employee.City)
+                @Html.DisplayFor(modelItem => item.ImageUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EmployeeId)
+                @Html.DisplayFor(modelItem => item.RoomCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomBreakfast)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerNight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasBalcony)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasMinibar)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasAirConditioning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasTV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasHairDryer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasWiFi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataStasus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MasterId)
@@ -93,4 +343,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table> *@

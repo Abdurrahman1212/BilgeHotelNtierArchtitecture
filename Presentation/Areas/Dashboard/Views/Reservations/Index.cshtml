@@ -10,7 +10,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table id="dtReservations" class="table">
     <thead>
         <tr>
             <th>
@@ -32,10 +32,10 @@
                 @Html.DisplayNameFor(model => model.status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Room)
+                @Html.DisplayNameFor(model => model.RoomId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MasterId)
@@ -58,57 +58,85 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckInDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckOutDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PackageType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentVerification)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MasterId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SelectedStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedComputerName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    </table>
+<!--/ DataTable with Buttons -->
+@section Reservations {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $("#dtReservations").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/dashboard/Reservations/AllReservation",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        console.dir(object.data);
+                        return object.data;
+                    }
+                },
+                columns: [
+                    { 'data': 'checkInDate'},
+                    { 'data': 'checkOutDate'},
+                    { 'data': 'packageType' },
+                    { 'data': 'totalAmount' },
+                    { 'data': 'paymentVerification' },
+                    { 'data': 'status' },
+                    { 'data': 'roomId' },
+                    { 'data': 'customerId' },
+                    { 'data': 'masterId' },
+                    { 'data': 'createdDate' },
+                    { 'data': 'entryDate' },
+                    { 'data': 'updatedDate' },
+                    { 'data': 'selectedStatus' },
+                    { 'data': 'updatedComputerName' },
+                    { 'data':'id'},
+
+
+
+                ],
+                     columnDefs: [{
+                    target:-1,
+                    title: 'İşlemler',
+                    orderable: false,
+                    render: function (data, type, row) {
+                var columnResult = `
+                    <div>
+                        <span>Güncelle</span><br>
+                        <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Reservations/Edit/${data}">Güncelle</a>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span>Sil</span><br>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Reservations/Delete/${data}">Sil</a>
+                    </div>
+                `;
+                    return columnResult;
+                },
+                }],
+            });
+            /*GetRooms();*/
+        });
+
+        function DeleteRoom(id)
+        {
+            console.dir(id);
+        }
+
+        function GetRooms() {
+            $.ajax({
+                url: '/Dashboard/Reservations/AllReservation',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                       console.dir(result.data);
+                },
+                error: function (err) {
+                    console.dir(err.Message);
+                }
+            });
+        }
+    </script>
+    }

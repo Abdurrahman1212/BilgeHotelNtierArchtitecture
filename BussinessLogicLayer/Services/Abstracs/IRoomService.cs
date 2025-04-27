@@ -9,6 +9,7 @@ namespace BussinessLogicLayer.Services.Abstracs
 {
     public interface IRoomService:IManagerService<Room>
     {
-        
+        Task CreateReservationAsync(Reservation reservation);
+
     }
 }

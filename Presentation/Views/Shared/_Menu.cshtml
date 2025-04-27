@@ -15,6 +15,7 @@
             <!-- top-right -->
             <div class="top-right"> 
                 <span><i class="icon fa-sharp fa-solid fa-location-dot"></i> Bilge Adam Kadıkoy
+              
               </span>
             </div>
         </div>
@@ -60,6 +61,19 @@
                         <li>@Html.ActionLink("Iletisim","Contact","Home")</li>
                         <li>@Html.ActionLink("Oturum Aç", "Login", "Account")</li>
                         <li>@Html.ActionLink("Kayıt Ol", "Register", "Account")    </li>
+                        <ul class="navbar-nav ms-auto">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user"></i> @User.Identity.Name
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
                   
 
                     </ul>

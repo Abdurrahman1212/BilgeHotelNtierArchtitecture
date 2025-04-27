@@ -7,27 +7,46 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Context;
 using Models.Entities;
+using BussinessLogicLayer.Services.Abstracs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
+
     public class ReservationsController : Controller
     {
         private readonly ProjectDatabaseContext _context;
+        private readonly IReservationService _reservationService;
 
-        public ReservationsController(ProjectDatabaseContext context)
+        public ReservationsController(ProjectDatabaseContext context,IReservationService reservation)
         {
             _context = context;
+            _reservationService = reservation;
         }
 
         // GET: Dashboard/Reservations
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var projectDatabaseContext = _context.Reservations.Include(r => r.Customer).Include(r => r.Room);
-            return View(await projectDatabaseContext.ToListAsync());
+           return View(_reservationService.GetAll().ToList());
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> AllReservation()
+        {
+            var allReservations = _reservationService.GetAll();
+
+            if (allReservations == null)
+                return Json(new { data = NotFound(), message = "Error while retrieving data." });
+
+            return Json(new { data = allReservations });
         }
 
         // GET: Dashboard/Reservations/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
