@@ -1,13 +1,16 @@
 using Models.Abstracts;
 using Models.Entities;
+using Models.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataAccessLayer.Contracts.Interfaces
 {
-    public interface IManagerRepository<T> where T :  BaseEntity
+    public interface IManagerRepository<T> where T :  IEntity
     {
+        //IEnumerable
+    
         //IEnumerable<T> GetFakeRooms();
         T GetById(int id);
         IQueryable<T> GetAll();

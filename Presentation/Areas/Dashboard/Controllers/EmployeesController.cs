@@ -153,7 +153,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         // POST: Dashboard/Employees/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employee = await _context.Employees.FindAsync(id);

@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Contracts.Interfaces;
 using Models.Abstracts;
+using Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BussinessLogicLayer.Services.Abstracs
 {
-    public interface IManagerService <T>where T : BaseEntity
+    public interface IManagerService <T>where T : class,IEntity
     {
         IEnumerable<T> GetAll();
 
@@ -29,7 +30,7 @@ namespace BussinessLogicLayer.Services.Abstracs
 
         Task UpdateRangeAsync(List<T> entities);
 
-        Task DeleteAsync(T entity);
+        Task DeleteAsync(int id);
 
         Task DeleteAllAsync(List<T> entities);
 

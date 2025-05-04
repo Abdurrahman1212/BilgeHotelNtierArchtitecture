@@ -1,18 +1,15 @@
 ﻿@model Models.Entities.Reservation
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Rezervasyon Oluştur";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Reservation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="card" id="createReservation">
+    <h5 class="card-header">Rezervasyon Oluştur</h5>
+    <form asp-action="Create" class="card-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row" style="align-items:center">
             <div class="form-group">
                 <label asp-for="CheckInDate" class="control-label"></label>
                 <input asp-for="CheckInDate" class="form-control" />
@@ -32,11 +29,6 @@
                 <label asp-for="TotalAmount" class="control-label"></label>
                 <input asp-for="TotalAmount" class="form-control" />
                 <span asp-validation-for="TotalAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PaymentVerification" class="control-label"></label>
-                <input asp-for="PaymentVerification" class="form-control" />
-                <span asp-validation-for="PaymentVerification" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="status" class="control-label"></label>
@@ -81,14 +73,10 @@
                 <input asp-for="UpdatedComputerName" class="form-control" />
                 <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
-    </div>
+            <div class="pt-6" style="text-align:end;">
+                <button type="reset" class="btn btn-outline-secondary waves-effect" asp-action="Index">İptal</button>
+                <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Create">Kaydet</button>
+            </div>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

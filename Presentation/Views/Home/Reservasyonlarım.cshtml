@@ -1,0 +1,176 @@
+﻿@model IEnumerable<Reservation>
+@{
+    ViewData["Title"] = "Reservasyonlarım";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Core CSS -->
+<link rel="stylesheet" href="../../assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+<link rel="stylesheet" href="../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+<link rel="stylesheet" href="../../assets/css/demo.css" />
+
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Reservasyonlarınız</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li>Reservasyonlarınız</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- end main-content -->
+<!--/ DataTable with Buttons -->
+<section class="pt-60 pb-60">
+    <div class="pl-120 pr-120">
+        <div class="row">
+            <div class="card" id="reservationList">
+                <div class="card-datatable table-responsive pt-0">
+                    <table id="dtCustomerReservations" class="table table-bordered table-hover table-checkable">
+
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CheckInDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.FirstOrDefault().CheckOutDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.FirstOrDefault().PackageType)</th>
+                                <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TotalAmount)</th>
+                                <th>@Html.DisplayNameFor(model => model.FirstOrDefault().Id)</th>
+                            </tr>
+                        </thead>
+
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal to add new record -->
+@section CustomerReservations {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           var dtCustomerReservations = $("#dtCustomerReservations").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/Home/AllReservations",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        console.dir(object.data);
+                        return object.data;
+                    }
+                },
+                columns: [
+                    { 'data': 'checkInDate' ,'render': $.fn.dataTable.render.datetime('DD-MMM-YYYY')},
+                    { 'data': 'checkOutDate','render': $.fn.dataTable.render.datetime('DD-MMM-YYYY')},
+                    { 'data': 'packageType' },
+                    { 'data': 'totalAmount' },
+                    { 'data':'id'},
+                ],
+                     columnDefs: [{
+                    target:-1,
+                    title: 'İşlemler',
+                    orderable: false,
+                    render: function (data, type, row) {
+                var columnResult = `
+                    <div>
+                        <a class="btn btn-primary btn-buy-now waves-effect waves-light text-white" title="Güncelle" onclick="editReservation(${data})">Güncelle</a>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light text-white" title="Sil" onclick="deleteRoom(${data})">Sil</a>
+                    </div>
+                `;
+                    return columnResult;
+                },
+                }]                ,
+                    dom:'<"card-header flex-column flex-md-row border-bottom"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6 mt-5 mt-md-0"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+
+                    buttons: [
+                            {
+                                extend: "collection",
+                                className: "btn btn-label-primary dropdown-toggle me-4 waves-effect waves-light",
+                                text: '<i class="ri-external-link-line me-sm-1"></i> <span class="d-none d-sm-inline-block">Export</span>',
+                                buttons: [
+                                    'print', 'excel', 'pdf'
+
+                                ],
+                            },
+                            { text: '<i class="ri-add-line ri-16px me-sm-2"></i> <a class="d-none d-sm-inline-block" onClick="newReservation();">Add New Record</a>', className: "create-new btn btn-primary waves-effect waves-light" }
+                        ],
+            });
+            /*GetRooms();*/
+        });
+
+        function deleteRoom(id)
+        {
+            Swal.fire({ title: "Rezervasyon Silme",
+                text: "Rezervasyonunuz Silinsin mi?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'İptal',
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                        url: "/Room/DeleteReservation",
+                        method: "post",
+                        data: {
+                               'reservationId': id
+                           },
+                        success: function (result) {
+                             ScreenMessage("success", "İşlem Başarılı", "Rezervasyon Kaydiniz Silinmiştir.");
+                             location.reload();
+                        },
+                        error: function (err) {
+                            ScreenMessage("error", "Hata Oluştu", err);
+                        }
+                    })
+                  } else if (result.isDenied) {
+                    ScreenMessage("success", "İptal Edildi", "Rezervasyon silme işleminiz iptal edildi.");
+                  }
+                })
+        }
+
+        function editReservation(id)
+        {
+            $.ajax({
+                url: "/Room/GetRoom",
+                method: "post",
+                data: {
+                    'id': id
+                },
+                success: function (result) {
+                    $("#LoadModal").html("");
+                    $("#LoadModal").append(result);
+                    $("#LoadModal").appendTo("body");
+                    $("#LoadModal").modal("show");
+                },
+                error: function (err) {
+                    ScreenMessage("error", "Hata Oluştu", err);
+                }
+            });
+        }
+
+        function newReservation() {
+            $.ajax({
+                url: "/Room/NewReservation",
+                method: "post",
+                success: function (result) {
+                    $("#LoadModal").html("");
+                    $("#LoadModal").append(result);
+                    $("#LoadModal").appendTo("body");
+                    $("#LoadModal").modal("show");
+                },
+                error: function (err) {
+                    ScreenMessage("error", "Hata Oluştu", err.Message);
+                }
+            });
+        }
+
+    </script>
+    }

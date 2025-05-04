@@ -140,22 +140,29 @@ namespace Presentation.Areas.Dashboard.Controllers
         }
 
         // GET: Dashboard/Shifts/Delete/5
-        [HttpPost]
-        public IActionResult Delete(int id)
+
+
+        // GET: Dashboard/Users/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            var shift = _shiftService.GetById(id);
-            if (shift == null)
+            if (id == null)
             {
-                return Json(new { success = false, message = "Shift not found." });
+                return NotFound();
             }
 
-            _shiftService.DestroyAsync(shift);
-            return Json(new { success = true });
+            var shift = await _context.Shifts
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (shift == null)
+            {
+                return NotFound();
+            }
+
+            return View(shift);
         }
 
-        // POST: Dashboard/Shifts/Delete/5
+        // POST: Dashboard/Users/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var shift = await _context.Shifts.FindAsync(id);
@@ -167,6 +174,8 @@ namespace Presentation.Areas.Dashboard.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+      
 
         private bool ShiftExists(int id)
         {

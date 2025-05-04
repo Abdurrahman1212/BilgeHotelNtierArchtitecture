@@ -9,5 +9,8 @@ namespace BussinessLogicLayer.Services.Abstracs
 {
     public interface IReservationService:IManagerService<Reservation>
     {
+        IEnumerable<Reservation> GetReservationsByCustomerId(int customerId);
+        bool IsRoomReserved(int roomId, DateTime checkInDate, DateTime checkOutDate);
+        Reservation GetReservation(int reservationId);
     }
 }

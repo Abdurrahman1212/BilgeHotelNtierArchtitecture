@@ -15,7 +15,6 @@ namespace Models.Entities
         public PackageType PackageType { get; set; }
         public decimal TotalAmount { get; set; }
 
-        public string? PaymentVerification { get; set; }
         public DataStasus status { get; set; }
         //Relational Properties
         public int RoomId { get; set; }

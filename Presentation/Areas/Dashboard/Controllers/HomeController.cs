@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
+    [Area("Dashboard")]
+    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         private readonly ProjectDatabaseContext _context;
@@ -16,8 +18,7 @@ namespace Presentation.Areas.Dashboard.Controllers
             _context = context;
             _controller = controller;
         }
-        [Area("Dashboard")]
-        [Authorize(Roles = "Admin")]
+      
 
         // GET: HomeController
         public ActionResult Index()
@@ -30,6 +31,7 @@ namespace Presentation.Areas.Dashboard.Controllers
             ViewBag.TotalReservations = TotalReservations;
             var averagePricePerNight = _context.Rooms.Average(r => r.PricePerNight);
             ViewBag.TotalRevenue = averagePricePerNight;
+            
             return View();
         }
   

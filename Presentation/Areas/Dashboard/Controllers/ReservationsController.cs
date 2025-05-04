@@ -29,7 +29,9 @@ namespace Presentation.Areas.Dashboard.Controllers
         // GET: Dashboard/Reservations
         public IActionResult Index()
         {
-           return View(_reservationService.GetAll().ToList());
+          
+
+            return View(_reservationService.GetAll().ToList());
         }
 
 
@@ -169,7 +171,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         // POST: Dashboard/Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);

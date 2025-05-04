@@ -1,65 +1,69 @@
-﻿@model IEnumerable<Models.Entities.Reservation>
+﻿@model IEnumerable<Reservation>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Rezervasyonlar";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
-
-<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table id="dtReservations" class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CheckInDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CheckOutDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PackageType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentVerification)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MasterId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SelectedStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedComputerName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    </table>
 <!--/ DataTable with Buttons -->
+
+<div class="card" id="reservationList">
+    <div class="card-datatable table-responsive pt-0">
+        <table id="dtReservations" class="table table-bordered table-hover table-checkable">
+
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckInDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckOutDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PackageType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TotalAmount)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RoomId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.MasterId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EntryDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UpdatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SelectedStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UpdatedComputerName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+
+    </div>
+</div>
+<!-- Modal to add new record -->
 @section Reservations {
     <script type="text/javascript">
         $(document).ready(function () {
@@ -68,7 +72,7 @@
                 autoWidth: false,
                 destroy: true,
                 ajax: {
-                    url: "/dashboard/Reservations/AllReservation",
+                    url: "/Dashboard/Reservations/AllReservation",
                     type: "GET",
                     datatype: "json",
                     contentType: "application/json; charset=utf-8",
@@ -82,7 +86,6 @@
                     { 'data': 'checkOutDate'},
                     { 'data': 'packageType' },
                     { 'data': 'totalAmount' },
-                    { 'data': 'paymentVerification' },
                     { 'data': 'status' },
                     { 'data': 'roomId' },
                     { 'data': 'customerId' },
@@ -109,7 +112,7 @@
                     </div>
                     <div style="margin-top: 5px;">
                         <span>Sil</span><br>
-                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Reservations/Delete/${data}">Sil</a>
+                        <a class="btn btn-danger btn-buy-now waves-effect waves-light btn-text-danger" title="Sil" onclick="deleteReservation(${data})">Sil</a>
                     </div>
                 `;
                     return columnResult;
@@ -119,9 +122,34 @@
             /*GetRooms();*/
         });
 
-        function DeleteRoom(id)
+        function deleteReservation(id)
         {
-            console.dir(id);
+                Swal.fire({ title: "Rezervasyon Silme",
+                text: "Rezervasyon Silinsin mi?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'İptal',
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                        url: "/Dashboard/Reservations/Delete",
+                        method: "post",
+                        data: {
+                               'id': id
+                           },
+                        success: function (result) {
+                             ScreenMessage("success", "İşlem Başarılı", "Rezervasyon Kaydiniz Silinmiştir.");
+                             location.reload();
+                        },
+                        error: function (err) {
+                            ScreenMessage("error", "Hata Oluştu", err);
+                        }
+                    })
+                  } else if (result.isDenied) {
+                    ScreenMessage("success", "İptal Edildi", "Rezervasyon silme işleminiz iptal edildi.");
+                  }
+                })
         }
 
         function GetRooms() {

@@ -434,8 +434,8 @@ button {
 img {
   display: inline-block;
   max-width: 100%;
-  height: 480px;
-  max-height:480px !important;
+  /*height: 480px;
+  max-height:480px !important;*/
 }
 
 ul,

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models.Abstracts
 {
-    public abstract class BaseEntity : IEntity<string>
+    public abstract class BaseEntity : IEntity
     {
         protected BaseEntity()
         {

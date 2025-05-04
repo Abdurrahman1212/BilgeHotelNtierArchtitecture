@@ -1,0 +1,179 @@
+﻿@model IEnumerable<Models.Entities.User>
+
+@{
+    ViewData["Title"] = "Kullanıcılar";
+    Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="card" id="userList">
+    <div class="card-datatable table-responsive pt-0">
+        <table id="dtUsers" class="table table-bordered table-hover table-checkable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ActivationCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NormalizedUserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NormalizedEmail)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmailConfirmed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PasswordHash)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SecurityStamp)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ConcurrencyStamp)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LockoutEnd)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LockoutEnabled)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccessFailedCount)
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!--/ DataTable with Buttons -->
+@section J {
+    <script type="text/javascript">
+        $(document).ready(function () {
+           $("#dtUsers").DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                ajax: {
+                    url: "/dashboard/users/AllUsers",
+                    type: "GET",
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    dataSrc : function (object){
+                        return object.data;
+                    }
+                },
+                columns: [
+                    { 'data': 'id'},
+                    { 'data': 'activationCode' },
+                    { 'data': 'address' },
+                    { 'data': 'userName' },
+                    { 'data': 'normalizedUserName' },
+                    { 'data': 'email' },
+                    { 'data': 'normalizedEmail' },
+                    { 'data': 'emailConfirmed' },
+                    { 'data': 'passwordHash' },
+                    { 'data': 'securityStamp' },
+                    { 'data': 'concurrencyStamp' },
+                    { 'data': 'phoneNumber' },
+                    { 'data': 'phoneNumberConfirmed' },
+                    { 'data': 'twoFactorEnabled' },
+                    { 'data': 'lockoutEnd' },
+                    { 'data': 'lockoutEnabled' },
+                    { 'data': 'accessFailedCount' }
+                ],
+                     columnDefs: [{
+                    target:0,
+                    title: 'İşlemler',
+                    orderable: false,
+                    render: function (data, type, row) {
+                var columnResult = `
+                <div class="row row-bordered g-0" style="float:left;">
+                        <div class="col-12">
+                    <div class="demo-inline-spacing">
+                        <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Users/Edit/${data}">
+                        <span class="tf-icons ri-edit-2-line ri-22px"></span>
+                        </a>
+                        <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteUser(${data})">
+                        <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>
+                        </a>
+                                           </div>
+                    </div>
+                    </div>
+                `;
+                    return columnResult;
+                },
+                }],
+            });
+        });
+
+        function deleteUser(id)
+        {
+                Swal.fire({ title: "Kullanıcı Silme",
+                text: "Kullanıcı Silinsin mi?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'İptal',
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                        url: "/Dashboard/Users/Delete",
+                        method: "post",
+                        data: {
+                               'id': id
+                           },
+                        success: function (result) {
+                             ScreenMessage("success", "İşlem Başarılı", "Kullanıcı Kaydiniz Silinmiştir.");
+                             location.reload();
+                        },
+                        error: function (err) {
+                            ScreenMessage("error", "Hata Oluştu", err);
+                        }
+                    })
+                  } else if (result.isDenied) {
+                    ScreenMessage("success", "İptal Edildi", "Kullanıcı silme işleminiz iptal edildi.");
+                  }
+                })
+        }
+
+        function GetRooms() {
+            $.ajax({
+                url: '/Dashboard/Users/AllUsers',
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                       console.dir(result.data);
+                },
+                error: function (err) {
+                    console.dir(err.Message);
+                }
+            });
+        }
+    </script>
+}
+

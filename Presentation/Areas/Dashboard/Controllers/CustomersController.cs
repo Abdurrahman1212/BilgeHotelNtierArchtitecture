@@ -155,7 +155,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         // POST: Dashboard/Customers/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.FindAsync(id);

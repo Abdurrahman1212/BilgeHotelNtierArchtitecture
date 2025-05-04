@@ -1,6 +1,8 @@
 ﻿using DataAccessLayer.Contracts.Interfaces;
+using DataAccessLayer.Services.Abstracs;
 using DataAccessLayer.Services.Concretes;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,8 @@ namespace BussinessLogicLayer.DependencyResolvers
         public static void AddRepositoryServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IManagerRepository<>), typeof(ManagerRepository<>));
+           
+            
         }
     }
 }

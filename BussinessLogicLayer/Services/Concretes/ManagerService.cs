@@ -2,13 +2,14 @@ using BussinessLogicLayer.Services.Abstracs;
 using DataAccessLayer.Contracts.Interfaces;
 using Models.Abstracts;
 using Models.Entities;
+using Models.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Services
 {
-    public class ManagerService<T> : IManagerService<T> where T : BaseEntity
+    public class ManagerService<T> : IManagerService<T> where T : class ,IEntity
     {
         protected readonly IManagerRepository<T> _roomRepo;
 
@@ -35,6 +36,11 @@ namespace BusinessLogicLayer.Services
         public async Task DeleteAsync(T entity)
         {
             await _roomRepo.DeleteAsync(entity);
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task DestroyAsync(T entity)

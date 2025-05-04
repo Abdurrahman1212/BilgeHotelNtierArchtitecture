@@ -1,0 +1,33 @@
+﻿@model UserDTO
+
+@{
+   ViewData["Title"] = "Delete User Details";
+   Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete User Details</h1>
+
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Reservasyonunuzu Guncelleyin</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li>Reservasyonunuzu Guncelleyin</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<div>
+   <p>Are you sure you want to delete the following user?</p>
+   <ul>
+       <li><strong>Name:</strong> @Model.UserName</li>
+       <li><strong>Email:</strong> @Model.Email</li>
+   </ul>
+</div>
+
+<form method="post" asp-page-handler="Delete">  
+  <input type="hidden" asp-for="Id" />  
+  <button type="submit" class="btn btn-danger">Delete</button>  
+  <a asp-page="/Home/Index" class="btn btn-secondary">Cancel</a>  
+</form>

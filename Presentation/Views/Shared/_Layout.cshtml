@@ -1,14 +1,26 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8">
     <title>@ViewData["Title"]</title>
     <!-- Stylesheets -->
-    <link href="~/css/bootstrap.min.css" rel="stylesheet">
-    <link href="~/css/flatpickr.min.css" rel="stylesheet">
-    <link href="~/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="~/css/slick-theme.css">
-    <link rel="stylesheet" type="text/css" href="~/css/slick.css">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/flatpickr.min.css" rel="stylesheet">
+    <link href="../../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../css/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="../../css/slick.css">
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css">
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css">
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/animate-css/animate.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/sweetalert2/sweetalert2.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/tagify/tagify.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/%40form-validation/form-validation.css" />
 
     <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon">
     <link rel="icon" href="~/images/favicon.png" type="image/x-icon">
@@ -139,11 +151,61 @@
 
         <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-up"></span></div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="LoadModal" tabindex="-1" aria-hidden="true">
+        </div>
+
     </div><!-- End Page Wrapper -->
 
-    <script src="../../js/jquery.js"></script>
+    @*<script src="../../js/jquery.js"></script>
     <script src="../../js/popper.min.js"></script>
     <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/slick.min.js"></script>
+    <script src="../../js/slick-animation.min.js"></script>
+    <script src="../../js/jquery.fancybox.js"></script>
+    <script src="../../js/wow.js"></script>
+    <script src="../../js/appear.js"></script>
+    <script src="../../js/mixitup.js"></script>
+    <script src="../../js/flatpickr.js"></script>
+    <script src="../../js/swiper.min.js"></script>
+    <script src="../../js/gsap.min.js"></script>
+
+    <script src="../../js/ScrollTrigger.min.js"></script>
+    <script src="../../js/SplitText.min.js"></script>
+    <script src="../../js/splitType.js"></script>    
+    <script src="../../js/jquery.validate.min.js"></script>
+    <script src="../../js/bxslider.js"></script>
+    <script src="../../js/script.js"></script>
+
+    <script src="../../js/script-gsap.js"></script>*@
+    @* @await RenderSectionAsync("J", required: false) *@
+
+    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../../assets/vendor/js/bootstrap.js"></script>
+
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="../../assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <script src="../../assets/vendor/libs/select2/select2.js"></script>
+    <script src="../../assets/vendor/libs/bootstrap-select/bootstrap-select.js"></script>
+    <script src="../../assets/vendor/libs/moment/moment.js"></script>
+    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="../../assets/vendor/libs/tagify/tagify.js"></script>
+
+    <script src="../../assets/vendor/libs/bs-stepper/bs-stepper.js"></script>
+    <script src="../../assets/vendor/libs/rateyo/rateyo.js"></script>
+    <script src="../../assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="../../assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+
+    <script src="../../assets/vendor/libs/jquery-validation/jquery.validate.js"></script>
+     <script src="../../assets/vendor/libs/jquery-validation/additional-methods.js"></script>
+    <script src="../../assets/vendor/libs/jquery-validation/localization/messages_tr.js"></script> 
+
+
+    
+
     <script src="../../js/slick.min.js"></script>
     <script src="../../js/slick-animation.min.js"></script>
     <script src="../../js/jquery.fancybox.js"></script>
@@ -156,13 +218,30 @@
     <script src="../../js/ScrollTrigger.min.js"></script>
     <script src="../../js/SplitText.min.js"></script>
     <script src="../../js/splitType.js"></script>
-    <script src="../../js/script-gsap.js"></script>
-    <script src="../../js/jquery.validate.min.js"></script>
     <script src="../../js/bxslider.js"></script>
+
+
+
     <script src="../../js/script.js"></script>
+    <script src="../../js/script-gsap.js"></script>
+
+    <script>
+        function ScreenMessage(type, title, message) {
+                Swal.fire({ title: title,
+                text: message,
+                icon: type,
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" }, 
+                buttonsStyling: !1 });
+            };
+    </script>
 
 
-    @* @await RenderSectionAsync("J", required: false) *@
+    @await RenderSectionAsync("CustomerReservations", required: false)
+    @await RenderSectionAsync("UsersList", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("CheckDate", required: false)
 
 </body>
 </html>
+
+

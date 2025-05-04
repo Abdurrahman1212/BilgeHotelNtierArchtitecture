@@ -1,0 +1,123 @@
+﻿@model PaymentProcessRequestModel
+
+@using (Html.BeginForm("CompletePayment", "Payment",FormMethod.Post, new { @id = "completedPayment" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReservationId)
+        @Html.TextBoxFor(m => m.ReservationId, new { @class = "form-control", @readonly = "true" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardUserName)
+        @Html.TextBoxFor(m => m.CardUserName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardNumber)
+        @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CVV)
+        @Html.TextBoxFor(m => m.CVV, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryMonth)
+        @Html.TextBoxFor(m => m.ExpiryMonth, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryYear)
+        @Html.TextBoxFor(m => m.ExpiryYear, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ShoppingPrice)
+        @Html.TextBoxFor(m => m.ShoppingPrice, new { @class = "form-control", @readonly = "true" })
+    </div>
+    <div class="form-group">
+        <button id="btnPayment" type="submit" class="btn btn-primary">Ödeme Yap</button>
+    </div>
+}
+
+
+<script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/jquery.validate.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/additional-methods.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/localization/messages_tr.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#completedPayment').validate({
+            rules:{
+            userName: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50,
+                    },
+                    CardNumber: {
+                        required: true,
+                        minlength: 16,
+                        maxlength:16,
+                    },
+                    CVV: {
+                        required: true,
+                        minlength: 3,
+                        maxlength:3,
+                        number:true,
+                    },
+                    ExpiryMonth: {
+                        required: true,
+                        minlength: 1,
+                        maxlength:2,
+                        number:true,
+                    },
+                    ExpiryYear: {
+                        required: true,
+                        minlength: 4,
+                        maxlength:4,
+                        number:true,
+                    }
+            }
+        });
+
+
+        $("#btnPayment").click(function () {
+            $('#ReservationId').val($("#newReservationId").val());
+            if ($("#completedPayment").valid()) {
+                var reservationId = $("#ReservationId").val();
+                var cardUserName = $("#CardUserName").val();
+                var cardNumber = $("#CardNumber").val();
+                var cvv = $("#CVV").val();
+                var expiryMonth = $("#ExpiryMonth").val();
+                var expiryYear = $("#ExpiryYear").val();
+                var shoppingPrice = $("#ShoppingPrice").val();
+                var roomId=$("#RoomId").val();
+                $.ajax({
+                    url: "/Payment/CompletePayment",
+                    method: "post",
+                    data: {
+                        'RoomNumber':roomId,
+                        'ReservationId': reservationId,
+                        'CardUserName': cardUserName,
+                        'CardNumber':    cardNumber,
+                        'CVV':           cvv,
+                        'ExpiryMonth':   expiryMonth,
+                        'ExpiryYear':    expiryYear,
+                        'ShoppingPrice': shoppingPrice.replace('.',',')
+                    },
+                    success: function (result) {
+                        getReservationDetail(reservationId);
+                        nextStep();
+                        return false;
+                    },
+                    error: function (err) {
+                        ScreenMessage('error','Hata Oluştu',err);
+                    }
+                });
+            }
+        });
+    });
+</script>

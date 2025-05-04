@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Models.Abstracts;
 using Models.Entities;
 using Models.Enums;
+using Models.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ManagerRepository<T> : IManagerRepository<T> where T : BaseEntity
+    public class ManagerRepository<T> : IManagerRepository<T> where T : class , IEntity
     {
         private readonly ProjectDatabaseContext _context;
         private readonly DbSet<T> _dbSet;

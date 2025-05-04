@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models.Entities;
+using Project.Entities.Models;
 
 namespace DataAccessLayer.Context
 {
@@ -26,6 +27,7 @@ namespace DataAccessLayer.Context
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         // OnConfiguring method for setting up the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

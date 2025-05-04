@@ -14,15 +14,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddCustomIdentityService();
-builder.Services.AddDbContext<ProjectDatabaseContext > (options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped(typeof(IManagerRepository<>), typeof(ManagerRepository<>));
-builder.Services.AddScoped(typeof(IManagerService<>),typeof( ManagerService<>));
-builder.Services.AddScoped<IRoomService,RoomService>();
-builder.Services.AddScoped<IShiftService, ShiftService>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IReservationService, ReservationService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddDbContextService(); 
+builder.Services.AddManagerServices();
+builder.Services.AddRepositoryServices();
+builder.Services.AddMapperService();    
+
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(3);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 var app = builder.Build();
 
@@ -35,7 +39,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -36,9 +36,6 @@ namespace DataAccessLayer.Configurations
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            builder.Property(r => r.PaymentVerification)
-                .IsRequired()
-                .HasMaxLength(50);
 
             builder.Property(r => r.status)
                 .IsRequired();

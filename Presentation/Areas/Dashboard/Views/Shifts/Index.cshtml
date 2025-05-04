@@ -6,12 +6,18 @@
 
 }
 
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
 <!-- DataTable with Buttons -->
-<div class="card" id="roomList">
+<div class="card" id="shiftList">
     <div class="card-datatable table-responsive pt-0">
         <table id="dtShifts" class="table table-bordered table-hover table-checkable">
             <thead>
                 <tr>
+                    <th></th>
                     <th>
                         @Html.DisplayNameFor(model=>model.Id)
                     </th>
@@ -143,6 +149,7 @@
                     }
                 },
                 columns: [
+                    {'data':'id'},
                     { 'data':'id'},
                     { 'data': 'shiftType'},
                     { 'data': 'startTime'},
@@ -155,21 +162,26 @@
                     { 'data': 'selectedStatus' },
                     { 'data': 'updatedComputerName' },
                     
+                    
 
                 ],
                    columnDefs: [{
-                    target:-1,
+                    target:0,
                     title: 'İşlemler',
                     orderable: false,
                     render: function (data, type, row) {
                 var columnResult = `
-                    <div>
-                        <span>Güncelle</span><br>
-                        <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Shifts/Edit/${data}">Güncelle</a>
+                    <div class="row row-bordered g-0" style="float:left;width:100px;">
+                <div class="col-12">
+                    <div class="demo-inline-spacing">
+                        <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Shifts/Edit/${data}">
+                            <span class="tf-icons ri-edit-2-line ri-22px"></span>
+                        </a>
+                        <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteShift(${data})">
+                            <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>
+                        </a>
+                        </div>
                     </div>
-                    <div style="margin-top: 5px;">
-                        <span>Sil</span><br>
-                        <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Shifts/Delete/${data}">Sil</a>
                     </div>
                 `;
                     return columnResult;
@@ -179,9 +191,34 @@
             /*GetRooms();*/
         });
 
-        function DeleteRoom(id)
+        function deleteShift(id)
         {
-            console.dir(id);
+                Swal.fire({ title: "Vardiya Silme",
+                text: "Vardiya Silinsin mi?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'İptal',
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                        url: "/Dashboard/Shifts/Delete",
+                        method: "post",
+                        data: {
+                               'id': id
+                           },
+                        success: function (result) {
+                             ScreenMessage("success", "İşlem Başarılı", "Vardiya Kaydiniz Silinmiştir.");
+                             location.reload();
+                        },
+                        error: function (err) {
+                            ScreenMessage("error", "Hata Oluştu", err);
+                        }
+                    })
+                  } else if (result.isDenied) {
+                    ScreenMessage("success", "İptal Edildi", "Vardiya silme işleminiz iptal edildi.");
+                  }
+                })
         }
 
         function GetRooms() {

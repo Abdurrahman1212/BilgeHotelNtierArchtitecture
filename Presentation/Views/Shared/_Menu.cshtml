@@ -1,4 +1,4 @@
-﻿
+﻿@using Presentation.Models.SessionService
 <!-- Main Header-->
 <header class="main-header header-style-five">
     <div class="header-top">
@@ -13,10 +13,54 @@
                 </ul>
             </div>
             <!-- top-right -->
-            <div class="top-right"> 
-                <span><i class="icon fa-sharp fa-solid fa-location-dot"></i> Bilge Adam Kadıkoy
-              
-              </span>
+            <div class="top-right">
+                <span>
+                    <i class="icon fa-sharp fa-solid fa-location-dot"></i> Bilge Adam Kadıkoy
+
+                </span>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @*  <span>
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> @User.Identity.Name
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
+                        </ul>
+                    </span> *@
+                    
+                    <nav class="nav main-menu btn btn-warning" style="margin-left:25px;">
+                        <ul class="navigation" style="padding:0px 10px;">
+                            <li class="dropdown">
+                                <a href="#"><i class="fas fa-user"></i> @User.Identity.Name</a>
+                                <ul>
+                                    <li>@Html.ActionLink("UserDetails","UserDetails","Home")</li>
+                                    <li>@Html.ActionLink("Reservasyonlarım","Reservasyonlarım","Home")</li>
+                                 
+
+
+
+
+                                    <li><a href="/Account/Logout">Logout</a></li>
+                                  
+                                 
+                                </ul>
+                                <div class="dropdown-btn"><i class="fa fa-angle-down"></i></div>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+                else
+                {
+                    <div style="padding-left:25px">
+                        @Html.ActionLink("Oturum Aç", "Login", "Account", new { area = "" }, new { @class = "btn-style-two", @style = "padding:10px 20px" })
+                        <span></span>
+                        @Html.ActionLink("Kayıt Ol", "Register", "Account", new { area = "" }, new { @class = "btn-style-two", @style = "padding:10px 20px" })
+                    </div>
+                  
+                }
+
             </div>
         </div>
     </div>
@@ -41,40 +85,27 @@
             <div class="nav-outer">
                 <nav class="nav main-menu">
                     <ul class="navigation">
-                        <li >
+                        <li>
                             <a href="/Home">Anasayfa</a>
-                           
+
                         </li>
                         <li>@Html.ActionLink("Hakkımızda", "About", "Home")</li>
                         <li class="dropdown">
                             <a>Odalar</a>
                             <ul>
                                 <li>@Html.ActionLink("Odalar", "Index", "Room")</li>
-                                <li>@Html.ActionLink("Oda Reservazyonu", "RoomDetail", "Room")</li>
-                              
+                                <li>@Html.ActionLink("Oda Detayları", "RoomDetail", "Room")</li>
+
                             </ul>
 
-                      
+
 
                         </li>
-                       
-                        <li>@Html.ActionLink("Iletisim","Contact","Home")</li>
-                        <li>@Html.ActionLink("Oturum Aç", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Kayıt Ol", "Register", "Account")    </li>
-                        <ul class="navbar-nav ms-auto">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-user"></i> @User.Identity.Name
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                        <li><a class="dropdown-item" href="/Account/Logout">Logout</a></li>
-                                    </ul>
-                                </li>
-                            }
-                        </ul>
-                  
+
+                        <li>@Html.ActionLink("Iletisim", "Contact", "Home")</li>
+                        @*<li>@Html.ActionLink("Oturum Aç", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Kayıt Ol", "Register", "Account")    </li>*@
+                      
 
                     </ul>
                 </nav>
@@ -85,12 +116,9 @@
                 <div class="ui-btn-outer">
                     <button class="ui-btn ui-btn search-btn">
                         <span class="icon lnr lnr-icon-search"></span>
-                    </button>
-                    <a href="shop-cart.html" class="ui-btn cart-btn">
-                        <i class="lnr-icon-shopping-cart"></i>
-                        <span class="items-count">0</span>
-                    </a>
+                    </button>                   
                 </div>
+                @* @Html.ActionLink("Reservasyonlarım", "Index", "Payment", new { area = "" }, new { @class = "ui-btn cart-btn" }) *@
                 <div class="mobile-nav-toggler"><span class="icon lnr-icon-bars"></span></div>
                 <!-- Mobile Nav toggler -->
             </div>
@@ -116,7 +144,7 @@
                             <a href="tel:+902160000">+90 (216) - 0000</a>
                         </div>
                     </li>
-                  
+
                     <li>
                         <!-- Contact Info Box -->
                         <div class="contact-info-box">
@@ -133,7 +161,6 @@
                 </ul>
             </nav>
         </div><!-- End Mobile Menu -->
- 
         <!-- Sticky Header  -->
         <div class="sticky-header">
             <div class="auto-container">
@@ -159,6 +186,6 @@
             </div>
         </div><!-- End Sticky Menu -->
     </div>
-    
+
 </header>
 <!--End Main Header -->

@@ -1,106 +1,100 @@
 ﻿@model Models.Entities.Employee
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Çalışan Oluştur";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Employee</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+<div class="card" id="createEmployee">
+    <h5 class="card-header">Çalışan Oluştur</h5>
+    <form asp-action="Create" class="card-body">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row" style="align-items:center">
+            <div class="form-group col-6 p-2">
                 <label asp-for="EmployeeFirstName" class="control-label"></label>
                 <input asp-for="EmployeeFirstName" class="form-control" />
                 <span asp-validation-for="EmployeeFirstName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="EmployeeLastName" class="control-label"></label>
                 <input asp-for="EmployeeLastName" class="form-control" />
                 <span asp-validation-for="EmployeeLastName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="EmployeePhoneNumber" class="control-label"></label>
                 <input asp-for="EmployeePhoneNumber" class="form-control" />
                 <span asp-validation-for="EmployeePhoneNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="EmployeeAddres" class="control-label"></label>
                 <input asp-for="EmployeeAddres" class="form-control" />
                 <span asp-validation-for="EmployeeAddres" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="City" class="control-label"></label>
                 <input asp-for="City" class="form-control" />
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="Country" class="control-label"></label>
                 <input asp-for="Country" class="form-control" />
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="PostalCode" class="control-label"></label>
                 <input asp-for="PostalCode" class="form-control" />
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="HourlyWage" class="control-label"></label>
                 <input asp-for="HourlyWage" class="form-control" />
                 <span asp-validation-for="HourlyWage" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="MasterId" class="control-label"></label>
                 <input asp-for="MasterId" class="form-control" />
                 <span asp-validation-for="MasterId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="CreatedDate" class="control-label"></label>
                 <input asp-for="CreatedDate" class="form-control" />
                 <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="EntryDate" class="control-label"></label>
                 <input asp-for="EntryDate" class="form-control" />
                 <span asp-validation-for="EntryDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="UpdatedDate" class="control-label"></label>
                 <input asp-for="UpdatedDate" class="form-control" />
                 <span asp-validation-for="UpdatedDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="SelectedStatus" class="control-label"></label>
                 <select asp-for="SelectedStatus" class="form-control"></select>
                 <span asp-validation-for="SelectedStatus" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="UpdatedComputerName" class="control-label"></label>
                 <input asp-for="UpdatedComputerName" class="form-control" />
                 <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+        </div>
+        <div class="pt-6" style="text-align:end;">
+            <button type="reset" class="btn btn-outline-secondary waves-effect" asp-action="Index">İptal</button>
+            <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Create">Kaydet</button>
+        </div>
+    </form>
 </div>
 

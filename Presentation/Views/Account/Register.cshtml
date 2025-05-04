@@ -4,41 +4,60 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form method="post" asp-action="Register" asp-controller="Account">
-    <div class="col-md-6 mx-auto">
-        <div class="card">
-            <div class="card-header">
-                <h2>Register</h2>
-            </div>
-            <div class="card-body">
-                <div>
-                    <label asp-for="UserName"></label>
-                    <span asp-validation-for="UserName"></span>
-                    <input type="text" class="form-control" asp-for="UserName" />
-                </div>
-                <div>
-                    <label asp-for="Email"></label>
-                    <span asp-validation-for="Email"></span>
-                    <input type="email" class="form-control" asp-for="Email" />
-                </div>
-                <div>
-                    <label asp-for="Password"></label>
-                    <span asp-validation-for="Password"></span>
-                    <input type="password" class="form-control" asp-for="Password" />
-                </div>
-                <div>
-                    <label asp-for="ConfirmPassword"></label>
-                    <span asp-validation-for="ConfirmPassword"></span>
-                    <input type="password" class="form-control" asp-for="ConfirmPassword" />
-                </div>
-                <div>
-                    <label asp-for="Address"></label>
-                    <span asp-validation-for="Address"></span>
-                    <input type="text" class="form-control" asp-for="Address" />
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Register</button>
-            </div>
+<!-- Start main-content -->
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Services</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="index.html">Home</a></li>
+                <li>Services</li>
+            </ul>
         </div>
     </div>
-</form>
+</section>
+<!-- end main-content -->
+<section class="room-service-section pt-120 pb-60">
+    <div class="auto-container">
+        <div class="row">
+            <form method="post" asp-action="Register" asp-controller="Account">
+                <div class="col-md-8 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Register</h2>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <label asp-for="UserName"></label>
+                                <span asp-validation-for="UserName"></span>
+                                <input type="text" class="form-control" asp-for="UserName" />
+                            </div>
+                            <div>
+                                <label asp-for="Email"></label>
+                                <span asp-validation-for="Email"></span>
+                                <input type="email" class="form-control" asp-for="Email" />
+                            </div>
+                            <div>
+                                <label asp-for="Password"></label>
+                                <span asp-validation-for="Password"></span>
+                                <input type="password" class="form-control" asp-for="Password" />
+                            </div>
+                            <div>
+                                <label asp-for="ConfirmPassword"></label>
+                                <span asp-validation-for="ConfirmPassword"></span>
+                                <input type="password" class="form-control" asp-for="ConfirmPassword" />
+                            </div>
+                            <div>
+                                <label asp-for="Address"></label>
+                                <span asp-validation-for="Address"></span>
+                                <input type="text" class="form-control" asp-for="Address" />
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
+        </div>
+    </div>
+</section>

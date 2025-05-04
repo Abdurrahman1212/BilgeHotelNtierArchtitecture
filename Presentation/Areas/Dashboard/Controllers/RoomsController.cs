@@ -39,7 +39,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         [HttpGet]
         public async Task<IActionResult> AllRooms()
-        {
+            {
             var allRooms = _roomService.GetAll();
 
             if (allRooms == null)
@@ -165,7 +165,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         // POST: Dashboard/Rooms/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var room = await _context.Rooms.FindAsync(id);

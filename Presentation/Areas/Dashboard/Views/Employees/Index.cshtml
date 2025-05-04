@@ -1,74 +1,77 @@
 ﻿@model IEnumerable<Models.Entities.Employee>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Çalışanlar";
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
-
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table id="dtEmployees" class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model=>model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeFirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeePhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeAddres)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostalCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HourlyWage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MasterId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SelectedStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedComputerName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="card" id="employeeList">
+    <div class="card-datatable table-responsive pt-0">
+        <table id="dtEmployees" class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeFirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeLastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeePhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeAddres)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Country)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PostalCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HourlyWage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MasterId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EntryDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SelectedStatus)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdatedComputerName)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
         </table>
+    </div>
+</div>
+
 <!--/ DataTable with Buttons -->
 @section Employee {
     <script type="text/javascript">
@@ -89,6 +92,7 @@
                 },
                 columns: [
                     { 'data':'id'},
+                    { 'data':'id'},
                     { 'data': 'employeeFirstName'},
                     { 'data': 'employeeLastName'},
                     { 'data': 'employeePhoneNumber' },
@@ -104,26 +108,27 @@
                     { 'data': 'entryDate' },
                     { 'data': 'updatedDate' },
                     { 'data': 'selectedStatus' },
-                    { 'data': 'updatedComputerName' },
-                    {'data':'id'}
-                  
-                  
+                    { 'data': 'updatedComputerName' }
 
                 ],
         columnDefs: [{
-                       target:-1,
-                       title: 'İşlemler',
-                       orderable: false,
+                       target:0,
+                    title: 'İşlemler',
+                    orderable: false,
                        render: function (data, type, row) {
                    var columnResult = `
-                       <div>
-                           <span>Güncelle</span><br>
-                           <a class="btn btn-primary btn-buy-now waves-effect waves-light" title="Güncelle" href="/Dashboard/Employees/Edit/${data}">Güncelle</a>
-                       </div>
-                       <div style="margin-top: 5px;">
-                           <span>Sil</span><br>
-                           <a class="btn btn-danger btn-buy-now waves-effect waves-light" title="Sil" href="/Dashboard/Employees/Delete/${data}">Sil</a>
-                       </div>
+                       <div class="row row-bordered g-0" style="float:left;width:100px;">
+                <div class="col-12">
+                    <div class="demo-inline-spacing">
+                           <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Employees/Edit/${data}">
+                            <span class="tf-icons ri-edit-2-line ri-22px"></span>
+                           </a>
+                           <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteEmployee(${data})">
+                           <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>
+                           </a>
+                        </div>
+                    </div>
+                    </div>
                    `;
                        return columnResult;
                    },
@@ -132,9 +137,34 @@
             /*GetRooms();*/
         });
 
-        function DeleteRoom(id)
+        function deleteEmployee(id)
         {
-            console.dir(id);
+                         Swal.fire({ title: "Personel Silme",
+                text: "Personel Silinsin mi?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Evet',
+                denyButtonText: 'İptal',
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
+                  if (result.isConfirmed) {
+                      $.ajax({
+                        url: "/Dashboard/Employess/Delete",
+                        method: "post",
+                        data: {
+                               'id': id
+                           },
+                        success: function (result) {
+                             ScreenMessage("success", "İşlem Başarılı", "Personel Kaydiniz Silinmiştir.");
+                             location.reload();
+                        },
+                        error: function (err) {
+                            ScreenMessage("error", "Hata Oluştu", err);
+                        }
+                    })
+                  } else if (result.isDenied) {
+                    ScreenMessage("success", "İptal Edildi", "Personel silme işleminiz iptal edildi.");
+                  }
+                })
         }
 
         function GetRooms() {

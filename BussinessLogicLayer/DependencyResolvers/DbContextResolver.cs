@@ -21,7 +21,7 @@ namespace BussinessLogicLayer.DependencyResolvers
 
             IConfiguration? configuration = provider.GetService<IConfiguration>();
 
-            services.AddDbContext<ProjectDatabaseContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("AbdurrahmanConnection")));
+            services.AddDbContext<ProjectDatabaseContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }
 }

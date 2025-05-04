@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Services.Abstracs;
+﻿using DataAccessLayer.Context;
+using DataAccessLayer.Services.Abstracs;
 using Models.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,66 +9,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ShiftRepo<T> : IShiftsRepo<T> where T : Shift
+    public class ShiftRepo : ManagerRepository<Shift>
     {
-        public Task CreateAsync(T entity)
+        public ShiftRepo(ProjectDatabaseContext project):base (project)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateRangeAsync(List<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAllAsync(List<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DestroyAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DestroyRangeAsync(List<T> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<T> GetActives()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<T> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<T> GetPassives()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateRangeAsync(List<T> entities)
-        {
-            throw new NotImplementedException();
+            
         }
     }
 }
