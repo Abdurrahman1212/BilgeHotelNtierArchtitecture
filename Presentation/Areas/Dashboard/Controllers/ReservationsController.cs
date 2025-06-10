@@ -124,6 +124,10 @@ namespace Presentation.Areas.Dashboard.Controllers
                 return NotFound();
             }
 
+            // Remove Payment validation errors if present
+            ModelState.Remove("Payment");
+            ModelState.Remove("Payment[]");
+
             if (ModelState.IsValid)
             {
                 try

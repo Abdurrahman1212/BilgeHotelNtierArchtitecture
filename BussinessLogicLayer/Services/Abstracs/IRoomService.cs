@@ -10,6 +10,7 @@ namespace BussinessLogicLayer.Services.Abstracs
     public interface IRoomService:IManagerService<Room>
     {
         Task CreateReservationAsync(Reservation reservation);
+        Task<List<Room>> GetRoomsNeedingMaintenanceReminderAsync(DateTime date);
 
     }
 }

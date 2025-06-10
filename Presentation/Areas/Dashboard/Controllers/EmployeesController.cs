@@ -29,13 +29,13 @@ namespace Presentation.Areas.Dashboard.Controllers
         // GET: Dashboard/Employees
         public IActionResult Index()
         {
-            return View(_employeeService.GetAll().ToList());    
+            return View(_employeeService.GetAllEmployeesAsync());    
         }
 
         [HttpGet]
         public async Task<IActionResult> AllEmployees()
         {
-            var allEmployees = _employeeService.GetAll();
+            var allEmployees = _employeeService.GetAllEmployeesAsync().ToList();
 
             if (allEmployees == null)
                 return Json(new { data = NotFound(), message = "Error while retrieving data." });
@@ -71,7 +71,7 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,EmployeeAddres,City,Country,PostalCode,HourlyWage,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,Position,EmployeeAddres,City,Country,PostalCode,ShiftStart,ShiftEnd,WeeklyOfDate,HasOverTime,WeeklyWorkedHours,TotalWorkedHours,HourlyWage,MonthlyWage,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -103,18 +103,18 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,EmployeeAddres,City,Country,PostalCode,HourlyWage,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,EmployeeAddres,City,Country,PostalCode,HourlyWage,MonthlyWage,WeeklyOfDate,WeeklyWorkedHours,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,Position,SelectedStatus,UpdatedComputerName")] Employee employee)
         {
             if (id != employee.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Shifts");
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(employee);
+                    _employeeService.UpdateManagerEmployeeInfo(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

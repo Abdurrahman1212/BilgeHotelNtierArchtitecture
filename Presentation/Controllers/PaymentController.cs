@@ -7,7 +7,6 @@ using Presentation.Models.Payments.ResponseModels;
 using Presentation.Models.Payments.RequestModels;
 using System.Security.Claims;
 using Models.Enums;
-using Project.Entities.Models;
 namespace Presentation.Controllers
 {
     public class PaymentController : Controller
@@ -22,12 +21,12 @@ namespace Presentation.Controllers
         {
             _reservationService = reservationService;
             _userService = userService;
-            _expenseService = expenseService;
+            _expenseService = expenseService;   
             _paymentService = paymentService;
             _roomService = roomService;
         }
         public IActionResult Index(int? id)
-        {
+            {
             if (id == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -46,9 +45,9 @@ namespace Presentation.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> CustomerReservationDetails(int reservasyonId)
+        public async Task<IActionResult> CustomerReservationDetails(int customerId)
         {
-            var reservations = _reservationService.GetReservationsByCustomerId(reservasyonId);
+            var reservations = _reservationService.GetReservationsByCustomerId(customerId);
             if (reservations == null || !reservations.Any())
             {
                 return NotFound("No reservations found for the customer.");
@@ -70,7 +69,7 @@ namespace Presentation.Controllers
                         PaymentMethod = payment.PaymentMethod.ToString()
                     }).ToList()
             });
-                
+
             return View(reservationDetails);
         }
         

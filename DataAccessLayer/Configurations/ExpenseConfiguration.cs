@@ -33,8 +33,7 @@ namespace DataAccessLayer.Configurations
             builder.Property(e => e.ExpenseDescription)
                 .HasMaxLength(200);
 
-            builder.Property(e => e.ExpenseStatus)
-                .IsRequired();
+           
 
             //  Relationships
             builder.HasOne(e => e.Reservation)

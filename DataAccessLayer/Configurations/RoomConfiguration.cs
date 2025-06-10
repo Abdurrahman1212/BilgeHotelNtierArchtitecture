@@ -30,7 +30,7 @@ namespace DataAccessLayer.Configurations
                 .IsRequired()
                 .HasMaxLength(10);
 
-            builder.Property(r => r.RoomType)
+            builder.Property(r => r.Type)
                 .IsRequired()
                 .HasMaxLength(50);
 
@@ -62,7 +62,7 @@ namespace DataAccessLayer.Configurations
                 .WithOne(res => res.Room)
                 .HasForeignKey(res => res.RoomId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasData(RoomFakeData.GetFakeRoom());
+            builder.HasData(RoomFakeData.GenerateRooms());
         }
 
 

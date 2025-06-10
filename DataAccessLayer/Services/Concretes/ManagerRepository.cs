@@ -37,12 +37,12 @@ namespace DataAccessLayer.Services.Concretes
 
         public IQueryable<T> GetActives()
         {
-            return _dbSet.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Active);
+            return _dbSet.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Inserted);
         }
 
         public IQueryable<T> GetPassives()
         {
-            return _dbSet.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Passive);
+            return _dbSet.Where(x => x.SelectedStatus == Models.Enums.DataStasus.Updated);
         }
 
         public async Task CreateAsync(T entity)
@@ -82,14 +82,14 @@ namespace DataAccessLayer.Services.Concretes
 
         public async Task DeleteAsync(T entity)
         {
-            entity.SelectedStatus = Models.Enums.DataStasus.Passive;
+            entity.SelectedStatus = Models.Enums.DataStasus.Active;
             entity.UpdatedDate = DateTime.Now;
             await UpdateAsync(entity);
         }
 
         public async Task DeleteAllAsync(List<T> entities)
         {
-            entities.RemoveAll(x => x.SelectedStatus == DataStasus.Empty);
+            entities.RemoveAll(x => x.SelectedStatus == DataStasus.Passive);
             _dbSet.RemoveRange(entities);
             await _context.SaveChangesAsync();
         }

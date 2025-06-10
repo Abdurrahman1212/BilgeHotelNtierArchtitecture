@@ -32,7 +32,7 @@ namespace DataAccessLayer.Configurations
                 .WithMany(e => e.Shifts)
                 .HasForeignKey(s => s.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasData(ShiftsFakeData.NewShifts());
+            builder.HasData(ShiftsFakeData.GetFakeShifts());
         }
     }
 }

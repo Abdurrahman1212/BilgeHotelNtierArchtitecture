@@ -88,7 +88,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         // GET: Dashboard/Shifts/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {
+            {
             if (id == null)
             {
                 return NotFound();
@@ -114,7 +114,7 @@ namespace Presentation.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-
+            @ModelState.Remove("Employee");
             if (ModelState.IsValid)
             {
                 try

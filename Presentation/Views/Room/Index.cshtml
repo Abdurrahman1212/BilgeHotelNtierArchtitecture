@@ -3,6 +3,11 @@
     ViewData["Title"] = "Oda Hizmetleri";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int delay = 0;
+    // Group rooms by floor and order by floor number
+    var groupedRooms = Model
+        .GroupBy(r => r.Floor)
+        .OrderBy(g => g.Key)
+        .ToList();
 }
 <!-- Start main-content -->
 <section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
@@ -24,50 +29,52 @@
             <span class="sub-title">CUSTOMER SERVICES</span>
             <h2>Book your stay and <br />relax in luxury</h2>
         </div>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-
-
-                <!-- News Block -->
-                <div class="room-service-block-one col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="@(delay)ms">
-                    <div class="inner-box">
-                        <div class="image-box">
-                            <figure class="image mb-0">
-                                <a href="@Url.Action("RoomDetail","Room",new{id=item.Id})">
-                                <img alt="" data-cfsrc="@item.ImageUrl" style="display:none;visibility:hidden;height:250px !important;">
-                                    <noscript><img src="@item.ImageUrl" alt=""></noscript>
-                                </a>
-                            </figure>
-                        </div>
-                        <div class="content-box">
+        @foreach (var floorGroup in groupedRooms)
+        {
+            <div class="mb-5">
+                <h3 class="mb-4">@(floorGroup.Key). Kat Odaları</h3>
+                <div class="row">
+                    @foreach (var item in floorGroup.OrderBy(r => r.Id))
+                    {
+                        <!-- News Block -->
+                        <div class="room-service-block-one col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay="@(delay)ms">
                             <div class="inner-box">
-                                <h4 class="title"><a href="@Url.Action("RoomDetail","Room",new{id=item.Id})">@item.PricePerNight</a></h4>
-                                <div class="price">@item.PricePerNight TL Gunluk</div>
-                            </div>
-                            <div class="facilities-box align-items-center d-flex justify-content-between">
-                                <ul class="facilities-list">
-                                    <li><i class="fal fa-circle-user me-2"></i>@item.RoomCapacity Kisi</li>
-                                    <li><i class="fal fa-bed me-2"></i>@item.RoomType Yatak</li>
-                                    <a type="button" id="bookNowBtn" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..." href="@Url.Action("Index","Payment",new{id=item.Id})">
-                                        <span class="btn-title">Rezerve Et</span>
-                                    </a>
-                                </ul>
-                                <ul class="facilities-list">
-                                    <li><i class="fal fa-wifi me-2"></i> @(item.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
-                                    <li> <i class="fal fa-television me-2"></i>@(item.HasTV ? "TV Var" : "TV Yok")</li>
-                                    <li><i class="fal fa-street-view me-2"></i>@(item.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
-                                    <li><i class="fal fa-glass-champagne me-2"></i>@(item.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
-
-                                </ul>
+                                <div class="image-box">
+                                    <figure class="image mb-0">
+                                        <a href="@Url.Action("RoomDetail","Room",new{id=item.Id})">
+                                            <img alt="" data-cfsrc="@item.ImageUrl" style="display:none;visibility:hidden;height:250px !important;">
+                                            <noscript><img src="@item.ImageUrl" alt=""></noscript>
+                                        </a>
+                                    </figure>
+                                </div>
+                                <div class="content-box">
+                                    <div class="inner-box">
+                                        <h4 class="title"><a href="@Url.Action("RoomDetail","Room",new{id=item.Id})">@item.PricePerNight</a></h4>
+                                        <div class="price">@item.PricePerNight TL Gunluk</div>
+                                    </div>
+                                    <div class="facilities-box align-items-center d-flex justify-content-between">
+                                        <ul class="facilities-list">
+                                            <li><i class="fal fa-circle-user me-2"></i>@item.RoomCapacity Kisi</li>
+                                            <li><i class="fal fa-bed me-2"></i>@item.Type Yatak</li>
+                                            <a type="button" id="bookNowBtn" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..." href="@Url.Action("Index","Payment",new{id=item.Id})">
+                                                <span class="btn-title">Rezerve Et</span>
+                                            </a>
+                                        </ul>
+                                        <ul class="facilities-list">
+                                            <li><i class="fal fa-wifi me-2"></i> @(item.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
+                                            <li> <i class="fal fa-television me-2"></i>@(item.HasTV ? "TV Var" : "TV Yok")</li>
+                                            <li><i class="fal fa-street-view me-2"></i>@(item.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
+                                            <li><i class="fal fa-glass-champagne me-2"></i>@(item.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        delay = delay + 200;
+                    }
                 </div>
-                delay = delay + 200;
-            }
-
-        </div>
+            </div>
+        }
     </div>
 </section>
 <!-- End Room section -->

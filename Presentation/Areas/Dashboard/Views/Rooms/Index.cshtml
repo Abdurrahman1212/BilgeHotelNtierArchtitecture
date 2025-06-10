@@ -42,7 +42,7 @@
                         @Html.DisplayNameFor(model => model.HasMinibar)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.RoomType)
+                        @Html.DisplayNameFor(model => model.Type)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.HasAirConditioning)
@@ -70,7 +70,10 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.UpdatedDate)
-                    </th>
+                    </th
+                    <th>
+                        @Html.DisplayNameFor(model=>model.Reservations)
+                    </th>>
                     <th>
                         @Html.DisplayNameFor(model => model.SelectedStatus)
                     </th>
@@ -183,13 +186,14 @@
                     { 'data': 'pricePerNight' },
                     { 'data': 'hasBalcony' },
                     { 'data': 'hasMinibar' },
-                    { 'data': 'roomType' },
+                    { 'data': 'type' },
                     { 'data': 'hasAirConditioning' },
                     { 'data': 'hasTV' },
                     { 'data': 'hasHairDryer' },
                     { 'data': 'hasWiFi' },
                     { 'data': 'dataStasus' },
                     { 'data': 'masterId' },
+                    {'data':  'reservations'},
                     { 'data': 'createdDate' },
                     { 'data': 'entryDate' },
                     { 'data': 'updatedDate' },

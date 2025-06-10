@@ -51,11 +51,11 @@ namespace Presentation.Controllers
                     #region RolKontrolIslemleri
 
                     IdentityRole<int> role = new IdentityRole<int>();
-                    //role.Name = "Admin";
+                    role.Name = "Admin";
 
-                    //IdentityResult roleResult = await _roleManager.CreateAsync(role);
+                    IdentityResult roleResult = await _roleManager.CreateAsync(role);
 
-                    //await _userManager.AddToRoleAsync(user, "Admin");
+                    await _userManager.AddToRoleAsync(user, "Admin");
 
                     //IdentityRole<int> appRole = await _roleManager.FindByNameAsync("Member");
                     //if (appRole == null) await _roleManager.CreateAsync(new() { Name = "Member" });

@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.Services;
 using BussinessLogicLayer.Services.Abstracs;
 using DataAccessLayer.Contracts.Interfaces;
-using Project.Entities.Models;
+using Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -8,11 +8,11 @@ namespace Models.Enums
 {
     public enum DataStasus
     {
-        Empty,
-        Full,
-        Reserved,
-        OutOfService,
-        Active,
-        Passive,
+        Inserted = 1,
+        Updated = 2,
+        Deleted = 3,
+        Active = 4,
+        Passive = 5,
+
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models.Entities;
-using Project.Entities.Models;
 
 namespace DataAccessLayer.Context
 {
@@ -14,7 +13,7 @@ namespace DataAccessLayer.Context
         public ProjectDatabaseContext(DbContextOptions<ProjectDatabaseContext> options) : base(options)
         {
         }
-        public ProjectDatabaseContext()
+        public ProjectDatabaseContext(DbContextOptionsBuilder<ProjectDatabaseContext> options)
         {
             
         }

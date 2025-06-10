@@ -14,7 +14,6 @@ namespace Models.Entities
         public decimal ExpenseAmount { get; set; }
         public DateTime ExpenseDate { get; set; }
         public string ExpenseDescription { get; set; }
-        public DataStasus ExpenseStatus { get; set; }
 
         // Navigation property
         public int ReservationId { get; set; } // Foreign Key to Reservation

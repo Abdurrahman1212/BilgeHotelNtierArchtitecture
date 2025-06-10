@@ -52,6 +52,32 @@ namespace DataAccessLayer.Configurations
             builder.Property(e => e.HourlyWage)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
+            builder.Property(e=>e.MonthlyWage)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)");
+            builder.Property(e => e.ShiftStart)
+                .IsRequired()
+                .HasColumnType("date");
+            builder.Property(e => e.ShiftEnd)
+                .IsRequired()
+                .HasColumnType("date");
+            builder.Property(e => e.WeeklyOfDate)
+                .IsRequired(false)
+                .HasMaxLength(20)
+                .HasDefaultValue("none");
+            builder.Property(e => e.HasOverTime)
+                .IsRequired()
+                .HasDefaultValue(false);
+            builder.Property(e => e.WeeklyWorkedHours)
+                .IsRequired()
+                .HasDefaultValue(0);
+            builder.Property(e => e.TotalWorkedHours)
+                .IsRequired()
+                .HasDefaultValue(0);
+            builder.Property(e => e.Position)
+                .IsRequired()
+                .HasMaxLength(50);
+
 
             builder.Property(e => e.Status)
                 .IsRequired();
@@ -59,9 +85,9 @@ namespace DataAccessLayer.Configurations
             // Relationships
             builder.HasMany(e => e.Shifts)
                 .WithOne(s => s.Employee)
-                .HasForeignKey(s => s.Id)
+                .HasForeignKey(s => s.EmployeeId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasData(EmployeeFakeData.Employees().ToArray());
+            builder.HasData(EmployeeFakeData.GetEmployees().ToArray());
         }
     }
 }

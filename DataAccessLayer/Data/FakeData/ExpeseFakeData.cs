@@ -25,7 +25,6 @@ namespace DataAccessLayer.Data.FakeData
                     ExpenseAmount = faker.Finance.Amount(),
                     ExpenseDate = faker.Date.Past(),
                     ExpenseDescription = faker.Lorem.Sentence(),
-                    ExpenseStatus = Models.Enums.DataStasus.Active,
                     ReservationId = faker.Random.Int(1,10),
                 };
                 expenses.Add(expense);

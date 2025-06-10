@@ -76,6 +76,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> CreateReservation(Reservation reservation)
         {
             // Model validasyonunu kontrol et
+            ModelState.Remove("Payment");
             if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
@@ -89,7 +90,7 @@ namespace Presentation.Controllers
 
             // Tarih bilgilerini kullanıcıdan al
             reservation.CreatedDate = DateTime.Now;
-            reservation.status = DataStasus.Reserved;
+            reservation.status = (DataStasus)RoomStatus.Reserved;
 
             // Kullanıcıdan CheckIn ve CheckOut tarihlerini al
             reservation.CheckInDate = reservation.CheckInDate; // Kullanıcının girdiği tarihler
@@ -217,6 +218,7 @@ namespace Presentation.Controllers
         {
             return _context.Reservations.Any(e => e.Id == id);
         }
+      
     }
 
 }

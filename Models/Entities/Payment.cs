@@ -1,5 +1,4 @@
 ﻿using Models.Abstracts;
-using Models.Entities;
 using Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Entities.Models
+namespace Models.Entities
 {
     /// <summary>
     /// Rezervasyon ödemelerini temsil eder.
@@ -23,6 +22,6 @@ namespace Project.Entities.Models
         public int ReservationId { get; set; }               // Ödemenin hangi rezervasyona ait olduğunu belirtir.
 
         // Relational Properties
-        public virtual Reservation Reservation { get; set; } // 1 Reservation 1 Payment, 1 Payment 1 Reservation (Bir rezervasyonun bir ödemesi olabilir.)
+        public  Reservation Reservation { get; set; } // 1 Reservation 1 Payment, 1 Payment 1 Reservation (Bir rezervasyonun bir ödemesi olabilir.)
     }
 }

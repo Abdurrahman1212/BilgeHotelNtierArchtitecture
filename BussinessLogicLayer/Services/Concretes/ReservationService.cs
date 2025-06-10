@@ -37,5 +37,23 @@ namespace BussinessLogicLayer.Services.Concretes
         {
             return _context.Reservations.FirstOrDefault(r => r.Id == reservationId);
         }
+
+        public Reservation CreateReservation(DateTime checkInDate, DateTime checkOutDate)
+        {
+            var fixedCheckIn = checkInDate.Date.AddHours(14);   // 14:00
+            var fixedCheckOut = checkOutDate.Date.AddHours(10); // 10:00
+
+            var reservation = new Reservation
+            {
+                CheckInDate = fixedCheckIn,
+                CheckOutDate = fixedCheckOut,
+                // diğer alanlar
+            };
+            // Kaydetme işlemleri
+            return reservation;
+        }
     }
+
+
 }
+

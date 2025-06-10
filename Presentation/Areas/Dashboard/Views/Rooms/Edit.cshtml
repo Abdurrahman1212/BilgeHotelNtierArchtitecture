@@ -64,10 +64,17 @@
             </label>
         </div>
         <div class="form-group col-6 p-2">
-            <label asp-for="RoomType" class="control-label"></label>
-            <select asp-for="RoomType" class="form-control"></select>
-            <span asp-validation-for="RoomType" class="text-danger"></span>
-        </div>
+            <label asp-for="Type" class="control-label"></label>
+            <select asp-for="Type" class="form-control" required>
+                <option value="">-- Select Type --</option>
+                @* Example options, replace with your actual types *@
+                <option value="@Model.Type">Single</option>
+                <option value="@Model.Type">Double</option>
+                <option value="@Model.Type">Triple</option>
+                <option value="@Model.Type">Quad</option>
+                <option value="@Model.Type">KingSuite</option>
+            </select>
+            <span asp-validation-for="Type" class="text-danger"></span>
         </div>
         <div class="row" style="align-items:center;">
         <div class="form-group form-check col-6 p-2">
@@ -92,14 +99,46 @@
                 <input class="form-check-input" asp-for="HasWiFi" /> @Html.DisplayNameFor(model => model.HasWiFi)
             </label>
         </div>
+                <div class="row" style="align-items:center;">
+                    <div class="form-group col-6 p-2">
+                        <label class="control-label">Reservation Status</label>
+                        @if (Model.Reservations != null && Model.Reservations.Any())
+                        {
+                            <ul class="list-group">
+                                @foreach (var reservation in Model.Reservations)
+                                {
+                                    <li class="list-group-item">
+                                        @* Adjust the following fields as per your Reservation entity *@
+                                        <strong>Reservation ID:</strong> @reservation.Id <br />
+                                        <strong>Status:</strong> @reservation.SelectedStatus <br />
+                                        <strong>Check-in:</strong> @reservation.CheckInDate.ToString("yyyy-MM-dd") <br />
+                                        <strong>Check-out:</strong> @reservation.CheckOutDate.ToString("yyyy-MM-dd")
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No reservations for this room.</span>
+                        }
+                    </div>
+                </div>
+        </div>
         </div>
         <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="DataStasus" class="control-label"></label>
-            <select asp-for="DataStasus" class="form-control"></select>
-            <span asp-validation-for="DataStasus" class="text-danger"></span>
-        </div>
-
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.DataStasus" class="control-label"></label>
+                    <select asp-for="@Model.DataStasus" class="form-control" required>
+                        <option value="">-- Select Type --</option>
+                        @* Example options, replace with your actual types *@
+                        <option value="@Model.DataStasus">Inserted</option>
+                        <option value="@Model.DataStasus">Updated</option>
+                        <option value="@Model.DataStasus">Deleted</option>
+                        <option value="@Model.DataStasus">Active</option>
+                        <option value="@Model.DataStasus">Passive</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
         <div class="form-group col-6 p-2">
             <label asp-for="MasterId" class="control-label"></label>
             <input asp-for="MasterId" class="form-control" />
@@ -124,11 +163,7 @@
             <input asp-for="UpdatedDate" class="form-control" />
             <span asp-validation-for="UpdatedDate" class="text-danger"></span>
         </div>
-        <div class="form-group col-6 p-2">
-            <label asp-for="SelectedStatus" class="control-label"></label>
-            <select asp-for="SelectedStatus" class="form-control"></select>
-            <span asp-validation-for="SelectedStatus" class="text-danger"></span>
-        </div>
+      
         </div>
         <div class="row">
         <div class="form-group col-6 p-2">

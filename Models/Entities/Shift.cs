@@ -19,5 +19,6 @@ namespace Models.Entities
         // Navigation property
         public  Employee Employee { get; set; } // Vardiyanın ilişkili olduğu çalışan
         public int EmployeeId { get; set; }
+        public DateTime ShiftDate { get; set; }
     }
 }

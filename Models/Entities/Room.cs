@@ -14,7 +14,7 @@ namespace Models.Entities
     public class Room : BaseEntity
     {
 
-        public string RoomNumber { get; set; }
+        public int RoomNumber { get; set; }
         public int Floor { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
@@ -23,7 +23,8 @@ namespace Models.Entities
         public decimal PricePerNight { get; set; }
         public bool HasBalcony { get; set; }
         public bool HasMinibar { get; set; }
-        public RoomType RoomType { get; set; }
+        public RoomType Type { get; set; }
+        public PackageType PackageType { get; set; } // Enum for package type (e.g., Bed & Breakfast, Full Board, etc.)
         public bool HasAirConditioning { get; set; }
         public bool HasTV { get; set; }
         public bool HasHairDryer { get; set; }

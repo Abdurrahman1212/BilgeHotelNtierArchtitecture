@@ -115,13 +115,13 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomNumber,Floor,Description,ImageUrl,RoomCapacity,RoomBreakfast,PricePerNight,HasBalcony,HasMinibar,RoomType,HasAirConditioning,HasTV,HasHairDryer,HasWiFi,DataStasus,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomNumber,Floor,Description,ImageUrl,RoomCapacity,RoomBreakfast,PricePerNight,HasBalcony,HasMinibar,RoomType,HasAirConditioning,HasTV,HasHairDryer,HasWiFi,Reservations,DataStasus,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Room room)
         {
             if (id != room.Id)
             {
                 return NotFound();
             }
-
+            ModelState.Remove("Reservation");
             if (ModelState.IsValid)
             {
                 try
