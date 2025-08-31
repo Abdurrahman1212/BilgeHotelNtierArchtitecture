@@ -35,7 +35,12 @@ namespace DataAccessLayer.Configurations
             builder.Property(r => r.TotalAmount)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
-
+            builder.Property(r => r.PaymentMethod)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder.Property(r => r.ReservationStatus)
+                .IsRequired()
+                .HasMaxLength(50);
 
             builder.Property(r => r.status)
                 .IsRequired();
@@ -50,8 +55,9 @@ namespace DataAccessLayer.Configurations
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+            //builder.Property(r => r.Expenses)
+            //    .IsRequired();
 
-          
             builder.HasData(ReservationsFakeData.GetFakeReservations());
         }
     }

@@ -1,106 +1,140 @@
-﻿using BussinessLogicLayer.DtoClasses;
-using BussinessLogicLayer.Services.Abstracs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.Entities;
-using Presentation.Models.Payments.ResponseModels;
-using Presentation.Models.Payments.RequestModels;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Presentation.Models;
+using Models.Entities;
 using Models.Enums;
+using System.Text;
+using System.Text.Json;
+
 namespace Presentation.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
-        private readonly IReservationService _reservationService;
-        private readonly IUserService _userService;
-        private readonly IExpenseService _expenseService;
-        private readonly IPaymentService _paymentService;
-        private readonly IRoomService _roomService;
+        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public PaymentController(IReservationService reservationService, IUserService userService, IExpenseService expenseService, IPaymentService paymentService, IRoomService roomService)
+        public PaymentController(IConfiguration configuration)
         {
-            _reservationService = reservationService;
-            _userService = userService;
-            _expenseService = expenseService;   
-            _paymentService = paymentService;
-            _roomService = roomService;
-        }
-        public IActionResult Index(int? id)
-            {
-            if (id == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var room = _roomService.GetById(id.Value);
-            if (room == null)
-            {
-                return NotFound();
-            }
-
-            return View(room);
+            _httpClient = new HttpClient();
+            _configuration = configuration;
         }
 
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> CustomerReservationDetails(int customerId)
+        // GET: Payment/Index
+        public IActionResult Index(int reservationId, decimal totalAmount)
         {
-            var reservations = _reservationService.GetReservationsByCustomerId(customerId);
-            if (reservations == null || !reservations.Any())
+            var paymentViewModel = new PaymentViewModel
             {
-                return NotFound("No reservations found for the customer.");
-            }
-
-            var reservationDetails = reservations.Select(reservation => new
-            {
-                ReservationId = reservation.Id,
-                CheckInDate = reservation.CheckInDate,
-                CheckOutDate = reservation.CheckOutDate,
-                RoomNumber = reservation.Room?.RoomNumber,
-                TotalAmount = reservation.TotalAmount,
-                Payments = _paymentService.GetAll()
-                    .Where(payment => payment.ReservationId == reservation.Id)
-                    .Select(payment => new
-                    {
-                        PaymentDate = payment.PaymentDate,
-                        PaymentAmount = payment.PaymentAmount,
-                        PaymentMethod = payment.PaymentMethod.ToString()
-                    }).ToList()
-            });
-
-            return View(reservationDetails);
-        }
-        
-        //public async Task<IActionResult> CompletePayment()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CompletePayment(PaymentProcessRequestModel paymentRequest)
-        {
-            if (!ModelState.IsValid) return View(paymentRequest);
-
-           
-            var payment = new Payment
-            {
-                PaymentDate = DateTime.Now,
-                PaymentAmount = paymentRequest.ShoppingPrice,
-                ReservationId = paymentRequest.ReservationId,
-                PaymentMethod = PaymentMethod.CreditCard 
+                ReservationId = reservationId,
+                TotalAmount = totalAmount,
+                PaymentDate = DateTime.Now
             };
 
-            await _paymentService.CreateAsync(payment);
-
-            Reservation getReservation=_reservationService.GetById(paymentRequest.ReservationId);
-            getReservation.TotalAmount = payment.PaymentAmount;
-            await _reservationService.UpdateAsync(getReservation);
-
-            //return RedirectToAction(nameof(CustomerReservationDetails), new { reservationId = paymentRequest.ReservationId });
-            return Json(payment);
+            return View(paymentViewModel);
         }
+
+        // POST: Payment/ProcessPayment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProcessPayment(PaymentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            // Kredi kartı seçilmediğinde kart bilgileri zorunlu değil
+            if (model.PaymentMethod == PaymentMethod.CreditCard)
+            {
+                if (string.IsNullOrEmpty(model.CardNumber) || string.IsNullOrEmpty(model.CardHolderName) ||
+                    model.ExpiryMonth <= 0 || model.ExpiryYear <= 0 || string.IsNullOrEmpty(model.CVV))
+                {
+                    ModelState.AddModelError("", "Kredi kartı seçildiğinde tüm kart bilgileri zorunludur.");
+                    return View("Index", model);
+                }
+            }
+
+            try
+            {
+                // API'ye payment bilgilerini gönder
+                var paymentData = new
+                {
+                    ReservationId = model.ReservationId,
+                    PaymentAmount = model.TotalAmount,
+                    PaymentMethod = (int)model.PaymentMethod, // Enum'ı int olarak gönder
+                    PaymentDate = DateTime.Now,
+                    CardNumber = model.CardNumber ?? "",
+                    CardHolderName = model.CardHolderName ?? "",
+                    ExpiryMonth = model.ExpiryMonth,
+                    ExpiryYear = model.ExpiryYear,
+                    CVV = model.CVV ?? ""
+                };
+
+                var json = JsonSerializer.Serialize(paymentData);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // API endpoint'i configuration'dan al
+                var apiBaseUrl = _configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7679";
+                var response = await _httpClient.PostAsync($"{apiBaseUrl}/api/payment/process", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<PaymentResult>(responseContent);
+
+                    if (result?.IsSuccess == true)
+                    {
+                        TempData["SuccessMessage"] = "Ödeme başarıyla tamamlandı!";
+                        return RedirectToAction("Success", new { paymentId = result.PaymentId });
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", result?.ErrorMessage ?? "Ödeme işlemi başarısız oldu.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "API ile iletişim kurulamadı. Lütfen tekrar deneyin.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Ödeme işlemi sırasında hata oluştu: {ex.Message}");
+            }
+
+            return View("Index", model);
+        }
+
+        // GET: Payment/Success
+        public IActionResult Success(int paymentId)
+        {
+            ViewBag.PaymentId = paymentId;
+            return View();
+        }
+
+        // GET: Payment/Failed
+        public IActionResult Failed(string errorMessage)
+        {
+            ViewBag.ErrorMessage = errorMessage;
+            return View();
+        }
+
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return 0;
+        }
+    }
+
+    public class PaymentResult
+    {
+        public bool IsSuccess { get; set; }
+        public int PaymentId { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

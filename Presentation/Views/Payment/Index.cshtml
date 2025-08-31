@@ -1,251 +1,223 @@
-﻿@model Room
+@model Presentation.Models.PaymentViewModel
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Ödeme Sayfası";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!-- Core CSS -->
-<link rel="stylesheet" href="../../assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-<link rel="stylesheet" href="../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-<link rel="stylesheet" href="../../assets/css/demo.css" />
 
-<!-- Vendors CSS -->
-<link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-<link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
-<link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
-<link rel="stylesheet" href="../../assets/vendor/libs/bs-stepper/bs-stepper.css" />
-<link rel="stylesheet" href="../../assets/vendor/libs/rateyo/rateyo.css" />
-<link rel="stylesheet" href="../../assets/vendor/libs/%40form-validation/form-validation.css" />
-
-
-<link rel="stylesheet" href="../../assets/vendor/css/pages/wizard-ex-checkout.css" />
-
-<input type="hidden" id="newReservationId">
-<input type="hidden" id="pricePerNight" value="@Model.PricePerNight" />
-<input type="hidden" id="totalDay">
-<!-- Start main-content -->
 <section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
     <div class="auto-container">
         <div class="title-outer text-center">
-            <h1 class="title">Rooms</h1>
+            <h1 class="title">Ödeme Adımlarınız</h1>
             <ul class="page-breadcrumb">
-                <li><a href="index.html">Home</a></li>
-                <li>Rooms</li>
+                <li><a href="/Home">Anasayfa</a></li>
+                <li><a href="/Home/Payment">Ödemeler</a></li>
+                <li>Ödeme Bilgileriniz</li>
             </ul>
         </div>
     </div>
 </section>
-<!-- end main-content -->
 
-<section class="room-service-section pt-120 pb-60">
-    <div class="auto-container">
-        <div class="row bg-white">
-            <!-- Checkout Wizard -->
-            <div id="wizard-checkout" class="bs-stepper wizard-icons wizard-icons-example">
-                <div class="bs-stepper-header m-auto border-0">
-                    <div class="step" data-target="#checkout-room">
-                        <button type="button" class="step-trigger">
-                            <span class="bs-stepper-icon">
-                                <span class="fal fa-bed me-2 font-size-50"></span>
-                            </span>
-                            <span class="bs-stepper-label">Oda Seçimi</span>
-                        </button>
-                    </div>
-                    <div class="line">
-                        <i class="fa fa-angle-right"></i>
-                    </div>
-                    <div class="step" data-target="#checkout-payment">
-                        <button type="button" class="step-trigger">
-                            <span class="bs-stepper-icon">
-                                <span class="far fa-credit-card font-size-50"></span>
-                            </span>
-                            <span class="bs-stepper-label">Ödeme</span>
-                        </button>
-                    </div>
-                    <div class="line">
-                        <i class="fa fa-angle-right"></i>
-                    </div>
-                    <div class="step" data-target="#checkout-confirmation">
-                        <button type="button" class="step-trigger">
-                            <span class="bs-stepper-icon">
-                                <span class="far fa-check font-size-50"></span>
-                            </span>
-                            <span class="bs-stepper-label">Rezervasyon Onay</span>
-                        </button>
-                    </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-credit-card me-2"></i>
+                        Ödeme Bilgileri
+                    </h3>
                 </div>
-                <div class="bs-stepper-content border-top rounded-0">
-                    <div id="wizard-checkout-form" onSubmit="return false">
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
 
-                        <!-- Cart -->
-                        <div id="checkout-room" class="content">
-                            <div class="row">
-                                <div class="col-8">
-                                    <section class="room-details">
-                                        <div class="container">
-                                            @Html.Partial("Partial/_RoomReservation", Model)
-                                        </div>
-                                    </section>
-                                </div>
-                                <div class="col-4">
-                                    <!-- News Block -->
-                                    <div class="room-service-block-one">
-                                        <div class="inner-box">
-                                            <div class="image-box">
-                                                <figure class="image mb-0"><a href="@Url.Action("RoomDetail","Room",new{id=Model.Id})"><img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;"><noscript><img src="@Model.ImageUrl" alt=""></noscript></a></figure>
-                                            </div>
-                                            <div class="content-box">
-                                                <div class="inner-box">
-                                                    <h4 class="title"><a href="@Url.Action("RoomDetail","Room",new{id=Model.Id})">@Model.PricePerNight</a></h4>
-                                                    <div class="price">@Model.PricePerNight TL Gunluk</div>
-                                                </div>
-                                                <div class="facilities-box align-items-center d-flex justify-content-between">
-                                                    <ul class="facilities-list">
-                                                        <li><i class="fal fa-circle-user me-2"></i>@Model.RoomCapacity Kisi</li>
-                                                        <li><i class="fal fa-bed me-2"></i>@Model.Type Yatak</li>
-                                                    </ul>
-                                                    <ul class="facilities-list">
-                                                        <li><i class="fal fa-wifi me-2"></i> @(Model.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
-                                                        <li> <i class="fal fa-television me-2"></i>@(Model.HasTV ? "TV Var" : "TV Yok")</li>
-                                                        <li><i class="fal fa-street-view me-2"></i>@(Model.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
-                                                        <li><i class="fal fa-glass-champagne me-2"></i>@(Model.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Rezervasyon Detayları</h5>
+                            <div class="border rounded p-3 bg-light">
+                                <p><strong>Rezervasyon ID:</strong> @Model.ReservationId</p>
+                                <p><strong>Toplam Tutar:</strong> <span class="text-primary fw-bold">@Model.TotalAmount.ToString("C")</span></p>
+                                <p><strong>Ödeme Tarihi:</strong> @Model.PaymentDate.ToString("dd/MM/yyyy")</p>
                             </div>
                         </div>
-
-                        <!-- Payment -->
-                        <div id="checkout-payment" class="content">
-                            @Html.Partial("Partial/_CompletePayment", new PaymentProcessRequestModel { ReservationId = Model.Id })
-                        </div>
-
-                        <!-- Confirmation -->
-                        <div id="checkout-confirmation" class="content">
-
-                            <div class="row">
-                                <div class="col-8">
-                                    @Html.Partial("Partial/_ReservationDetails", new PaymentProcessRequestModel { ReservationId = Model.Id })
-                                </div>
-                                <div class="col-4">
-                                    <div class="room-service-block-one">
-                                        <div class="inner-box content-box p-0">
-
-
-                                            <div class="image-box">
-                                                <figure class="image mb-0">
-                                                    <img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;max-height:480px;width:auto;">
-                                                    <noscript><img src="@Model.ImageUrl" alt=""></noscript>
-                                                </figure>
-                                            </div>
-                                            <div class="facilities-box align-items-center d-flex pt-10 pl-10">
-                                                <ul class="facilities-list">
-                                                    <li><i class="fal fa-circle-user me-2"></i>@Model.RoomCapacity Kisi</li>
-                                                    <li><i class="fal fa-bed me-2"></i>@Model.Type Yatak</li>
-                                                    <li><i class="fal fa-street-view me-2"></i>@(Model.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
-                                                </ul>
-                                                <ul class="facilities-list">
-                                                    <li><i class="fal fa-wifi me-2"></i> @(Model.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
-                                                    <li> <i class="fal fa-television me-2"></i>@(Model.HasTV ? "TV Var" : "TV Yok")</li>
-                                                    <li><i class="fal fa-glass-champagne me-2"></i>@(Model.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
-                                                </ul>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-md-6">
+                            <h5>Güvenlik</h5>
+                            <div class="border rounded p-3 bg-light">
+                                <p class="text-muted small">
+                                    <i class="fas fa-lock me-1"></i>
+                                    Tüm ödeme bilgileriniz SSL ile şifrelenerek güvenli bir şekilde işlenmektedir.
+                                </p>
                             </div>
                         </div>
                     </div>
+
+                    <form asp-action="ProcessPayment" method="post" id="paymentForm">
+                        <input type="hidden" asp-for="ReservationId" />
+                        <input type="hidden" asp-for="TotalAmount" />
+                        <input type="hidden" asp-for="PaymentDate" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PaymentMethod" class="form-label fw-bold">Ödeme Yöntemi</label>
+                                    <select asp-for="PaymentMethod" class="form-select" id="paymentMethodSelect" asp-items="Html.GetEnumSelectList<Models.Enums.PaymentMethod>()">
+                                        <option value="">-- Ödeme Yöntemi Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kredi Kartı Bilgileri -->
+                        <div id="creditCardSection" class="row" style="display: none;">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardNumber" class="form-label fw-bold">Kart Numarası</label>
+                                    <input asp-for="CardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" />
+                                    <span asp-validation-for="CardNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CardHolderName" class="form-label fw-bold">Kart Sahibi Adı</label>
+                                    <input asp-for="CardHolderName" class="form-control" placeholder="Ad Soyad" />
+                                    <span asp-validation-for="CardHolderName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="creditCardDetailsSection" class="row" style="display: none;">
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ExpiryMonth" class="form-label fw-bold">Ay</label>
+                                    <select asp-for="ExpiryMonth" class="form-select">
+                                        <option value="">Ay</option>
+                                        @for (int i = 1; i <= 12; i++)
+                                        {
+                                            <option value="@i">@i.ToString("00")</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ExpiryMonth" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ExpiryYear" class="form-label fw-bold">Yıl</label>
+                                    <select asp-for="ExpiryYear" class="form-select">
+                                        <option value="">Yıl</option>
+                                        @for (int year = DateTime.Now.Year; year <= DateTime.Now.Year + 6; year++)
+                                        {
+                                            <option value="@year">@year</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ExpiryYear" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CVV" class="form-label fw-bold">CVV</label>
+                                    <input asp-for="CVV" class="form-control" placeholder="123" maxlength="4" />
+                                    <span asp-validation-for="CVV" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <div class="form-group mb-3">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-lock me-2"></i>
+                                        Ödemeyi Tamamla
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nakit ve Banka Havalesi -->
+                        <div id="otherPaymentSection" class="row" style="display: none;">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <span id="paymentInfoText"></span>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        <i class="fas fa-check me-2"></i>
+                                        Ödemeyi Onayla
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <!--/ Checkout Wizard -->
-
         </div>
     </div>
-</section>
-
+</div>
 
 @section Scripts {
-    <!-- Helpers -->
-    <script src="../../assets/vendor/js/helpers.js"></script>
-
-
-
-
-
     <script>
-        var stepper = new Stepper(document.querySelector("#wizard-checkout"));
         $(document).ready(function () {
+            function updatePaymentUI() {
+                var selectedValue = parseInt($('#paymentMethodSelect').val());
+                var creditCardSection = $('#creditCardSection');
+                var creditCardDetailsSection = $('#creditCardDetailsSection');
+                var otherPaymentSection = $('#otherPaymentSection');
+                var paymentInfoText = $('#paymentInfoText');
 
-        $("#CheckInDate, #CheckOutDate").change(function() {
-            const roomId = $("#RoomId").val();
-            const checkInDate = $("#CheckInDate").val();
-            const checkOutDate = $("#CheckOutDate").val();
-            if (checkInDate && checkOutDate) {
-                checkAvailability(roomId, checkInDate, checkOutDate);
+                // Tüm bölümleri gizle
+                creditCardSection.hide();
+                creditCardDetailsSection.hide();
+                otherPaymentSection.hide();
+
+                if (selectedValue === 1) {
+                    creditCardSection.show();
+                    creditCardDetailsSection.show();
+                } else if (selectedValue === 2) {
+                    paymentInfoText.text('Nakit ödeme seçildi. Rezervasyon sırasında ödeme yapılacaktır.');
+                    otherPaymentSection.show();
+                } else if (selectedValue === 3) {
+                    paymentInfoText.text('Banka havalesi seçildi. Banka bilgileri e-posta ile gönderilecektir.');
+                    otherPaymentSection.show();
+                }
             }
-        });
 
-        function checkAvailability(roomId, checkInDate, checkOutDate) {
-            $.ajax({
-                url: `/Home/CheckAvailability?roomId=${roomId}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`,
-                method: "post",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    if(!response.isAvailable)
-                    {
-                        ScreenMessage('error','Oda Durumu','Oda bu tarihlerde müsait değildir.');
+            $('#paymentMethodSelect').on('change', updatePaymentUI);
+            updatePaymentUI(); // Sayfa yüklendiğinde tetiklenmeli
+
+            // Kart numarası otomatik formatlama (4'lü gruplar)
+            $('#CardNumber').on('input', function () {
+                var value = $(this).val().replace(/\D/g, '').substring(0, 16);
+                var formatted = value.replace(/(.{4})/g, '$1 ').trim();
+                $(this).val(formatted);
+            });
+
+            // CVV yalnızca rakam
+            $('#CVV').on('input', function () {
+                var value = $(this).val().replace(/\D/g, '').substring(0, 4);
+                $(this).val(value);
+            });
+
+            // Form submit kontrolü
+            $('#paymentForm').on('submit', function (e) {
+                var selectedValue = parseInt($('#paymentMethodSelect').val());
+                if (selectedValue === 1) {
+                    var cardNumber = $('#CardNumber').val().replace(/\s/g, '');
+                    var cvv = $('#CVV').val().trim();
+
+                    if (cardNumber.length < 16 || cvv.length < 3) {
+                        alert('Lütfen geçerli kredi kartı bilgilerini girin.');
+                        e.preventDefault();
+                        return false;
                     }
-                },
-                error: function (err) {
-                    ScreenMessage('error','Hata Oluştu',err);
                 }
+
+                var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<i class="fas fa-spinner fa-spin me-2"></i>İşleniyor...');
             });
-        }
-
-
-
-
-
-          });
-
-           function calcPrice(){
-            var roomPrice=$('#pricePerNight').val();
-            var totalDay=$('#totalDay').val();
-            var shoppingPrice=parseFloat(roomPrice.replace(',' , '.'))*parseFloat(totalDay.replace(',' , '.'));
-            $('#ShoppingPrice').val(shoppingPrice);
-          }
-
-          function getReservationDetail(reservationId)
-          {
-              $.ajax({
-                url: "/Room/GetReservationDetail",
-                method: "post",
-                data: {
-                    'ReservationId': reservationId
-                },
-                success: function (result) {
-                    $('#reservationId').val(result.id);
-                    $('#checkInDate').val(new Date(result.checkInDate).toLocaleDateString('tr-TR'));
-                    $('#checkOutDate').val(new Date(result.checkOutDate).toLocaleDateString('tr-TR'));
-                    $('#roomNumber').val(result.roomId);
-                    $('#shoppingPrice').val(result.totalAmount);
-                },
-                error: function (err) {
-                    ScreenMessage('error','Hata Oluştu',err.Message);
-                }
-            });
-            }
-
-          function nextStep()
-          {
-              stepper.next();
-          }
+        });
     </script>
 }
-

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BussinessLogicLayer.Services.Abstracs
 {
-    public interface IEmployeeService 
+    public interface IEmployeeService:IManagerService<Employee>
     {
         // Custom Employee-specific service methods
 

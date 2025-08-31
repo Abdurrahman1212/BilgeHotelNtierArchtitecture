@@ -1,0 +1,415 @@
+﻿@model ReservationViewModel
+@{
+    ViewData["Title"] = "Oda Rezervasyonu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Start main-content -->
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Oda Rezervasyonu</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li><a href="/Room">Odalar</a></li>
+                <li>@Model.RoomNumber Numaralı Oda Rezervasyonu</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Room Information Section -->
+<section class="room-info-section pt-60 pb-60">
+    <div class="auto-container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="room-details-box">
+                    <h3>@Model.RoomNumber Numaralı Oda Bilgileri</h3>
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <div class="room-image mb-4">
+                            <img src="@Model.ImageUrl" alt="Oda @Model.RoomNumber" class="img-fluid rounded" style="max-height: 300px; width: 100%; object-fit: cover;">
+                        </div>
+                    }
+
+                    <div class="room-info-grid">
+                        <div class="info-item">
+                            <strong>Oda Tipi:</strong> @Model.RoomType
+                        </div>
+                        <div class="info-item">
+                            <strong>Kat:</strong> @Model.Floor
+                        </div>
+                        <div class="info-item">
+                            <strong>Kapasite:</strong> @Model.RoomCapacity Kişi
+                        </div>
+                        <div class="info-item">
+                            <strong>Fiyat:</strong> @Model.PricePerNight.ToString("C") / Gece
+                        </div>
+                        <div class="info-item">
+                            <strong>Paket Tipi:</strong> @Model.PackageType
+                        </div>
+                        <div class="info-item">
+                            <strong>Oda Durumu:</strong> @Model.RoomStatus
+                        </div>
+                        <div class="info-item">
+                            <strong>Kahvaltı Dahil:</strong> @(Model.RoomBreakfast ? "Evet" : "Hayır")
+                        </div>
+                        <div class="info-item">
+                            <strong>Açıklama:</strong> @Model.RoomDescription
+                        </div>
+                    </div>
+
+                    <div class="amenities-section mt-4">
+                        <h4>Oda Özellikleri</h4>
+                        <div class="amenities-grid">
+                            @if (Model.HasWiFi)
+                            {
+                                <span class="amenity-item"><i class="fas fa-wifi"></i> WiFi</span>
+                            }
+                            @if (Model.HasTV)
+                            {
+                                <span class="amenity-item"><i class="fas fa-tv"></i> TV</span>
+                            }
+                            @if (Model.HasBalcony)
+                            {
+                                <span class="amenity-item"><i class="fas fa-door-open"></i> Balkon</span>
+                            }
+                            @if (Model.HasMinibar)
+                            {
+                                <span class="amenity-item"><i class="fas fa-glass-whiskey"></i> Minibar</span>
+                            }
+                            @if (Model.HasHairDryer)
+                            {
+                                <span class="amenity-item"><i class="fas fa-wind"></i> Saç Kurutma Makinesi</span>
+                            }
+                            @if (Model.HasAirConditioner)
+                            {
+                                <span class="amenity-item"><i class="fas fa-snowflake"></i> Klima</span>
+                            }
+                            @if (Model.RoomBreakfast)
+                            {
+                                <span class="amenity-item"><i class="fas fa-coffee"></i> Kahvaltı Dahil</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="reservation-form-box">
+                    <h3>Rezervasyon Formu</h3>
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["SuccessMessage"]
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["ErrorMessage"]
+                        </div>
+                    }
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="RoomId" />
+                        <input type="hidden" asp-for="RoomNumber" />
+                        <input type="hidden" asp-for="RoomDescription" />
+                        <input type="hidden" asp-for="PricePerNight" />
+                        <input type="hidden" asp-for="RoomCapacity" />
+                        <input type="hidden" asp-for="RoomType" />
+                        <input type="hidden" asp-for="Floor" />
+                        <input type="hidden" asp-for="ImageUrl" />
+                        <input type="hidden" asp-for="RoomBreakfast" />
+                        <input type="hidden" asp-for="PackageType" />
+                        <input type="hidden" asp-for="RoomStatus" />
+                        <input type="hidden" asp-for="HasWiFi" />
+                        <input type="hidden" asp-for="HasTV" />
+                        <input type="hidden" asp-for="HasBalcony" />
+                        <input type="hidden" asp-for="HasMinibar" />
+                        <input type="hidden" asp-for="HasAirConditioner" />
+                        <input type="hidden" asp-for="HasHairDryer" />
+                        <input type="hidden" asp-for="CustomerId" />
+
+                        <div class="form-group">
+                            <label asp-for="CheckInDate">Giriş Tarihi</label>
+                            <input asp-for="CheckInDate" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="CheckOutDate">Çıkış Tarihi</label>
+                            <input asp-for="CheckOutDate" type="date" class="form-control" min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="price-summary mt-3">
+                            <h5>Fiyat Özeti</h5>
+                            <div class="price-item">
+                                <span>Gecelik Fiyat:</span>
+                                <span>@Model.PricePerNight.ToString("C")</span>
+                            </div>
+                            <div class="price-item">
+                                <span>Toplam Gün:</span>
+                                <span id="totalDays">1</span>
+                            </div>
+                            <div class="price-item total-price">
+                                <span>Toplam Tutar:</span>
+                                <span id="totalAmount">@Model.PricePerNight.ToString("C")</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block mt-4">
+                            Rezervasyon Yap
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .room-info-section {
+        background-color: #f8f9fa;
+    }
+
+    .room-details-box {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .room-image {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .room-image img {
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .room-image img:hover {
+                transform: scale(1.02);
+            }
+
+    .room-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .info-item {
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border-left: 4px solid #007bff;
+    }
+
+    .amenities-section h4 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .amenities-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .amenity-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        background: #e3f2fd;
+        color: #1976d2;
+        border-radius: 20px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+    }
+
+        .amenity-item:hover {
+            background: #bbdefb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+    .reservation-form-box {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+            outline: none;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .price-summary {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+    }
+
+        .price-summary h5 {
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+        }
+
+    .price-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .total-price {
+        font-weight: bold;
+        font-size: 18px;
+        color: #007bff;
+        border-bottom: none;
+        border-top: 2px solid #007bff;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+        }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+
+
+    .amenities-grid {
+        justify-content: center;
+    }
+
+    .reservation-form-box {
+        position: static;
+        margin-top: 30px;
+    }
+
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkInDate = document.getElementById('CheckInDate');
+        const checkOutDate = document.getElementById('CheckOutDate');
+        const totalDaysSpan = document.getElementById('totalDays');
+        const totalAmountSpan = document.getElementById('totalAmount');
+        const pricePerNight = @Model.PricePerNight;
+
+        function calculateTotal() {
+            const checkIn = new Date(checkInDate.value);
+            const checkOut = new Date(checkOutDate.value);
+
+            if (checkIn && checkOut && checkOut > checkIn) {
+                const timeDiff = checkOut.getTime() - checkIn.getTime();
+                const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                const totalAmount = daysDiff * pricePerNight;
+
+                totalDaysSpan.textContent = daysDiff;
+                totalAmountSpan.textContent = new Intl.NumberFormat('tr-TR', {
+                    style: 'currency',
+                    currency: 'TRY'
+                }).format(totalAmount);
+            }
+        }
+
+        checkInDate.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (selectedDate < tomorrow) {
+                checkOutDate.min = tomorrow.toISOString().split('T')[0];
+            } else {
+                checkOutDate.min = this.value;
+            }
+
+            if (checkOutDate.value && new Date(checkOutDate.value) <= selectedDate) {
+                checkOutDate.value = '';
+            }
+
+            calculateTotal();
+        });
+
+        checkOutDate.addEventListener('change', calculateTotal);
+
+        // Initial calculation
+        calculateTotal();
+    });
+</script>

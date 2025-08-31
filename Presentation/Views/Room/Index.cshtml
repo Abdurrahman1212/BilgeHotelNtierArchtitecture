@@ -56,7 +56,7 @@
                                         <ul class="facilities-list">
                                             <li><i class="fal fa-circle-user me-2"></i>@item.RoomCapacity Kisi</li>
                                             <li><i class="fal fa-bed me-2"></i>@item.Type Yatak</li>
-                                            <a type="button" id="bookNowBtn" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..." href="@Url.Action("Index","Payment",new{id=item.Id})">
+                                            <a type="button" id="bookNowBtn" class="theme-btn btn-style-one w-100" data-loading-text="Please wait..." href="@Url.Action("Index","Reservation",new{id=item.Id})">
                                                 <span class="btn-title">Rezerve Et</span>
                                             </a>
                                         </ul>

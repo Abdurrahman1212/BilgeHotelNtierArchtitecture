@@ -15,6 +15,9 @@
             <thead>
                 <tr>
                     <th>
+                        @Html.DisplayNameFor(model=>model.Id)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.RoomNumber)
                     </th>
                     <th>
@@ -85,83 +88,143 @@
         </table>
     </div>
 </div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<!-- Modal to add new record -->
 <!-- Modal to add new record -->
 <div class="offcanvas offcanvas-end" id="add-new-record">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title" id="exampleModalLabel">New Record</h5>
+        <h5 class="offcanvas-title" id="exampleModalLabel">New Room</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body flex-grow-1">
-        <form class="add-new-record pt-0 row g-3" id="form-add-new-record" onsubmit="return false">
+        <form class="add-new-record pt-0 row g-3" id="form-add-new-room" method="post" asp-action="Create">
             <div class="col-sm-12">
                 <div class="input-group input-group-merge">
-                    <span id="basicFullname2" class="input-group-text"><i class="ri-user-line ri-18px"></i></span>
+                    <span class="input-group-text"><i class="ri-hotel-bed-line ri-18px"></i></span>
                     <div class="form-floating form-floating-outline">
-                        <input type="text" id="basicFullname" class="form-control dt-full-name" name="basicFullname" placeholder="John Doe" aria-label="John Doe" aria-describedby="basicFullname2" />
-                        <label for="basicFullname">Full Name</label>
+                        <input type="text" id="RoomNumber" name="RoomNumber" class="form-control" placeholder="Room Number" required />
+                        <label for="RoomNumber">Room Number</label>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="input-group input-group-merge">
-                    <span id="basicPost2" class="input-group-text"><i class='ri-briefcase-line ri-18px'></i></span>
+                    <span class="input-group-text"><i class="ri-building-line ri-18px"></i></span>
                     <div class="form-floating form-floating-outline">
-                        <input type="text" id="basicPost" name="basicPost" class="form-control dt-post" placeholder="Web Developer" aria-label="Web Developer" aria-describedby="basicPost2" />
-                        <label for="basicPost">Post</label>
+                        <input type="number" id="Floor" name="Floor" class="form-control" placeholder="Floor" required />
+                        <label for="Floor">Floor</label>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="input-group input-group-merge">
-                    <span class="input-group-text"><i class="ri-mail-line ri-18px"></i></span>
+                    <span class="input-group-text"><i class="ri-file-text-line ri-18px"></i></span>
                     <div class="form-floating form-floating-outline">
-                        <input type="text" id="basicEmail" name="basicEmail" class="form-control dt-email" placeholder="john.doe@example.com" aria-label="john.doe@example.com" />
-                        <label for="basicEmail">Email</label>
-                    </div>
-                </div>
-                <div class="form-text">
-                    You can use letters, numbers & periods
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="input-group input-group-merge">
-                    <span id="basicDate2" class="input-group-text"><i class='ri-calendar-2-line ri-18px'></i></span>
-                    <div class="form-floating form-floating-outline">
-                        <input type="text" class="form-control dt-date" id="basicDate" name="basicDate" aria-describedby="basicDate2" placeholder="MM/DD/YYYY" aria-label="MM/DD/YYYY" />
-                        <label for="basicDate">Joining Date</label>
+                        <input type="text" id="Description" name="Description" class="form-control" placeholder="Description" />
+                        <label for="Description">Description</label>
                     </div>
                 </div>
             </div>
             <div class="col-sm-12">
                 <div class="input-group input-group-merge">
-                    <span id="basicSalary2" class="input-group-text"><i class='ri-money-dollar-circle-line ri-18px'></i></span>
+                    <span class="input-group-text"><i class="ri-image-line ri-18px"></i></span>
                     <div class="form-floating form-floating-outline">
-                        <input type="number" id="basicSalary" name="basicSalary" class="form-control dt-salary" placeholder="12000" aria-label="12000" aria-describedby="basicSalary2" />
-                        <label for="basicSalary">Salary</label>
+                        <input type="text" id="ImageUrl" name="ImageUrl" class="form-control" placeholder="Image URL" />
+                        <label for="ImageUrl">Image URL</label>
                     </div>
                 </div>
             </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="ri-group-line ri-18px"></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="number" id="RoomCapacity" name="RoomCapacity" class="form-control" placeholder="Capacity" required />
+                        <label for="RoomCapacity">Capacity</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="ri-restaurant-line ri-18px"></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <select id="RoomBreakfast" name="RoomBreakfast" class="form-control">
+                            <option value="true">With Breakfast</option>
+                            <option value="false">Without Breakfast</option>
+                        </select>
+                        <label for="RoomBreakfast">Breakfast</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="ri-money-dollar-circle-line ri-18px"></i></span>
+                    <div class="form-floating form-floating-outline">
+                        <input type="number" id="PricePerNight" name="PricePerNight" class="form-control" placeholder="Price Per Night" required />
+                        <label for="PricePerNight">Price Per Night</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Add other room features as needed -->
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
                 <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
-                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-                    <a asp-action="Edit" asp-route-id="@Model.FirstOrDefault()?.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@Model.FirstOrDefault()?.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@Model.FirstOrDefault()?.Id">Delete</a>
-                </div>
             </div>
         </form>
-
     </div>
 </div>
 
-<!--/ DataTable with Buttons -->
+<!-- Room Availability Filter -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="room-availability-form" class="row g-2">
+            <div class="col-md-4">
+                <input type="date" id="checkIn" name="checkIn" class="form-control" placeholder="Check-in Date" required />
+            </div>
+            <div class="col-md-4">
+                <input type="date" id="checkOut" name="checkOut" class="form-control" placeholder="Check-out Date" required />
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-info" onclick="getAvailableRooms()">Show Available Rooms</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Room Reminders Link -->
+<div class="mb-3">
+    <a asp-action="RoomReminders" class="btn btn-warning">Room Reminders</a>
+</div>
+
+<!-- Price Calculator -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form id="price-calculator-form" class="row g-2">
+            <div class="col-md-3">
+                <input type="number" id="calcRoomId" name="roomId" class="form-control" placeholder="Room ID" required />
+            </div>
+            <div class="col-md-3">
+                <select id="calcPackageType" name="packageType" class="form-control">
+                    <option value="Herşey Dahil">Herşey Dahil</option>
+                    <option value="Yarım Pansiyon">Yarım Pansiyon</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="number" id="calcDays" name="days" class="form-control" placeholder="Number of Days" required />
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-success" onclick="calculatePrice()">Calculate Price</button>
+            </div>
+        </form>
+        <div id="priceResult" class="mt-2"></div>
+    </div>
+</div>
+
 @section J {
     <script type="text/javascript">
         $(document).ready(function () {
-           $("#dtRooms").DataTable({
+            $("#dtRooms").DataTable({
                 responsive: true,
                 autoWidth: false,
                 destroy: true,
@@ -170,13 +233,12 @@
                     type: "GET",
                     datatype: "json",
                     contentType: "application/json; charset=utf-8",
-                    dataSrc : function (object){
-                        console.dir(object.data);
+                    dataSrc: function (object) {
                         return object.data;
                     }
                 },
                 columns: [
-                    { 'data':'id'},
+                    { 'data': 'id' },
                     { 'data': 'roomNumber' },
                     { 'data': 'floor' },
                     { 'data': 'description' },
@@ -193,228 +255,259 @@
                     { 'data': 'hasWiFi' },
                     { 'data': 'dataStasus' },
                     { 'data': 'masterId' },
-                    {'data':  'reservations'},
+                    { 'data': 'reservations' },
                     { 'data': 'createdDate' },
                     { 'data': 'entryDate' },
                     { 'data': 'updatedDate' },
                     { 'data': 'selectedStatus' },
-                    { 'data': 'updatedComputerName' },
-                     
-                   
-
+                    { 'data': 'updatedComputerName' }
                 ],
-                     columnDefs: [{
-                    target:0,
+                columnDefs: [{
+                    target: 0,
                     title: 'İşlemler',
                     orderable: false,
                     render: function (data, type, row) {
-                var columnResult = `
-                <div class="row row-bordered g-0" style="float:left;">
-                <div class="col-12">
-                    <div class="demo-inline-spacing">
-                        <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Rooms/Edit/${data}">
-                        <span class="tf-icons ri-edit-2-line ri-22px"></span>
-                        </a>
-                        <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteRoom(${data})">
-                        <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>
-                        </a>
-                    </div> </div>
-                    </div>
-                `;
-                    return columnResult;
-                },
+                        var columnResult = `
+                        <div class="row row-bordered g-0" style="float:left;">
+                        <div class="col-12">
+                            <div class="demo-inline-spacing">
+                                <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Rooms/Edit/${data}">
+                                <span class="tf-icons ri-edit-2-line ri-22px"></span>
+                                </a>
+                                <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteRoom(${data})">
+                                <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>
+                                </a>
+                            </div> </div>
+                            </div>
+                        `;
+                        return columnResult;
+                    },
                 }],
             });
-            /*GetRooms();*/
         });
 
-        function deleteRoom(id)
-        {
-                Swal.fire({ title: "Oda Silme",
+        
+         
+          
+                  function getAvailableRooms() {
+                      var checkIn = $('#checkIn').val();
+                      var checkOut = $('#checkOut').val();
+                      $.ajax({
+                          url: '/Dashboard/Rooms/AvailableRooms',
+                          type: 'GET',
+                          data: { checkIn: checkIn, checkOut: checkOut },
+                          success: function (result) {
+                              if (result && result.data && result.data.length > 0) {
+                                  alert('Available rooms found: ' + result.data.length);
+                              } else {
+                                  alert((result && result.message) ? result.message : 'No available rooms.');
+                              }
+                          },
+                          error: function (xhr) {
+                              let errorMsg = 'Error fetching available rooms.';
+                              if (xhr.responseJSON && xhr.responseJSON.message) {
+                                  errorMsg = xhr.responseJSON.message;
+                              }
+                              alert(errorMsg);
+                          }
+                      });
+                  }
+     
+          
+
+                ```csharp
+                    // In RoomsController or RoomsPageModel
+                    [HttpGet]
+                    public IActionResult AvailableRooms(DateTime checkIn, DateTime checkOut)
+                    {
+                        // Your logic here
+                        return Json(new { data = availableRooms });
+                    }
+                ```
+                // ... other JS functions ...
+            
+        
+
+        function calculatePrice() {
+            var roomId = $('#calcRoomId').val();
+            var packageType = $('#calcPackageType').val();
+            var days = $('#calcDays').val();
+            $.ajax({
+                url: '/Dashboard/Rooms/CalculatePrice',
+                type: 'GET',
+                data: { roomId: roomId, packageType: packageType, days: days },
+                success: function (result) {
+                    $('#priceResult').html('Total Price: ' + result);
+                },
+                error: function () {
+                    $('#priceResult').html('Error calculating price.');
+                }
+            });
+        }
+
+        function deleteRoom(id) {
+            Swal.fire({
+                title: "Oda Silme",
                 text: "Oda Silinsin mi?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: 'Evet',
                 denyButtonText: 'İptal',
-                customClass: { confirmButton: "btn btn-primary waves-effect waves-light" ,cancelButton: "btn btn-warning waves-effect waves-light"}}).then((result) => {
-                  if (result.isConfirmed) {
-                      $.ajax({
+                customClass: { confirmButton: "btn btn-primary waves-effect waves-light", cancelButton: "btn btn-warning waves-effect waves-light" }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
                         url: "/Dashboard/Rooms/Delete",
                         method: "post",
-                        data: {
-                               'id': id
-                           },
-                        success: function (result) {
-                             ScreenMessage("success", "İşlem Başarılı", "Oda Kaydiniz Silinmiştir.");
-                             location.reload();
+                        data: { 'id': id },
+                        success: function () {
+                            ScreenMessage("success", "İşlem Başarılı", "Oda Kaydiniz Silinmiştir.");
+                            location.reload();
                         },
                         error: function (err) {
                             ScreenMessage("error", "Hata Oluştu", err);
                         }
                     })
-                  } else if (result.isDenied) {
+                } else if (result.isDenied) {
                     ScreenMessage("success", "İptal Edildi", "Oda silme işleminiz iptal edildi.");
-                  }
-                })
+                }
+            })
         }
 
-        function GetRooms() {
-            $.ajax({
-                url: '/Dashboard/Rooms/AllRooms',
-                type: "GET",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                       console.dir(result.data);
-                },
-                error: function (err) {
-                    console.dir(err.Message);
-                }
-            });
-        }
-    </script>
+     
+       
+            $(document).ready(function () {  
+                $("#dtRooms").DataTable({  
+                    responsive: true,  
+                    autoWidth: false,  
+                    destroy: true,  
+                    ajax: {  
+                        url: "/dashboard/rooms/AllRooms",  
+                        type: "GET",  
+                        datatype: "json",  
+                        contentType: "application/json; charset=utf-8",  
+                        dataSrc: function (object) {  
+                            return object.data;  
+                        }  
+                    },  
+                    columns: [  
+                        { 'data': 'id' },  
+                        { 'data': 'roomNumber' },  
+                        { 'data': 'floor' },  
+                        { 'data': 'description' },  
+                        { 'data': 'imageUrl' },  
+                        { 'data': 'roomCapacity' },  
+                        { 'data': 'roomBreakfast' },  
+                        { 'data': 'pricePerNight' },  
+                        { 'data': 'hasBalcony' },  
+                        { 'data': 'hasMinibar' },  
+                        { 'data': 'type' },  
+                        { 'data': 'hasAirConditioning' },  
+                        { 'data': 'hasTV' },  
+                        { 'data': 'hasHairDryer' },  
+                        { 'data': 'hasWiFi' },  
+                        { 'data': 'dataStasus' },  
+                        { 'data': 'masterId' },  
+                        { 'data': 'reservations' },  
+                        { 'data': 'createdDate' },  
+                        { 'data': 'entryDate' },  
+                        { 'data': 'updatedDate' },  
+                        { 'data': 'selectedStatus' },  
+                        { 'data': 'updatedComputerName' }  
+                    ],  
+                    columnDefs: [{  
+                        target: 0,  
+                        title: 'İşlemler',  
+                        orderable: false,  
+                        render: function (data, type, row) {  
+                            var columnResult = `  
+                            <div class="row row-bordered g-0" style="float:left;">  
+                            <div class="col-12">  
+                                <div class="demo-inline-spacing">  
+                                    <a class="btn btn-icon btn-label-primary waves-effect" title="Güncelle" href="/Dashboard/Rooms/Edit/${data}">  
+                                    <span class="tf-icons ri-edit-2-line ri-22px"></span>  
+                                    </a>  
+                                    <a class="btn btn-icon btn-label-danger waves-effect" title="Sil" onclick="deleteRoom(${data})">  
+                                    <span class="tf-icons ri-delete-bin-6-line ri-22px btn-text-danger"></span>  
+                                    </a>  
+                                </div> </div>  
+                                </div>  
+                            `;  
+                            return columnResult;  
+                        },  
+                    }],  
+                });  
+            });  
+
+            function getAvailableRooms() {  
+                var checkIn = $('#checkIn').val();  
+                var checkOut = $('#checkOut').val();  
+                $.ajax({  
+                    url: '/Dashboard/Rooms/AvailableRooms',  
+                    type: 'GET',  
+                    data: { checkIn: checkIn, checkOut: checkOut },  
+                    success: function (result) {  
+                        if (result && result.data && result.data.length > 0) {  
+                            alert('Available rooms found: ' + result.data.length);  
+                        } else {  
+                            alert((result && result.message) ? result.message : 'No available rooms.');  
+                        }  
+                    },  
+                    error: function (xhr) {  
+                        let errorMsg = 'Error fetching available rooms.';  
+                        if (xhr.responseJSON && xhr.responseJSON.message) {  
+                            errorMsg = xhr.responseJSON.message;  
+                        }  
+                        alert(errorMsg);  
+                    }  
+                });  
+            }  
+
+            function calculatePrice() {  
+                var roomId = $('#calcRoomId').val();  
+                var packageType = $('#calcPackageType').val();  
+                var days = $('#calcDays').val();  
+                $.ajax({  
+                    url: '/Dashboard/Rooms/CalculatePrice',  
+                    type: 'GET',  
+                    data: { roomId: roomId, packageType: packageType, days: days },  
+                    success: function (result) {  
+                        $('#priceResult').html('Total Price: ' + result);  
+                    },  
+                    error: function () {  
+                        $('#priceResult').html('Error calculating price.');  
+                    }  
+                });  
+            }  
+
+            function deleteRoom(id) {  
+                Swal.fire({  
+                    title: "Oda Silme",  
+                    text: "Oda Silinsin mi?",  
+                    icon: "warning",  
+                    showCancelButton: true,  
+                    confirmButtonText: 'Evet',  
+                    denyButtonText: 'İptal',  
+                    customClass: { confirmButton: "btn btn-primary waves-effect waves-light", cancelButton: "btn btn-warning waves-effect waves-light" }  
+                }).then((result) => {  
+                    if (result.isConfirmed) {  
+                        $.ajax({  
+                            url: "/Dashboard/Rooms/Delete",  
+                            method: "post",  
+                            data: { 'id': id },  
+                            success: function () {  
+                                ScreenMessage("success", "İşlem Başarılı", "Oda Kaydiniz Silinmiştir.");  
+                                location.reload();  
+                            },  
+                            error: function (err) {  
+                                ScreenMessage("error", "Hata Oluştu", err);  
+                            }  
+                        })  
+                    } else if (result.isDenied) {  
+                        ScreenMessage("success", "İptal Edildi", "Oda silme işleminiz iptal edildi.");  
+                    }  
+                })  
+            }  
+        </script>  
+    }
 }
-@* <table class="table table-responsive">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Floor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomBreakfast)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PricePerNight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasBalcony)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasMinibar)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RoomType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasAirConditioning)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasTV)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasHairDryer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HasWiFi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataStasus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MasterId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EntryDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SelectedStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdatedComputerName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Floor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomCapacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomBreakfast)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PricePerNight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasBalcony)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasMinibar)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasAirConditioning)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasTV)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasHairDryer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasWiFi)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataStasus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MasterId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EntryDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SelectedStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdatedComputerName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table> *@

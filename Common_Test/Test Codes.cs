@@ -3,6 +3,7 @@ using DataAccessLayer.Services.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models.Entities;
+using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Common_Test
 {
-    internal class FileName
+    internal class TestCodes
     {
         #region Repository Test Operations
 
@@ -392,92 +393,201 @@ namespace Common_Test
         ///
         #endregion
         #region Employee Methods Test Run
-//        var options = new DbContextOptionsBuilder<ProjectDatabaseContext>()
-//            .UseInMemoryDatabase(databaseName: "TestDb")
-//            .Options;
+        //        var options = new DbContextOptionsBuilder<ProjectDatabaseContext>()
+        //            .UseInMemoryDatabase(databaseName: "TestDb")
+        //            .Options;
 
-//        await using var context = new ProjectDatabaseContext(options);
+        //        await using var context = new ProjectDatabaseContext(options);
 
-//            try
-//            {
-//                // Seed test data
-//                var employee = new Employee
-//                {
-//                    Id = 1,
-//                    EmployeeFirstName = "John",
-//                    EmployeeLastName = "Doe",
-//                    EmployeePhoneNumber = "123456789",
-//                    Email = "john.doe@example.com",
-//                    Position = "Staff",
-//                    EmployeeAddres = "123 Main St",
-//                    City = "CityName",
-//                    Country = "CountryName",
-//                    PostalCode = "12345",
-//                    HourlyWage = 20,
-//                    MonthlyWage = 0,
-//                    Status = Models.Enums.DataStasus.Active
-//                };
+        //            try
+        //            {
+        //                // Seed test data
+        //                var employee = new Employee
+        //                {
+        //                    Id = 1,
+        //                    EmployeeFirstName = "John",
+        //                    EmployeeLastName = "Doe",
+        //                    EmployeePhoneNumber = "123456789",
+        //                    Email = "john.doe@example.com",
+        //                    Position = "Staff",
+        //                    EmployeeAddres = "123 Main St",
+        //                    City = "CityName",
+        //                    Country = "CountryName",
+        //                    PostalCode = "12345",
+        //                    HourlyWage = 20,
+        //                    MonthlyWage = 0,
+        //                    Status = Models.Enums.DataStasus.Active
+        //                };
 
-//    var manager = new Employee
-//    {
-//        Id = 2,
-//        EmployeeFirstName = "Jane",
-//        EmployeeLastName = "Smith",
-//        EmployeePhoneNumber = "987654321",
-//        Email = "jane.smith@example.com",
-//        Position = "Manager",
-//        EmployeeAddres = "456 Main St",
-//        City = "CityName",
-//        Country = "CountryName",
-//        PostalCode = "54321",
-//        HourlyWage = 0,
-//        MonthlyWage = 4000,
-//        Status = Models.Enums.DataStasus.Active
-//    };
+        //    var manager = new Employee
+        //    {
+        //        Id = 2,
+        //        EmployeeFirstName = "Jane",
+        //        EmployeeLastName = "Smith",
+        //        EmployeePhoneNumber = "987654321",
+        //        Email = "jane.smith@example.com",
+        //        Position = "Manager",
+        //        EmployeeAddres = "456 Main St",
+        //        City = "CityName",
+        //        Country = "CountryName",
+        //        PostalCode = "54321",
+        //        HourlyWage = 0,
+        //        MonthlyWage = 4000,
+        //        Status = Models.Enums.DataStasus.Active
+        //    };
 
-//    var shift1 = new Shift { Id = 1, EmployeeId = 1, ShiftDate = DateTime.Today };
-//    var shift2 = new Shift { Id = 2, EmployeeId = 1, ShiftDate = DateTime.Today.AddDays(-1) };
+        //    var shift1 = new Shift { Id = 1, EmployeeId = 1, ShiftDate = DateTime.Today };
+        //    var shift2 = new Shift { Id = 2, EmployeeId = 1, ShiftDate = DateTime.Today.AddDays(-1) };
 
-//    context.Employees.Add(employee);
-//                context.Employees.Add(manager);
-//                context.Shifts.AddRange(shift1, shift2);
-//                await context.SaveChangesAsync();
+        //    context.Employees.Add(employee);
+        //                context.Employees.Add(manager);
+        //                context.Shifts.AddRange(shift1, shift2);
+        //                await context.SaveChangesAsync();
 
-//    var employeeService = new EmployeeRepo(context);
+        //    var employeeService = new EmployeeRepo(context);
 
-//    Console.WriteLine("=== Employee Shift Tests ===");
-//                var shifts = await employeeService.GetShiftsByEmployeeIdAsync(1);
-//    Console.WriteLine($"Shifts for Employee 1: {shifts.Count}");
+        //    Console.WriteLine("=== Employee Shift Tests ===");
+        //                var shifts = await employeeService.GetShiftsByEmployeeIdAsync(1);
+        //    Console.WriteLine($"Shifts for Employee 1: {shifts.Count}");
 
-//                var empWithShifts = await employeeService.GetEmployeeWithShiftsAsync(1);
-//    Console.WriteLine($"Employee {empWithShifts.EmployeeFirstName} has {empWithShifts.Shifts.Count} shifts.");
+        //                var empWithShifts = await employeeService.GetEmployeeWithShiftsAsync(1);
+        //    Console.WriteLine($"Employee {empWithShifts.EmployeeFirstName} has {empWithShifts.Shifts.Count} shifts.");
 
-//                var emp = await employeeService.GetEmployeeByIdAsync(1);
-//    Console.WriteLine($"Employee by ID 1: {emp.EmployeeFirstName}");
+        //                var emp = await employeeService.GetEmployeeByIdAsync(1);
+        //    Console.WriteLine($"Employee by ID 1: {emp.EmployeeFirstName}");
 
-//                var empsWithShiftsByDate = await employeeService.GetEmployeesWithShiftsByDateAsync(DateTime.Today);
-//    Console.WriteLine($"Employees with shifts today: {empsWithShiftsByDate.Count}");
+        //                var empsWithShiftsByDate = await employeeService.GetEmployeesWithShiftsByDateAsync(DateTime.Today);
+        //    Console.WriteLine($"Employees with shifts today: {empsWithShiftsByDate.Count}");
 
-//                var empsOff = await employeeService.GetEmployeesOffByDateAsync(DateTime.Today);
-//    Console.WriteLine($"Employees off today: {empsOff.Count}");
+        //                var empsOff = await employeeService.GetEmployeesOffByDateAsync(DateTime.Today);
+        //    Console.WriteLine($"Employees off today: {empsOff.Count}");
 
-//                var overtimeShifts = await employeeService.GetOvertimeShiftsByEmployeeIdAsync(1);
-//    Console.WriteLine($"Overtime shifts for Employee 1: {overtimeShifts.Count}");
+        //                var overtimeShifts = await employeeService.GetOvertimeShiftsByEmployeeIdAsync(1);
+        //    Console.WriteLine($"Overtime shifts for Employee 1: {overtimeShifts.Count}");
 
-//                var salary = await employeeService.CalculateMonthlySalaryAsync(1, DateTime.Today.Year, DateTime.Today.Month);
-//    Console.WriteLine($"Monthly salary for Employee 1: {salary}");
+        //                var salary = await employeeService.CalculateMonthlySalaryAsync(1, DateTime.Today.Year, DateTime.Today.Month);
+        //    Console.WriteLine($"Monthly salary for Employee 1: {salary}");
 
-//                var managerSalary = await employeeService.CalculateManagerMonthlySalaryAsync(2, DateTime.Today.Year, DateTime.Today.Month);
-//    Console.WriteLine($"Monthly salary for Manager 2: {managerSalary}");
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine("An error occurred during test execution:");
-//Console.WriteLine(ex);
-//            }
+        //                var managerSalary = await employeeService.CalculateManagerMonthlySalaryAsync(2, DateTime.Today.Year, DateTime.Today.Month);
+        //    Console.WriteLine($"Monthly salary for Manager 2: {managerSalary}");
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine("An error occurred during test execution:");
+        //Console.WriteLine(ex);
+        //            }
 
-        
+
         #endregion Em
 
     }
+    #region PaymentController
+    //    using BussinessLogicLayer.DtoClasses;
+    //using BussinessLogicLayer.Services.Abstracs;
+    //using Microsoft.AspNetCore.Http;
+    //using Microsoft.AspNetCore.Mvc;
+    //using Models.Entities;
+    //using Presentation.Models.Payments.ResponseModels;
+    //using Presentation.Models.Payments.RequestModels;
+    //using System.Security.Claims;
+    //using Models.Enums;
+    //namespace Presentation.Controllers
+    //{
+    //    public class PaymentController : Controller
+    //    {
+    //        private readonly IReservationService _reservationService;
+    //        private readonly IUserService _userService;
+    //        private readonly IExpenseService _expenseService;
+    //        private readonly IPaymentService _paymentService;
+    //        private readonly IRoomService _roomService;
+
+    //        public PaymentController(IReservationService reservationService, IUserService userService, IExpenseService expenseService, IPaymentService paymentService, IRoomService roomService)
+    //        {
+    //            _reservationService = reservationService;
+    //            _userService = userService;
+    //            _expenseService = expenseService;
+    //            _paymentService = paymentService;
+    //            _roomService = roomService;
+    //        }
+    //        public IActionResult Index(int? id)
+    //        {
+    //            if (id == null)
+    //            {
+    //                return RedirectToAction("Index", "Home");
+    //            }
+
+    //            var room = _roomService.GetById(id.Value);
+    //            if (room == null)
+    //            {
+    //                return NotFound();
+    //            }
+
+    //            return View(room);
+    //        }
+
+
+
+
+    //        [HttpGet]
+    //        public async Task<IActionResult> CustomerReservationDetails(int customerId)
+    //        {
+    //            var reservations = _reservationService.GetReservationsByCustomerId(customerId);
+    //            if (reservations == null || !reservations.Any())
+    //            {
+    //                return NotFound("No reservations found for the customer.");
+    //            }
+
+    //            var reservationDetails = reservations.Select(reservation => new
+    //            {
+    //                ReservationId = reservation.Id,
+    //                CheckInDate = reservation.CheckInDate,
+    //                CheckOutDate = reservation.CheckOutDate,
+    //                RoomNumber = reservation.Room?.RoomNumber,
+    //                TotalAmount = reservation.TotalAmount,
+    //                Payments = _paymentService.GetAll()
+    //                    .Where(payment => payment.ReservationId == reservation.Id)
+    //                    .Select(payment => new
+    //                    {
+    //                        PaymentDate = payment.PaymentDate,
+    //                        PaymentAmount = payment.PaymentAmount,
+    //                        PaymentMethod = payment.PaymentMethod.ToString()
+    //                    }).ToList()
+    //            });
+
+    //            return View(reservationDetails);
+    //        }
+
+    //        //public async Task<IActionResult> CompletePayment()
+    //        //{
+    //        //    return View();
+    //        //}
+
+    //        //[HttpPost]
+    //        //[ValidateAntiForgeryToken]
+    //        public async Task<IActionResult> CompletePayment(PaymentProcessRequestModel paymentRequest)
+    //        {
+    //            if (!ModelState.IsValid) return View(paymentRequest);
+
+
+    //            var payment = new Payment
+    //            {
+    //                PaymentDate = DateTime.Now,
+    //                PaymentAmount = paymentRequest.ShoppingPrice,
+    //                ReservationId = paymentRequest.ReservationId,
+    //                PaymentMethod = PaymentMethod.CreditCard
+    //            };
+
+    //            await _paymentService.CreateAsync(payment);
+
+    //            Reservation getReservation = _reservationService.GetById(paymentRequest.ReservationId);
+    //            getReservation.TotalAmount = payment.PaymentAmount;
+    //            await _reservationService.UpdateAsync(getReservation);
+
+    //            //return RedirectToAction(nameof(CustomerReservationDetails), new { reservationId = paymentRequest.ReservationId });
+    //            return Json(payment);
+    //        }
+    //    }
+    #endregion
 }
+
+

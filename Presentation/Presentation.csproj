@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BussinessLogicLayer\BussinessLogicLayer.csproj" />
     <ProjectReference Include="..\Common_Test\Common_Test.csproj" />
+    <ProjectReference Include="..\RoomControlsApi\RoomControlsApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

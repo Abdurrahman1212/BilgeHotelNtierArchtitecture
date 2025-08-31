@@ -13,60 +13,65 @@ using System.Threading.Tasks;
 
 namespace BussinessLogicLayer.Services.Concretes
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService(IEmployeeRepo employeeRepo) : ManagerService<Employee>(employeeRepo), IEmployeeService
     {
-        private readonly IEmployeeRepo _employeeRepo;
-        public EmployeeService(IEmployeeRepo employeeRepo) 
-        {
-            _employeeRepo = employeeRepo;
-        }
+        private readonly IEmployeeRepo _employeeRepo = employeeRepo;
 
-        public async Task<decimal> CalculateMonthlyWageAsync(int employeeId)
+        public Task<decimal> CalculateMonthlyWageAsync(int employeeId)
         {
-            return await _employeeRepo.CalculateMonthlySalaryAsync(employeeId, DateTime.Now.Year, DateTime.Now.Month);
+            // Assuming current month and year for calculation
+            var now = DateTime.Now;
+            return _employeeRepo.CalculateMonthlySalaryAsync(employeeId, now.Year, now.Month);
         }
 
         public IEnumerable<Employee> GetAllEmployeesAsync()
         {
-           return _employeeRepo.GetAllEmployeesAsync();
-           
+            return _employeeRepo.GetAllEmployeesAsync();
         }
 
-        public async Task<Employee> GetEmployeeByEmailAsync(string email)
+        public Task<Employee> GetEmployeeByEmailAsync(string email)
         {
-            return await _employeeRepo.GetEmployeeByEmailAsync(email);
-                }
+            return _employeeRepo.GetEmployeeByEmailAsync(email);
+        }
 
         public async Task<IEnumerable<Employee>> GetEmployeesByCityAsync(string city)
         {
-            return await _employeeRepo.GetEmployeesByCityAsync(city);
-                
-
+            var result = await _employeeRepo.GetEmployeesByCityAsync(city);
+            return result;
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesByPositionAsync(string position)
         {
-            return await _employeeRepo.GetEmployeesByPositionAsync(position);
+            var result = await _employeeRepo.GetEmployeesByPositionAsync(position);
+            return result;
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesByStatusAsync(DataStasus status)
         {
-            return await _employeeRepo.GetEmployeesByStatusAsync(status); 
+            var result = await _employeeRepo.GetEmployeesByStatusAsync(status);
+            return result;
         }
 
         public async Task<IEnumerable<Shift>> GetEmployeeShiftsAsync(int employeeId)
         {
-            return await _employeeRepo.GetShiftsByEmployeeIdAsync(employeeId);
+            var result = await _employeeRepo.GetShiftsByEmployeeIdAsync(employeeId);
+            return result;
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesWithOvertimeAsync()
         {
-            return await _employeeRepo.GetEmployeesWithOvertimeAsync();
+            var result = await _employeeRepo.GetEmployeesWithOvertimeAsync();
+            return result;
         }
 
         public async Task UpdateManagerEmployeeInfo(Employee employee)
         {
-            await _employeeRepo.UpdateManagerInfoAsync(employee); // Assuming UpdateAsync is implemented in IEmployeeRepo
+            // Fetch the original employee from the database
+            var originalEmployee = await _employeeRepo.GetEmployeeByIdAsync(employee.Id);
+            if (originalEmployee != null)
+            {
+                await _employeeRepo.UpdateManagerInfoAsync(originalEmployee, employee);
+            }
         }
     }
 }

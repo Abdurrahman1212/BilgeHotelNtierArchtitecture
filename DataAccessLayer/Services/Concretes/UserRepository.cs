@@ -10,14 +10,11 @@ using System.Threading.Tasks;
 
 namespace Services.Repositories
 {
-    public class UserRepository:ManagerRepository<User>
+    public class UserRepository: ManagerRepository<User>, IUserRepo
     {
-        public UserRepository(ProjectDatabaseContext context):base(context)
+        public UserRepository(ProjectDatabaseContext context):base (context)
         {
-
-        }
-        
             
-        
+        }
     }
 }

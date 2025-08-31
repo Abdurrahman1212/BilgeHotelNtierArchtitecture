@@ -11,15 +11,10 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class RoomRepo : ManagerRepository<Room>, IRoomRepo
+    public class RoomRepo(ProjectDatabaseContext context) : ManagerRepository<Room>(context), IRoomRepo
     {
-        private readonly   DbSet<Room> _dbSet;
-        public RoomRepo(ProjectDatabaseContext project):base(project)
-        {
-            _dbSet = project.Set<Room>();
-        }
 
-        public decimal CalculateRoomPrice(RoomType roomType, PackageType packageType, int numberOfDays)
+        public decimal CalculateRoomPrice(Models.Enums.RoomType roomType, Models.Enums.PackageType packageType, int numberOfDays)
         {
             if (numberOfDays <= 0)
                 throw new ArgumentException("Number of days must be greater than zero.", nameof(numberOfDays));
@@ -27,19 +22,19 @@ namespace DataAccessLayer.Services.Concretes
             // Base price per night by room type
             decimal basePricePerNight = roomType switch
             {
-                RoomType.Single => 100m,
-                RoomType.Double => 150m,
-                RoomType.Triple => 160m,
-                RoomType.Quadruple => 200m,
-                RoomType.KingSuite => 400m,
+                Models.Enums.RoomType.Single => 100m,
+                Models.Enums.RoomType.Double => 150m,
+                Models.Enums.RoomType.Triple => 160m,
+                Models.Enums.RoomType.Quadruple => 200m,
+                Models.Enums.RoomType.KingSuite => 400m,
                 _ => 100m
             };
 
             // Package multiplier
             decimal packageMultiplier = packageType switch
             {
-                PackageType.FullBoard => 1.0m,
-                PackageType.AllIncluesive => 1.3m,
+                Models.Enums.PackageType.FullBoard => 1.0m,
+                Models.Enums.PackageType.AllInclusive => 1.3m,
                 _ => 1.0m
             };
 
@@ -50,51 +45,45 @@ namespace DataAccessLayer.Services.Concretes
         #region GetRoomsNeedingMaintenanceReminderAsync
         public async Task<List<Room>> GetRoomsNeedingMaintenanceReminderAsync(DateTime date)
         {
-            // Rooms that have just been vacated (CheckOutDate == date and reservation is active)
-            // or rooms that are currently vacant (no active reservation overlapping with 'date')
-            var roomsToRemind = await _dbSet
+            var roomsToRemind = await context.Rooms
                 .Where(room =>
                     room.Reservations.Any(r =>
                         r.CheckOutDate.Date == date.Date &&
-                        r.status == DataStasus.Active
+                        r.status == Models.Enums.DataStasus.Active
                     )
                     ||
                     !room.Reservations.Any(r =>
-                        r.CheckInDate <= date && r.CheckOutDate > date && r.status == DataStasus.Active
+                        r.CheckInDate <= date && r.CheckOutDate > date && r.status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();
             return roomsToRemind;
         }
-
-#endregion
+        #endregion
 
         #region GetRoomsToBeVacatedAsync
         public async Task<List<Room>> GetRoomsToBeVacatedAsync(DateTime date)
         {
-            // Rooms with a reservation ending on the given date
-            var roomsToBeVacated = await _dbSet
+            var roomsToBeVacated = await context.Rooms
                 .Where(room =>
                     room.Reservations.Any(r =>
                         r.CheckOutDate.Date == date.Date &&
-                        r.status == DataStasus.Active
+                        r.status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();
             return roomsToBeVacated;
         }
-
-#endregion
+        #endregion
 
         #region GetVacantRoomsAsync
         public async Task<List<Room>> GetVacantRoomsAsync()
         {
             var today = DateTime.Today;
-            // Rooms with no active reservation for today
-            var vacantRooms = await _dbSet
+            var vacantRooms = await context.Rooms
                 .Where(room =>
                     !room.Reservations.Any(r =>
-                        r.CheckInDate <= today && r.CheckOutDate > today && r.status == DataStasus.Active
+                        r.CheckInDate <= today && r.CheckOutDate > today && r.status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();
@@ -104,16 +93,83 @@ namespace DataAccessLayer.Services.Concretes
         public async Task<List<Room>> GetVacantRoomsWithDetailsAsync()
         {
             var today = DateTime.Today;
-            // Get rooms with no active reservation for today, including all details and navigation properties
-            var vacantRoomsWithDetails = await _dbSet
+            var vacantRoomsWithDetails = await context.Rooms
                 .Include(r => r.Reservations)
                 .Where(room =>
                     !room.Reservations.Any(res =>
-                        res.CheckInDate <= today && res.CheckOutDate > today && res.status == DataStasus.Active
+                        res.CheckInDate <= today && res.CheckOutDate > today && res.ReservationStatus == Models.Enums.ReservationStatus.Canceled
                     )
                 )
                 .ToListAsync();
             return vacantRoomsWithDetails;
+        }
+
+        public async Task UpdateRoom(Room OriginalRoom, Room UpdatedRoom)
+        {
+            if (UpdatedRoom.RoomNumber != default && OriginalRoom.RoomNumber != UpdatedRoom.RoomNumber)
+                OriginalRoom.RoomNumber = UpdatedRoom.RoomNumber;
+
+            if (UpdatedRoom.Floor != default && OriginalRoom.Floor != UpdatedRoom.Floor)
+                OriginalRoom.Floor = UpdatedRoom.Floor;
+
+            if (!string.IsNullOrWhiteSpace(UpdatedRoom.Description) && OriginalRoom.Description != UpdatedRoom.Description)
+                OriginalRoom.Description = UpdatedRoom.Description;
+
+            if (!string.IsNullOrWhiteSpace(UpdatedRoom.ImageUrl) && OriginalRoom.ImageUrl != UpdatedRoom.ImageUrl)
+                OriginalRoom.ImageUrl = UpdatedRoom.ImageUrl;
+
+            if (UpdatedRoom.RoomCapacity != default && OriginalRoom.RoomCapacity != UpdatedRoom.RoomCapacity)
+                OriginalRoom.RoomCapacity = UpdatedRoom.RoomCapacity;
+
+            // For bools, update only if different (since default is false)
+            if (OriginalRoom.RoomBreakfast != UpdatedRoom.RoomBreakfast)
+                OriginalRoom.RoomBreakfast = UpdatedRoom.RoomBreakfast;
+
+            if (UpdatedRoom.PricePerNight != default && OriginalRoom.PricePerNight != UpdatedRoom.PricePerNight)
+                OriginalRoom.PricePerNight = UpdatedRoom.PricePerNight;
+
+            if (OriginalRoom.HasBalcony != UpdatedRoom.HasBalcony)
+                OriginalRoom.HasBalcony = UpdatedRoom.HasBalcony;
+
+            if (OriginalRoom.HasMinibar != UpdatedRoom.HasMinibar)
+                OriginalRoom.HasMinibar = UpdatedRoom.HasMinibar;
+
+            if (OriginalRoom.Type != UpdatedRoom.Type)
+                OriginalRoom.Type = UpdatedRoom.Type;
+
+            if (OriginalRoom.PackageType != UpdatedRoom.PackageType)
+                OriginalRoom.PackageType = UpdatedRoom.PackageType;
+
+            if (OriginalRoom.HasAirConditioning != UpdatedRoom.HasAirConditioning)
+                OriginalRoom.HasAirConditioning = UpdatedRoom.HasAirConditioning;
+
+            if (OriginalRoom.HasTV != UpdatedRoom.HasTV)
+                OriginalRoom.HasTV = UpdatedRoom.HasTV;
+
+            if (OriginalRoom.HasHairDryer != UpdatedRoom.HasHairDryer)
+                OriginalRoom.HasHairDryer = UpdatedRoom.HasHairDryer;
+
+            if (OriginalRoom.HasWiFi != UpdatedRoom.HasWiFi)
+                OriginalRoom.HasWiFi = UpdatedRoom.HasWiFi;
+
+            if (OriginalRoom.DataStasus != UpdatedRoom.DataStasus)
+                OriginalRoom.DataStasus = UpdatedRoom.DataStasus;
+
+            // Reservations: update only if not null and different
+            if (UpdatedRoom.Reservations != null && !ReferenceEquals(OriginalRoom.Reservations, UpdatedRoom.Reservations))
+                OriginalRoom.Reservations = UpdatedRoom.Reservations;
+
+            // BaseEntity properties
+            if (UpdatedRoom.UpdatedDate != default && OriginalRoom.UpdatedDate != UpdatedRoom.UpdatedDate)
+                OriginalRoom.UpdatedDate = UpdatedRoom.UpdatedDate;
+
+            if (UpdatedRoom.SelectedStatus != default && OriginalRoom.SelectedStatus != UpdatedRoom.SelectedStatus)
+                OriginalRoom.SelectedStatus = UpdatedRoom.SelectedStatus;
+
+            if (!string.IsNullOrWhiteSpace(UpdatedRoom.UpdatedComputerName) && OriginalRoom.UpdatedComputerName != UpdatedRoom.UpdatedComputerName)
+                OriginalRoom.UpdatedComputerName = UpdatedRoom.UpdatedComputerName;
+
+            await context.SaveChangesAsync();
         }
         #endregion
     }

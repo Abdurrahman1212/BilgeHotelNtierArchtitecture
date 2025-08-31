@@ -70,19 +70,33 @@ namespace Presentation.Areas.Dashboard.Controllers
         }
 
         // POST: Dashboard/Shifts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ShiftType,StartTime,EndTime,EmployeeId,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Shift shift)
+        public async Task<IActionResult> Create([Bind("ShiftType,StartTime,EndTime,EmployeeId,ShiftDate")] Shift shift)
         {
+            // Prevent manual assignment of restricted fields
+            shift.MasterId = Guid.NewGuid().ToString();
+            shift.CreatedDate = DateTime.UtcNow;
+            shift.UpdatedDate = DateTime.UtcNow;
+            shift.UpdatedComputerName = Environment.MachineName;
+
+            ModelState.Remove("Employee");
             if (ModelState.IsValid)
             {
+                // Ensure EmployeeId refers to a valid Employee
+                var employeeExists = await _context.Employees.AnyAsync(e => e.Id == shift.EmployeeId);
+                if (!employeeExists)
+                {
+                    ModelState.AddModelError("EmployeeId", "Selected employee does not exist.");
+                    ViewBag["Id"] = new SelectList(_context.Employees, "Id");
+                    return View(shift);
+                }
+
                 _context.Add(shift);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.Employees, "Id", "City", shift.Id);
+            ViewData["Id"] = new SelectList(_context.Employees, "Id", "City", shift.EmployeeId);
             return View(shift);
         }
 
@@ -114,8 +128,8 @@ namespace Presentation.Areas.Dashboard.Controllers
             {
                 return NotFound();
             }
-            @ModelState.Remove("Employee");
             if (ModelState.IsValid)
+             
             {
                 try
                 {

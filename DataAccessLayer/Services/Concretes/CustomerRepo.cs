@@ -10,24 +10,24 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class CustomerRepo : ManagerRepository<Customer>,ICustomerRepo
+    public class CustomerRepo :ManagerRepository<Customer>,ICustomerRepo
     {
-        private readonly ProjectDatabaseContext _context;
         public CustomerRepo(ProjectDatabaseContext context):base (context)
         {
-            _context = context;
+            
         }
 
-        public async Task<bool> CustomerExistsAsync(string email, string identityNumber)
+        public Task<bool> CustomerExistsAsync(string email, string identityNumber)
         {
-            return await _context.Customers
-                .AnyAsync(c => c.Email == email || c.CustomerIdentityNumber == identityNumber);
+            throw new NotImplementedException();
         }
 
-        public async Task<Customer?> GetByEmailAsync(string email)
+        public Task<Customer?> GetByEmailAsync(string email)
         {
-            return await _context.Customers
-                .FirstOrDefaultAsync(c => c.Email == email);
+            throw new NotImplementedException();
         }
     }
+
+
+    
 }

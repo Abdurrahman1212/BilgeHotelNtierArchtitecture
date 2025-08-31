@@ -9,7 +9,6 @@ namespace Models.Enums
     public enum PackageType
     {
         FullBoard,
-        AllIncluesive,
-
+        AllInclusive
     }
 }

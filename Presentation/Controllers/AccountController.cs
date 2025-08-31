@@ -62,12 +62,12 @@ namespace Presentation.Controllers
                     //await _userManager.AddToRoleAsync(user, "Member");
 
 
-                    IdentityRole<int> Approle = new IdentityRole<int>();
-                    role.Name = "Employee";
+                    //IdentityRole<int> Approle = new IdentityRole<int>();
+                    //role.Name = "Employee";
 
-                    IdentityResult ApproleResult = await _roleManager.CreateAsync(role);
+                    //IdentityResult ApproleResult = await _roleManager.CreateAsync(role);
 
-                    await _userManager.AddToRoleAsync(user, "Employee");
+                    //await _userManager.AddToRoleAsync(user, "Employee");
 
                     string message = $"Hesabınız olusturulmustur...Üyeliginiz onaylamak icin lüfen http://localhost:5104/Account/ConfirmEmail?specId={user.ActivationCode}&id={user.Id} linkine  tıklayınız";
 

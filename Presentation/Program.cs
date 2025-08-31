@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services.AddCustomIdentityService();
-builder.Services.AddDbContextService(); 
+builder.Services.AddDbContextService(builder.Configuration); 
 builder.Services.AddManagerServices();
 builder.Services.AddRepositoryServices();
 builder.Services.AddMapperService();    
@@ -58,3 +58,6 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+
+            

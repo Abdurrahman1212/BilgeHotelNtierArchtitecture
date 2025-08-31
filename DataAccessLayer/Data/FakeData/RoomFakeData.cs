@@ -54,7 +54,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = false;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Triple;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -102,7 +102,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = false;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Double;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -127,7 +127,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = true;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Double;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -150,7 +150,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = true;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Triple;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -175,7 +175,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = true;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Double;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -198,7 +198,7 @@ namespace DataAccessLayer.Data.FakeData
                 room.HasBalcony = true;
                 room.HasMinibar = true;
                 room.Type = Models.Enums.RoomType.Quadruple;
-                room.PackageType = PackageType.AllIncluesive;
+                room.PackageType = PackageType.AllInclusive;
                 room.HasAirConditioning = true;
                 room.HasTV = true;
                 room.HasHairDryer = true;
@@ -219,7 +219,7 @@ namespace DataAccessLayer.Data.FakeData
             kingSuite.HasBalcony = true;
             kingSuite.HasMinibar = true;
             kingSuite.Type = Models.Enums.RoomType.KingSuite;
-            kingSuite.PackageType = PackageType.AllIncluesive;
+            kingSuite.PackageType = PackageType.AllInclusive;
             kingSuite.HasAirConditioning = true;
             kingSuite.HasTV = true;
             kingSuite.HasHairDryer = true;

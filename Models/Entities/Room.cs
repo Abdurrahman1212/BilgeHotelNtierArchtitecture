@@ -24,6 +24,7 @@ namespace Models.Entities
         public bool HasBalcony { get; set; }
         public bool HasMinibar { get; set; }
         public RoomType Type { get; set; }
+        public RoomStatus Status { get; set; } // Enum for room status (e.g., Empty, Occupied, Maintenance, Reserved)
         public PackageType PackageType { get; set; } // Enum for package type (e.g., Bed & Breakfast, Full Board, etc.)
         public bool HasAirConditioning { get; set; }
         public bool HasTV { get; set; }

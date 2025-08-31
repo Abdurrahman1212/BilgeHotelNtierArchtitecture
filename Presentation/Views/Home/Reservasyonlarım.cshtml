@@ -138,22 +138,8 @@
 
         function editReservation(id)
         {
-            $.ajax({
-                url: "/Room/GetRoom",
-                method: "post",
-                data: {
-                    'id': id
-                },
-                success: function (result) {
-                    $("#LoadModal").html("");
-                    $("#LoadModal").append(result);
-                    $("#LoadModal").appendTo("body");
-                    $("#LoadModal").modal("show");
-                },
-                error: function (err) {
-                    ScreenMessage("error", "Hata Oluştu", err);
-                }
-            });
+            // Rezervasyon güncelleme sayfasına yönlendir
+            window.location.href = "/Reservation/Edit/" + id;
         }
 
         function newReservation() {

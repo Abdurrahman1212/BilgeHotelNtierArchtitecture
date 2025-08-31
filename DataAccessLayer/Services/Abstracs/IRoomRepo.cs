@@ -28,5 +28,6 @@ namespace DataAccessLayer.Services.Abstracs
         Task<List<Room>> GetRoomsToBeVacatedAsync(DateTime date);
         Task<List<Room>> GetVacantRoomsAsync();
         Task<List<Room>> GetVacantRoomsWithDetailsAsync();
+        Task UpdateRoom(Room OriginalRoom,Room UpdatedRoom);
     }
 }

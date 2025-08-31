@@ -5,116 +5,92 @@
     Layout = "~/Areas/Dashboard/Views/Shared/_DashboardLayout2.cshtml";
 }
 
-<h1>Edit</h1>
 
-<h4>Reservation</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+<div class="card" id="editReservation">
+    <h5 class="card-header">Rezervasyon Güncelle</h5>
+    <form asp-action="Edit" class="card-body" method="post" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+           
+            <div class="form-group col-6 p-2">
+                <label asp-for="CustomerId" class="id"></label>
+                <input asp-for="CustomerId" class="form-control" readonly />
+                <span asp-validation-for="CustomerId" class="read-more"></span>
+            </div>
+            <div class="form-group col-6 p-2">
                 <label asp-for="CheckInDate" class="control-label"></label>
                 <input asp-for="CheckInDate" class="form-control" />
                 <span asp-validation-for="CheckInDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
                 <label asp-for="CheckOutDate" class="control-label"></label>
                 <input asp-for="CheckOutDate" class="form-control" />
                 <span asp-validation-for="CheckOutDate" class="text-danger"></span>
             </div>
-      
-
-        
-            <div class="row">
-                <div class="form-group col-6 p-2">
-                    <label asp-for="@Model.PackageType" class="control-label"></label>
-                    <select asp-for="@Model.PackageType" class="form-control" required>
-                        <option value="">-- Select Type --</option>
-                        <option value="@Model.PackageType">FullBoard</option>
-                        <option value="@Model.PackageType">AllInclusive</option>
-                    </select>
-                    <span asp-validation-for="PackageType" class="text-danger"></span>
-                </div>
-                </div>
-            <div class="form-group">
+            <div class="form-group col-6 p-2">
+                <label asp-for="RoomId" class="control-label"></label>
+                <input asp-for="RoomId" class="form-control" readonly />
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="PaymentMethod" class="control-label"></label>
+                <select asp-for="PaymentMethod" class="form-control @(ViewData.ModelState["PaymentMethod"]?.Errors.Count > 0 ? "is-invalid" : "")" asp-items="Html.GetEnumSelectList<Models.Enums.PaymentMethod>()" required>
+                    <option value="">-- Payment Method --</option>
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="MasterId" class="id"></label>
+                <input asp-for="MasterId" class="form-control" readonly />
+                <span asp-validation-for="MasterId" class="read-more"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" readonly />
+                <span asp-validation-for="CreatedDate" class="read-more"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="EntryDate" class="control-label"></label>
+                <input asp-for="EntryDate" class="form-control" readonly />
+                <span asp-validation-for="EntryDate" class="read-more"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-6 p-2">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" class="form-control" readonly />
+                <span asp-validation-for="UpdatedDate" class="read-more"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="UpdatedComputerName" class="control-label"></label>
+                <input asp-for="UpdatedComputerName" class="form-control" readonly />
+                <span asp-validation-for="UpdatedComputerName" class="read-more"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="PackageType" class="control-label"></label>
+                <select asp-for="PackageType" class="form-control" asp-items="Html.GetEnumSelectList<Models.Enums.PackageType>()" required>
+                    <option value="">--Select Type --</option>
+                </select>
+                <span asp-validation-for="PackageType" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
                 <label asp-for="TotalAmount" class="control-label"></label>
                 <input asp-for="TotalAmount" class="form-control" />
                 <span asp-validation-for="TotalAmount" class="text-danger"></span>
             </div>
-                <div class="row">
-                    <div class="form-group col-6 p-2">
-                        <label asp-for="@Model.status" class="control-label"></label>
-                        <select asp-for="@Model.status" class="form-control" required>
-                            <option value="">-- Select Type --</option>
-                            @* Example options, replace with your actual types *@
-                            <option value="@Model.status">PendingPayment</option>
-                            <option value="@Model.status">Confirmed</option>
-                            <option value="@Model.status">Cancelled</option>
-                        </select>
-                        <span asp-validation-for="status" class="text-danger"></span>
-                    </div>
-                    </div>
-            <div class="form-group">
-                <label asp-for="RoomId" class="control-label"></label>
-                <select asp-for="RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
+            <div class="form-group col-6 p-2">
+                <label asp-for="ReservationStatus" class="control-label"></label>
+                <select asp-for="ReservationStatus" class="form-control" asp-items="Html.GetEnumSelectList<Models.Enums.ReservationStatus>()" required>
+                    <option value="">-- Select Type --</option>
+                </select>
+                <span asp-validation-for="ReservationStatus" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="MasterId" class="control-label"></label>
-                <input asp-for="MasterId" class="form-control" />
-                <span asp-validation-for="MasterId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EntryDate" class="control-label"></label>
-                <input asp-for="EntryDate" class="form-control" />
-                <span asp-validation-for="EntryDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
-                <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-            </div>
-                    <div class="row">
-                        <div class="form-group col-6 p-2">
-                            <label asp-for="@Model.status" class="control-label"></label>
-                            <select asp-for="@Model.status" class="form-control" required>
-                                <option value="">-- Select Type --</option>
-                                @* Example options, replace with your actual types *@
-                                <option value="@Model.status">Inserted</option>
-                                <option value="@Model.status">Updated</option>
-                                <option value="@Model.status">Deleted</option>
-                                <option value="@Model.status">Active</option>
-                                <option value="@Model.status">Passive</option>
-                            </select>
-                            <span asp-validation-for="status" class="text-danger"></span>
-                        </div>
-                    </div>
-            <div class="form-group">
-                <label asp-for="UpdatedComputerName" class="control-label"></label>
-                <input asp-for="UpdatedComputerName" class="form-control" />
-                <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
-            </div>
-            <div class="pt-6" style="text-align:end;">
-                <button type="reset" class="btn btn-outline-secondary waves-effect">@Html.ActionLink("Iptal", "Index", "Reservations")</button>
-                <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="pt-6" style="text-align:end;">
+            <button type="reset" class="btn btn-outline-secondary waves-effect">@Html.ActionLink("Iptal", "Index", "Reservations")</button>
+            <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
+        </div>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

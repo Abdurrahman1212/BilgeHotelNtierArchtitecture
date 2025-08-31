@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common_Test", "Common_Test\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation.csproj", "{8585364F-5DD2-4D17-B928-73D64D471EEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoomControlsApi", "RoomControlsApi\RoomControlsApi.csproj", "{226A0988-B3D1-41B2-B2D0-F1FC007B848D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,8 +41,15 @@ Global
 		{8585364F-5DD2-4D17-B928-73D64D471EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8585364F-5DD2-4D17-B928-73D64D471EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8585364F-5DD2-4D17-B928-73D64D471EEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226A0988-B3D1-41B2-B2D0-F1FC007B848D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226A0988-B3D1-41B2-B2D0-F1FC007B848D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226A0988-B3D1-41B2-B2D0-F1FC007B848D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226A0988-B3D1-41B2-B2D0-F1FC007B848D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8007D0CB-D454-4E0E-B4D1-E18AF61B03D8}
 	EndGlobalSection
 EndGlobal

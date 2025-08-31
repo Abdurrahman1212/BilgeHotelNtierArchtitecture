@@ -22,8 +22,10 @@ namespace Models.Entities
         public Room? Room { get; set; } // Navigation property
         public Customer? Customer { get; set; } // Navigation property
         public int CustomerId { get; set; }
-        public ICollection<Payment> Payment { get; set; } // Navigation property (One-to-one relationship with Payment) 
-       
+        public PaymentMethod PaymentMethod { get; set; } // Enum for payment method (e.g., Credit Card, Cash, Bank Transfer)
+        public ReservationStatus ReservationStatus { get; set; } // Enum for reservation status (e.g., Confirmed, Cancelled, Completed)
+        
+
         public ICollection<Expense>? Expenses { get; set; } // Navigation property (One-to-many relationship with Expense)
     }
 }

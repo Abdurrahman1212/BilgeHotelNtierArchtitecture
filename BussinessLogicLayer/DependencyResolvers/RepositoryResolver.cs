@@ -3,7 +3,6 @@ using DataAccessLayer.Services.Abstracs;
 using DataAccessLayer.Services.Concretes;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Entities;
-using Services.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace BussinessLogicLayer.DependencyResolvers
             services.AddScoped(typeof(IManagerRepository<>), typeof(ManagerRepository<>));
             services.AddScoped(typeof(IRoomRepo), typeof(RoomRepo));
             services.AddScoped(typeof(ICustomerRepo), typeof(CustomerRepo));
-            services.AddScoped(typeof(IEmployeeRepo),typeof(EmployeeRepo));
+            services.AddScoped(typeof(IEmployeeRepo), typeof(EmployeeRepo));
 
 
 

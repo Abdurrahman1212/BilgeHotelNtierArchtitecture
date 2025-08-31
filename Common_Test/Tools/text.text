@@ -1,0 +1,702 @@
+using BussinessLogicLayer.DtoClasses;
+using BussinessLogicLayer.Services.Abstracs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
+using Presentation.Models.Payments.ResponseModels;
+using Presentation.Models.Payments.RequestModels;
+using System.Security.Claims;
+using Models.Enums;
+namespace Presentation.Controllers
+{
+    public class PaymentController : Controller
+    {
+        private readonly IReservationService _reservationService;
+        private readonly IUserService _userService;
+        private readonly IExpenseService _expenseService;
+        private readonly IPaymentService _paymentService;
+        private readonly IRoomService _roomService;
+
+        public PaymentController(IReservationService reservationService, IUserService userService, IExpenseService expenseService, IPaymentService paymentService, IRoomService roomService)
+        {
+            _reservationService = reservationService;
+            _userService = userService;
+            _expenseService = expenseService;   
+            _paymentService = paymentService;
+            _roomService = roomService;
+        }
+        public IActionResult Index(int? id)
+            {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var room = _roomService.GetById(id.Value);
+            if (room == null)
+            {
+                return NotFound();
+            }
+
+            return View(room);
+        }
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> CustomerReservationDetails(int customerId)
+        {
+            var reservations = _reservationService.GetReservationsByCustomerId(customerId);
+            if (reservations == null || !reservations.Any())
+            {
+                return NotFound("No reservations found for the customer.");
+            }
+
+            var reservationDetails = reservations.Select(reservation => new
+            {
+                ReservationId = reservation.Id,
+                CheckInDate = reservation.CheckInDate,
+                CheckOutDate = reservation.CheckOutDate,
+                RoomNumber = reservation.Room?.RoomNumber,
+                TotalAmount = reservation.TotalAmount,
+                Payments = _paymentService.GetAll()
+                    .Where(payment => payment.ReservationId == reservation.Id)
+                    .Select(payment => new
+                    {
+                        PaymentDate = payment.PaymentDate,
+                        PaymentAmount = payment.PaymentAmount,
+                        PaymentMethod = payment.PaymentMethod.ToString()
+                    }).ToList()
+            });
+
+            return View(reservationDetails);
+        }
+        
+        //public async Task<IActionResult> CompletePayment()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CompletePayment(PaymentProcessRequestModel paymentRequest)
+        {
+            if (!ModelState.IsValid) return View(paymentRequest);
+
+           
+            var payment = new Payment
+            {
+                PaymentDate = DateTime.Now,
+                PaymentAmount = paymentRequest.ShoppingPrice,
+                ReservationId = paymentRequest.ReservationId,
+                PaymentMethod = PaymentMethod.CreditCard 
+            };
+
+            await _paymentService.CreateAsync(payment);
+
+            Reservation getReservation=_reservationService.GetById(paymentRequest.ReservationId);
+            getReservation.TotalAmount = payment.PaymentAmount;
+            await _reservationService.UpdateAsync(getReservation);
+
+            //return RedirectToAction(nameof(CustomerReservationDetails), new { reservationId = paymentRequest.ReservationId });
+            return Json(payment);
+        }
+    }
+}
+@model PaymentProcessRequestModel
+
+@using (Html.BeginForm("CompletePayment", "Payment",FormMethod.Post, new { @id = "completedPayment" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReservationId)
+        @Html.TextBoxFor(m => m.ReservationId, new { @class = "form-control", @readonly = "true" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardUserName)
+        @Html.TextBoxFor(m => m.CardUserName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardNumber)
+        @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CVV)
+        @Html.TextBoxFor(m => m.CVV, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryMonth)
+        @Html.TextBoxFor(m => m.ExpiryMonth, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryYear)
+        @Html.TextBoxFor(m => m.ExpiryYear, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ShoppingPrice)
+        @Html.TextBoxFor(m => m.ShoppingPrice, new { @class = "form-control", @readonly = "true" })
+    </div>
+    <div class="form-group">
+        <button id="btnPayment" type="submit" class="btn btn-primary">Ödeme Yap</button>
+    </div>
+}
+
+
+<script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/jquery.validate.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/additional-methods.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/localization/messages_tr.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#completedPayment').validate({
+            rules:{
+            userName: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50,
+                    },
+                    CardNumber: {
+                        required: true,
+                        minlength: 16,
+                        maxlength:16,
+                    },
+                    CVV: {
+                        required: true,
+                        minlength: 3,
+                        maxlength:3,
+                        number:true,
+                    },
+                    ExpiryMonth: {
+                        required: true,
+                        minlength: 1,
+                        maxlength:2,
+                        number:true,
+                    },
+                    ExpiryYear: {
+                        required: true,
+                        minlength: 4,
+                        maxlength:4,
+                        number:true,
+                    }
+            }
+        });
+
+
+        $("#btnPayment").click(function () {
+            $('#ReservationId').val($("#newReservationId").val());
+            if ($("#completedPayment").valid()) {
+                var reservationId = $("#ReservationId").val();
+                var cardUserName = $("#CardUserName").val();
+                var cardNumber = $("#CardNumber").val();
+                var cvv = $("#CVV").val();
+                var expiryMonth = $("#ExpiryMonth").val();
+                var expiryYear = $("#ExpiryYear").val();
+                var shoppingPrice = $("#ShoppingPrice").val();
+                var roomId=$("#RoomId").val();
+                $.ajax({
+                    url: "/Payment/CompletePayment",
+                    method: "post",
+                    data: {
+                        'RoomNumber':roomId,
+                        'ReservationId': reservationId,
+                        'CardUserName': cardUserName,
+                        'CardNumber':    cardNumber,
+                        'CVV':           cvv,
+                        'ExpiryMonth':   expiryMonth,
+                        'ExpiryYear':    expiryYear,
+                        'ShoppingPrice': shoppingPrice.replace('.',',')
+                    },
+                    success: function (result) {
+                        getReservationDetail(reservationId);
+                        nextStep();
+                        return false;
+                    },
+                    error: function (err) {
+                        ScreenMessage('error','Hata Oluþtu',err);
+                    }
+                });
+            }
+        });
+    });
+</script>
+@model PaymentProcessRequestModel
+
+@using (Html.BeginForm("CompletePayment", "Payment",FormMethod.Post, new { @id = "completedPayment" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReservationId)
+        @Html.TextBoxFor(m => m.ReservationId, new { @class = "form-control", @readonly = "true" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardUserName)
+        @Html.TextBoxFor(m => m.CardUserName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CardNumber)
+        @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CVV)
+        @Html.TextBoxFor(m => m.CVV, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryMonth)
+        @Html.TextBoxFor(m => m.ExpiryMonth, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ExpiryYear)
+        @Html.TextBoxFor(m => m.ExpiryYear, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.ShoppingPrice)
+        @Html.TextBoxFor(m => m.ShoppingPrice, new { @class = "form-control", @readonly = "true" })
+    </div>
+    <div class="form-group">
+        <button id="btnPayment" type="submit" class="btn btn-primary">Ödeme Yap</button>
+    </div>
+}
+
+
+<script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/jquery.validate.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/additional-methods.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/localization/messages_tr.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#completedPayment').validate({
+            rules:{
+            userName: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50,
+                    },
+                    CardNumber: {
+                        required: true,
+                        minlength: 16,
+                        maxlength:16,
+                    },
+                    CVV: {
+                        required: true,
+                        minlength: 3,
+                        maxlength:3,
+                        number:true,
+                    },
+                    ExpiryMonth: {
+                        required: true,
+                        minlength: 1,
+                        maxlength:2,
+                        number:true,
+                    },
+                    ExpiryYear: {
+                        required: true,
+                        minlength: 4,
+                        maxlength:4,
+                        number:true,
+                    }
+            }
+        });
+
+
+        $("#btnPayment").click(function () {
+            $('#ReservationId').val($("#newReservationId").val());
+            if ($("#completedPayment").valid()) {
+                var reservationId = $("#ReservationId").val();
+                var cardUserName = $("#CardUserName").val();
+                var cardNumber = $("#CardNumber").val();
+                var cvv = $("#CVV").val();
+                var expiryMonth = $("#ExpiryMonth").val();
+                var expiryYear = $("#ExpiryYear").val();
+                var shoppingPrice = $("#ShoppingPrice").val();
+                var roomId=$("#RoomId").val();
+                $.ajax({
+                    url: "/Payment/CompletePayment",
+                    method: "post",
+                    data: {
+                        'RoomNumber':roomId,
+                        'ReservationId': reservationId,
+                        'CardUserName': cardUserName,
+                        'CardNumber':    cardNumber,
+                        'CVV':           cvv,
+                        'ExpiryMonth':   expiryMonth,
+                        'ExpiryYear':    expiryYear,
+                        'ShoppingPrice': shoppingPrice.replace('.',',')
+                    },
+                    success: function (result) {
+                        getReservationDetail(reservationId);
+                        nextStep();
+                        return false;
+                    },
+                    error: function (err) {
+                        ScreenMessage('error','Hata Oluþtu',err);
+                    }
+                });
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm("NewReservation", "Room", FormMethod.Post, new { @id = "checkoutRoom" }))
+{
+    <input type="hidden" id="RoomId" name="RoomId" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="CustomerFirstName">Musteri Isim</label>
+        <input type="text" id="CustomerFirstName" name="CustomerFirstName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="CheckInDate">Giriþ Tarihi</label>
+        <input type="date" id="CheckInDate" name="CheckInDate" class="form-control" placeholder="dd.MM.yyyy" />
+    </div>
+    <div class="mb-3">
+        <label for="CheckOutDate">Çýkýþ Tarihi</label>
+        <input type="date" id="CheckOutDate" name="CheckOutDate" class="form-control" placeholder="dd.MM.yyyy" />
+    </div>
+    <div class="mb-3">
+        <label for="GuestNumber">Misafir Sayýsý</label>
+        <input type="number" id="GuestNumber" name="GuestNumber" class="form-control" />
+    </div>
+    <button type="submit" id="btnReservation" class="btn btn-primary">Rezervasyon Yap</button>
+}
+
+<script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/jquery.validate.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/additional-methods.js"></script>
+<script src="../../assets/vendor/libs/jquery-validation/localization/messages_tr.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+       $("#checkoutRoom").validate({
+                rules: {
+                    CustomerFirstName: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 50
+                    },
+                    CheckInDate: {
+                        required: true,
+                       date:true
+                    },
+                    CheckOutDate:
+                    {
+                        required: true,
+                        date: true
+                    },
+                    GuestNumber:
+                    {
+                        required: true,
+                        number: true
+                    }
+                   }
+            });
+
+
+           $('#btnReservation').click(function ()
+           {
+               var roomId = $("#RoomId").val();
+                if(roomId!=null&&roomId!="")
+                {
+                   var checkInDate = $("#CheckInDate").val();
+                   var checkOutDate = $("#CheckOutDate").val();
+                   var userName=$("#CustomerFirstName").val();
+                   var guestNumber=$("#GuestNumber").val();
+                    if ($("#checkoutRoom").valid()) {
+                    var diff = new Date(new Date(checkOutDate) - new Date(checkInDate));
+                    var days = diff/1000/60/60/24;
+                    $('#totalDay').val(days);
+                    $.ajax({
+                        url: "/Room/CreateReservation",
+                        method: "post",
+                        data: {
+                               'RoomId': roomId,
+                               'UserName': userName,
+                               'CheckInDate': checkInDate,
+                               'CheckOutDate': checkOutDate,
+                               'GuestNumber': guestNumber
+                           },
+                        success: function (result) {
+                             $('#newReservationId').val(result.id);
+                             $('#ReservationId').val(result.id);
+                             $('#CardUserName').val(userName);
+                             calcPrice();
+                             nextStep();
+                             return false;
+                        },
+                        error: function (err) {
+                            console.dir(err);
+                            ScreenMessage("error", "Hata Oluþtu", err);
+                        }
+                    })
+                    }
+               }
+               else {
+                   ScreenMessage("error", "Hata Oluþtu", "Oda Seçmelisiniz.");
+               }
+           });
+       });
+</script>
+@model Room
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Core CSS -->
+<link rel="stylesheet" href="../../assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+<link rel="stylesheet" href="../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+<link rel="stylesheet" href="../../assets/css/demo.css" />
+
+<!-- Vendors CSS -->
+<link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+<link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
+<link rel="stylesheet" href="../../assets/vendor/libs/select2/select2.css" />
+<link rel="stylesheet" href="../../assets/vendor/libs/bs-stepper/bs-stepper.css" />
+<link rel="stylesheet" href="../../assets/vendor/libs/rateyo/rateyo.css" />
+<link rel="stylesheet" href="../../assets/vendor/libs/%40form-validation/form-validation.css" />
+
+
+<link rel="stylesheet" href="../../assets/vendor/css/pages/wizard-ex-checkout.css" />
+
+<input type="hidden" id="newReservationId">
+<input type="hidden" id="pricePerNight" value="@Model.PricePerNight" />
+<input type="hidden" id="totalDay">
+<!-- Start main-content -->
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Rooms</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="index.html">Home</a></li>
+                <li>Rooms</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!-- end main-content -->
+
+<section class="room-service-section pt-120 pb-60">
+    <div class="auto-container">
+        <div class="row bg-white">
+            <!-- Checkout Wizard -->
+            <div id="wizard-checkout" class="bs-stepper wizard-icons wizard-icons-example">
+                <div class="bs-stepper-header m-auto border-0">
+                    <div class="step" data-target="#checkout-room">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-icon">
+                                <span class="fal fa-bed me-2 font-size-50"></span>
+                            </span>
+                            <span class="bs-stepper-label">Oda Seçimi</span>
+                        </button>
+                    </div>
+                    <div class="line">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                    <div class="step" data-target="#checkout-payment">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-icon">
+                                <span class="far fa-credit-card font-size-50"></span>
+                            </span>
+                            <span class="bs-stepper-label">Ödeme</span>
+                        </button>
+                    </div>
+                    <div class="line">
+                        <i class="fa fa-angle-right"></i>
+                    </div>
+                    <div class="step" data-target="#checkout-confirmation">
+                        <button type="button" class="step-trigger">
+                            <span class="bs-stepper-icon">
+                                <span class="far fa-check font-size-50"></span>
+                            </span>
+                            <span class="bs-stepper-label">Rezervasyon Onay</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bs-stepper-content border-top rounded-0">
+                    <div id="wizard-checkout-form" onSubmit="return false">
+
+                        <!-- Cart -->
+                        <div id="checkout-room" class="content">
+                            <div class="row">
+                                <div class="col-8">
+                                    <section class="room-details">
+                                        <div class="container">
+                                            @Html.Partial("Partial/_RoomReservation", Model)
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-4">
+                                    <!-- News Block -->
+                                    <div class="room-service-block-one">
+                                        <div class="inner-box">
+                                            <div class="image-box">
+                                                <figure class="image mb-0"><a href="@Url.Action("RoomDetail","Room",new{id=Model.Id})"><img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;"><noscript><img src="@Model.ImageUrl" alt=""></noscript></a></figure>
+                                            </div>
+                                            <div class="content-box">
+                                                <div class="inner-box">
+                                                    <h4 class="title"><a href="@Url.Action("RoomDetail","Room",new{id=Model.Id})">@Model.PricePerNight</a></h4>
+                                                    <div class="price">@Model.PricePerNight TL Gunluk</div>
+                                                </div>
+                                                <div class="facilities-box align-items-center d-flex justify-content-between">
+                                                    <ul class="facilities-list">
+                                                        <li><i class="fal fa-circle-user me-2"></i>@Model.RoomCapacity Kisi</li>
+                                                        <li><i class="fal fa-bed me-2"></i>@Model.Type Yatak</li>
+                                                    </ul>
+                                                    <ul class="facilities-list">
+                                                        <li><i class="fal fa-wifi me-2"></i> @(Model.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
+                                                        <li> <i class="fal fa-television me-2"></i>@(Model.HasTV ? "TV Var" : "TV Yok")</li>
+                                                        <li><i class="fal fa-street-view me-2"></i>@(Model.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
+                                                        <li><i class="fal fa-glass-champagne me-2"></i>@(Model.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment -->
+                        <div id="checkout-payment" class="content">
+                            @Html.Partial("Partial/_CompletePayment", new PaymentProcessRequestModel { ReservationId = Model.Id })
+                        </div>
+
+                        <!-- Confirmation -->
+                        <div id="checkout-confirmation" class="content">
+
+                            <div class="row">
+                                <div class="col-8">
+                                    @Html.Partial("Partial/_ReservationDetails", new PaymentProcessRequestModel { ReservationId = Model.Id })
+                                </div>
+                                <div class="col-4">
+                                    <div class="room-service-block-one">
+                                        <div class="inner-box content-box p-0">
+
+
+                                            <div class="image-box">
+                                                <figure class="image mb-0">
+                                                    <img alt="" data-cfsrc="@Model.ImageUrl" style="display:none;visibility:hidden;max-height:480px;width:auto;">
+                                                    <noscript><img src="@Model.ImageUrl" alt=""></noscript>
+                                                </figure>
+                                            </div>
+                                            <div class="facilities-box align-items-center d-flex pt-10 pl-10">
+                                                <ul class="facilities-list">
+                                                    <li><i class="fal fa-circle-user me-2"></i>@Model.RoomCapacity Kisi</li>
+                                                    <li><i class="fal fa-bed me-2"></i>@Model.Type Yatak</li>
+                                                    <li><i class="fal fa-street-view me-2"></i>@(Model.HasBalcony ? "Balkon Var " : "Balkon Yok")</li>
+                                                </ul>
+                                                <ul class="facilities-list">
+                                                    <li><i class="fal fa-wifi me-2"></i> @(Model.HasWiFi ? "Wifi Var" : "Wifi Yok")</li>
+                                                    <li> <i class="fal fa-television me-2"></i>@(Model.HasTV ? "TV Var" : "TV Yok")</li>
+                                                    <li><i class="fal fa-glass-champagne me-2"></i>@(Model.HasMinibar ? "Minibar Var" : "Minibar Yok")</li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/ Checkout Wizard -->
+
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <!-- Helpers -->
+    <script src="../../assets/vendor/js/helpers.js"></script>
+
+
+
+
+
+    <script>
+        var stepper = new Stepper(document.querySelector("#wizard-checkout"));
+        $(document).ready(function () {
+
+        $("#CheckInDate, #CheckOutDate").change(function() {
+            const roomId = $("#RoomId").val();
+            const checkInDate = $("#CheckInDate").val();
+            const checkOutDate = $("#CheckOutDate").val();
+            if (checkInDate && checkOutDate) {
+                checkAvailability(roomId, checkInDate, checkOutDate);
+            }
+        });
+
+        function checkAvailability(roomId, checkInDate, checkOutDate) {
+            $.ajax({
+                url: `/Home/CheckAvailability?roomId=${roomId}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`,
+                method: "post",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    if(!response.isAvailable)
+                    {
+                        ScreenMessage('error','Oda Durumu','Oda bu tarihlerde müsait deðildir.');
+                    }
+                },
+                error: function (err) {
+                    ScreenMessage('error','Hata Oluþtu',err);
+                }
+            });
+        }
+
+
+
+
+
+          });
+
+           function calcPrice(){
+            var roomPrice=$('#pricePerNight').val();
+            var totalDay=$('#totalDay').val();
+            var shoppingPrice=parseFloat(roomPrice.replace(',' , '.'))*parseFloat(totalDay.replace(',' , '.'));
+            $('#ShoppingPrice').val(shoppingPrice);
+          }
+
+          function getReservationDetail(reservationId)
+          {
+              $.ajax({
+                url: "/Room/GetReservationDetail",
+                method: "post",
+                data: {
+                    'ReservationId': reservationId
+                },
+                success: function (result) {
+                    $('#reservationId').val(result.id);
+                    $('#checkInDate').val(new Date(result.checkInDate).toLocaleDateString('tr-TR'));
+                    $('#checkOutDate').val(new Date(result.checkOutDate).toLocaleDateString('tr-TR'));
+                    $('#roomNumber').val(result.roomId);
+                    $('#shoppingPrice').val(result.totalAmount);
+                },
+                error: function (err) {
+                    ScreenMessage('error','Hata Oluþtu',err.Message);
+                }
+            });
+            }
+
+          function nextStep()
+          {
+              stepper.next();
+          }
+    </script>
+}
+

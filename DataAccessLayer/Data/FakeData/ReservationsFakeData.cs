@@ -26,6 +26,8 @@ namespace DataAccessLayer.Data.FakeData
                     Id = i + 1,
                     CheckInDate = checkInDate,
                     CheckOutDate = checkOutDate,
+                    PaymentMethod= (PaymentMethod)(i % Enum.GetValues(typeof(PaymentMethod)).Length),
+                    ReservationStatus = (ReservationStatus)(i % Enum.GetValues(typeof(ReservationStatus)).Length),
                     PackageType = (PackageType)(i % Enum.GetValues(typeof(PackageType)).Length),
                     TotalAmount = decimal.Parse(faker.Commerce.Price(1500, 2500)),
                     status = (DataStasus)(i % Enum.GetValues(typeof(DataStasus)).Length),

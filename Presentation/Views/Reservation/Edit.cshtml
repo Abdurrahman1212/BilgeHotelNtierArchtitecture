@@ -1,0 +1,147 @@
+﻿@using Models.Enums
+@model Reservation
+
+@{
+    ViewData["Title"] = "Rezervasyon Güncelleme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-title" style="background-image: url(../../images/background/page-title-bg.png);">
+    <div class="auto-container">
+        <div class="title-outer text-center">
+            <h1 class="title">Rezervasyonunuzu Güncelleyin</h1>
+            <ul class="page-breadcrumb">
+                <li><a href="/Home">Anasayfa</a></li>
+                <li><a href="/Home/Reservasyonlarım">Rezervasyonlarım</a></li>
+                <li>Rezervasyon Güncelleme</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Rezervasyon Güncelleme
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" id="editReservationForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                        <!-- Rezervasyon ID -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label fw-bold">Rezervasyon ID</label>
+                                    <input value="@Model.Id" class="form-control" readonly />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CheckInDate" class="control-label fw-bold">Giriş Tarihi</label>
+                                    <input asp-for="CheckInDate" class="form-control" type="date" />
+                                    <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="CheckOutDate" class="control-label fw-bold">Çıkış Tarihi</label>
+                                    <input asp-for="CheckOutDate" class="form-control" type="date" />
+                                    <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PackageType" class="control-label fw-bold">Paket Türü</label>
+                                    <select asp-for="PackageType" class="form-select" asp-items="Html.GetEnumSelectList<PackageType>()">
+                                        <option value="">-- Paket Türü Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="PackageType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="TotalAmount" class="control-label fw-bold">Toplam Tutar</label>
+                                    <input asp-for="TotalAmount" class="form-control" type="number" step="0.01" />
+                                    <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ReservationStatus" class="control-label fw-bold">Rezervasyon Durumu</label>
+                                    <select asp-for="ReservationStatus" class="form-select" asp-items="Html.GetEnumSelectList<ReservationStatus>()">
+                                        <option value="">-- Durum Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="ReservationStatus" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PaymentMethod" class="control-label fw-bold">Ödeme Yöntemi</label>
+                                    <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<PaymentMethod>()">
+                                        <option value="">-- Ödeme Yöntemi Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden fields -->
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CustomerId" />
+                        <input type="hidden" asp-for="RoomId" />
+                        <input type="hidden" asp-for="MasterId" />
+                        <input type="hidden" asp-for="CreatedDate" />
+                        <input type="hidden" asp-for="EntryDate" />
+                        <input type="hidden" asp-for="UpdatedDate" />
+                        <input type="hidden" asp-for="UpdatedComputerName" />
+
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="/Home/Reservasyonlarım" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i>Rezervasyonlarıma Dön
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Güncelle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Form submit kontrolü
+            $('#editReservationForm').on('submit', function () {
+                var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<i class="fas fa-spinner fa-spin me-2"></i>Güncelleniyor...');
+            });
+        });
+    </script>
+}
+
+
+
+

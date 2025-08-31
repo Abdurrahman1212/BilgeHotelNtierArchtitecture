@@ -12,8 +12,8 @@ namespace Models.Entities
     {
 
         public ShiftType ShiftType { get; set; }
-        public DateTime StartTime { get; set; } // Vardiya başlangıç saati
-        public DateTime EndTime { get; set; } // Vardiya bitiş saati
+        public TimeOnly StartTime { get; set; } // Vardiya başlangıç saati
+        public TimeOnly EndTime { get; set; } // Vardiya bitiş saati
 
 
         // Navigation property

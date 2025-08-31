@@ -9,6 +9,7 @@ using DataAccessLayer.Context;
 using Models.Entities;
 using BussinessLogicLayer.Services.Abstracs;
 using Microsoft.AspNetCore.Authorization;
+using Models.Enums;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
@@ -19,17 +20,19 @@ namespace Presentation.Areas.Dashboard.Controllers
     {
         private readonly ProjectDatabaseContext _context;
         private readonly IEmployeeService _employeeService;
+        private readonly IManagerService<Employee> _managerService;
 
-        public EmployeesController(ProjectDatabaseContext context,IEmployeeService employee)
+        public EmployeesController(ProjectDatabaseContext context, IEmployeeService employee, IManagerService<Employee> managerService)
         {
             _context = context;
             _employeeService = employee;
+            _managerService = managerService;
         }
 
         // GET: Dashboard/Employees
         public IActionResult Index()
         {
-            return View(_employeeService.GetAllEmployeesAsync());    
+            return View(_employeeService.GetAllEmployeesAsync());
         }
 
         [HttpGet]
@@ -103,19 +106,23 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,EmployeeAddres,City,Country,PostalCode,HourlyWage,MonthlyWage,WeeklyOfDate,WeeklyWorkedHours,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,Position,SelectedStatus,UpdatedComputerName")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeFirstName,EmployeeLastName,EmployeePhoneNumber,Email,Position,EmployeeAddres,City,Country,PostalCode,ShiftStart,ShiftEnd,WeeklyOfDate,HasOverTime,WeeklyWorkedHours,TotalWorkedHours,HourlyWage,MonthlyWage,Status,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Employee employee)
         {
             if (id != employee.Id)
             {
                 return NotFound();
             }
+
+            // Set HasOverTime based on WeeklyWorkedHours
+            employee.HasOverTime = employee.WeeklyWorkedHours > 48;
             ModelState.Remove("Shifts");
+            // ModelState validation
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _employeeService.UpdateManagerEmployeeInfo(employee);
-                    await _context.SaveChangesAsync();
+                    // Update the employee in the database
+                    await _employeeService.UpdateManagerEmployeeInfo(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,6 +137,16 @@ namespace Presentation.Areas.Dashboard.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            // Repopulate dropdowns in case of error
+            ViewBag.Positions = new SelectList(new List<string> { "Manager", "Staff", "Intern" }, employee.Position);
+            ViewBag.Cities = new SelectList(new List<string> { "New York", "London", "Istanbul" }, employee.City);
+            ViewBag.Countries = new SelectList(new List<string> { "USA", "UK", "Turkey" }, employee.Country);
+            ViewBag.Statuses = new SelectList(Enum.GetValues(typeof(DataStasus)).Cast<DataStasus>(), employee.Status);
+            ViewBag.WeeklyWorkedHours = new SelectList(Enumerable.Range(0, 81), employee.WeeklyWorkedHours);
+            ViewBag.SelectedStatus = new SelectList(Enum.GetValues(typeof(DataStasus)).Cast<DataStasus>(), employee.SelectedStatus);
+            ViewBag.ShiftTypes = new SelectList(new List<string> { "Morning", "Evening", "Night" }, employee.WeeklyOfDate);
+            ViewBag.HourlyWage = employee.HourlyWage;
             return View(employee);
         }
 

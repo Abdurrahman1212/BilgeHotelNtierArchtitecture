@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ShiftRepo : ManagerRepository<Shift>
+    public class ShiftRepo : ManagerRepository<Shift>, IShiftsRepo
     {
-        public ShiftRepo(ProjectDatabaseContext project):base (project)
+        public ShiftRepo(ProjectDatabaseContext context):base (context)
         {
             
         }

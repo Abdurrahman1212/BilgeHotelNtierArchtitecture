@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace BussinessLogicLayer.Services.Abstracs
 {
-    public interface IRoomService:IManagerService<Room>
+    public interface IRoomService : IManagerService<Room>
     {
         Task CreateReservationAsync(Reservation reservation);
         Task<List<Room>> GetRoomsNeedingMaintenanceReminderAsync(DateTime date);
-
+        Task UptadeRoom(Room OriginalRoom, Room UpdatedRoom);
+        Task<List<Room>> GetAvailableRooms(DateTime checkIn, DateTime checkOut);
+        Task GetRoomReminders();
     }
 }

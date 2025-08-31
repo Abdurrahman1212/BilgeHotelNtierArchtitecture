@@ -6,10 +6,10 @@
 }
 
 
-<div class="card" id="editUser">    
+<div class="card" id="editUser">
     <h5 class="card-header">Çalışanları Güncelle</h5>
     <form asp-action="Edit" class="card-body">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <div class="row">
             <div class="form-group col-6 p-2">
@@ -57,93 +57,105 @@
                 <input asp-for="@Model.HourlyWage" class="form-control" />
                 <span asp-validation-for="@Model.HourlyWage" class="text-danger"></span>
             </div>
-         
+
             <div class="form-group col-6 p-2">
                 <label asp-for="@Model.MonthlyWage" class="form-control"></label>
                 <input asp-for="@Model.MonthlyWage" class="form-control" />
                 <span asp-validation-for="@Model.MonthlyWage" class="text-danger"></span>
             </div>
-                <div class="form-group col-6 p-2">
+            <div class="form-group col-6 p-2">
                 <label asp-for="@Model.WeeklyOfDate" class="control-label"></label>
                 <input asp-for="@Model.WeeklyOfDate" class="form-control" />
                 <span asp-validation-for="@Model.WeeklyOfDate" class="text-danger"></span>
-                </div>
-                <div class="form-group col-6 p-2">
+            </div>
+            <div class="form-group col-6 p-2">
                 <label asp-for="@Model.WeeklyWorkedHours" class="control-label"></label>
                 <input asp-for="@Model.WeeklyWorkedHours" class="form-control" />
                 <span asp-validation-for="@Model.WeeklyWorkedHours" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="form-group col-6 p-2">
+                    <div class="form-group col-6 p-2">
+                        <label asp-for="SelectedStatus" class="control-label"></label>
+                        <select asp-for="SelectedStatus" class="form-control" asp-items="Html.GetEnumSelectList<Models.Enums.DataStasus>()" required>
+                            <option value="">-- Select Type --</option>
+                        </select>
+                        <span asp-validation-for="SelectedStatus" class="text-danger"></span>
+                    </div>
                 </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.SelectedStatus" class="control-label"></label>
-                <select asp-for="@Model.SelectedStatus" class="form-control">
-                    <option value="@Model.SelectedStatus">Inserted</option>
-                    <option value="@Model.SelectedStatus">Updated</option>
-                    <option value="@Model.SelectedStatus">Deleted</option>
-                    <option value="@Model.SelectedStatus">Passive</option>
-                    <option value="@Model.SelectedStatus">Active</option>
-                </select>
-                <span asp-validation-for="@Model.SelectedStatus" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.MasterId" class="control-label"></label>
-                <input asp-for="@Model.MasterId" class="form-control" />
-                <span asp-validation-for="@Model.MasterId" class="text-danger"></span>
-            </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.CreatedDate" class="control-label"></label>
-                <input asp-for="@Model.CreatedDate" class="form-control" />
-                <span asp-validation-for="@Model.CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.EntryDate" class="control-label"></label>
-                <input asp-for="@Model.EntryDate" class="form-control" />
-                <span asp-validation-for="@Model.EntryDate" class="text-danger"></span>
-            </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.UpdatedDate" class="control-label"></label>
-                <input asp-for="@Model.UpdatedDate" class="form-control" />
-                <span asp-validation-for="@Model.UpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.HasOverTime" class="control-label"></label>
-                <input asp-for="@Model.HasOverTime" class="form-check-input" type="checkbox" id="hasOverTimeCheckbox" />
-                <span asp-validation-for="@Model.HasOverTime" class="text-danger"></span>
-            </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.MasterId" class="control-label"></label>
+                    <input asp-for="@Model.MasterId" class="form-control" />
+                    <span asp-validation-for="@Model.MasterId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.CreatedDate" class="control-label"></label>
+                    <input asp-for="@Model.CreatedDate" class="form-control" />
+                    <span asp-validation-for="@Model.CreatedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.EntryDate" class="control-label"></label>
+                    <input asp-for="@Model.EntryDate" class="form-control" />
+                    <span asp-validation-for="@Model.EntryDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.UpdatedDate" class="control-label"></label>
+                    <input asp-for="@Model.UpdatedDate" class="form-control" />
+                    <span asp-validation-for="@Model.UpdatedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <div class="">
+                        <input asp-for="HasOverTime" class="form-check-input" type="checkbox" id="hasOverTimeCheckbox" value="true" checked="@Model.HasOverTime" />
+                        <input type="hidden" asp-for="@Model.HasOverTime" value="@Model.HasOverTime" />
+                        <label asp-for="@Model.HasOverTime" class="form-check-label">@Model.HasOverTime</label>
+                    </div>
+                    <span asp-validation-for="@Model.HasOverTime" class="text-danger"></span>
+                </div>
 
-            <div class="form-group col-6 p-2">
-                <label asp-for="Position" class="control-label"></label>
-                <select asp-for="Position" class="form-control">
-                    <option value="Resepsiyon Görevlisi">Resepsiyon Görevlisi</option>
-                    <option value="Temizlik Görevlisi">Temizlik Görevlisi</option>
-                    <option value="Ascı">Ascı</option>
-                    <option value="Elektirikci">Elektirikci</option>
-                    <option value="Garson">Garson</option>
-                    <option value="Bilgi Islem Sorumlusu">Bilgi Islem Sorumlusu</option>
-                    <option value="Müdür">Müdür</option>
-                </select>
-                <span asp-validation-for="Position" class="text-danger"></span>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="Position" class="control-label"></label>
+                    <select asp-for="Position" class="form-control">
+                        <option value="Resepsiyon Görevlisi">Resepsiyon Görevlisi</option>
+                        <option value="Temizlik Görevlisi">Temizlik Görevlisi</option>
+                        <option value="Ascı">Ascı</option>
+                        <option value="Elektirikci">Elektirikci</option>
+                        <option value="Garson">Garson</option>
+                        <option value="Bilgi Islem Sorumlusu">Bilgi Islem Sorumlusu</option>
+                        <option value="Müdür">Müdür</option>
+                    </select>
+                    <span asp-validation-for="Position" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.Shifts" class="control-label"></label>
+                    <select asp-for="@Model.ShiftEnd" class="form-control">
+                        <option value="Sabah">Sabah</option>
+                        <option value="Öğle">Öğle</option>
+                        <option value="Gece">Gece</option>
+                    </select>
+                    <span asp-validation-for="@Model.Shifts" class="text-danger"></span>
+
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.ShiftStart" class="control-label"></label>
+                    <input asp-for="@Model.ShiftStart" class="form-control @(ViewData.ModelState["ShiftStart"]?.Errors.Count > 0 ? "is-invalid" : (ViewData.ModelState["ShiftStart"] != null ? "is-valid" : ""))" type="datetime-local" value="@(Model.ShiftStart.ToString("yyyy-MM-ddTHH:mm"))" />
+                    <span asp-validation-for="@Model.ShiftStart" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.ShiftEnd" class="control-label"></label>
+                    <input asp-for="@Model.ShiftEnd" class="form-control @(ViewData.ModelState["ShiftEnd"]?.Errors.Count > 0 ? "is-invalid" : (ViewData.ModelState["ShiftEnd"] != null ? "is-valid" : ""))" type="datetime-local" value="@(Model.ShiftEnd.ToString("yyyy-MM-ddTHH:mm"))" />
+                    <span asp-validation-for="@Model.ShiftEnd" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="@Model.UpdatedComputerName" class="control-label"></label>
+                    <input asp-for="@Model.UpdatedComputerName" class="form-control" />
+                    <span asp-validation-for="@Model.UpdatedComputerName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.ShiftStart" class="control-label"></label>
-                <input asp-for="@Model.ShiftStart" class="form-control" />
-                <span asp-validation-for="@Model.ShiftStart" class="text-danger"></span>
+            <div class="pt-6" style="text-align:end;">
+                <button type="reset" class="btn btn-outline-secondary waves-effect">@Html.ActionLink("Iptal", "Index", "Employees")</button>
+                <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
             </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.ShiftEnd" class="control-label"></label>
-                <input asp-for="@Model.ShiftEnd" class="form-control" />
-                <span asp-validation-for="@Model.ShiftEnd" class="text-danger"></span>
-            </div>
-            <div class="form-group col-6 p-2">
-                <label asp-for="@Model.UpdatedComputerName" class="control-label"></label>
-                <input asp-for="@Model.UpdatedComputerName" class="form-control" />
-                <span asp-validation-for="@Model.UpdatedComputerName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="pt-6" style="text-align:end;">
-            <button type="reset" class="btn btn-outline-secondary waves-effect" >@Html.ActionLink("Iptal", "Index", "Employees")</button>
-            <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
-        </div>        
     </form>
 </div>
 

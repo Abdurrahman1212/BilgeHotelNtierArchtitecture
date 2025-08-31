@@ -12,7 +12,13 @@ using BussinessLogicLayer.Services.Concretes;
 using Bogus;
 using Microsoft.SqlServer.Server;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+    
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
@@ -39,7 +45,7 @@ namespace Presentation.Areas.Dashboard.Controllers
 
         [HttpGet]
         public async Task<IActionResult> AllRooms()
-            {
+        {
             var allRooms = _roomService.GetAll();
 
             if (allRooms == null)
@@ -115,23 +121,31 @@ namespace Presentation.Areas.Dashboard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomNumber,Floor,Description,ImageUrl,RoomCapacity,RoomBreakfast,PricePerNight,HasBalcony,HasMinibar,RoomType,HasAirConditioning,HasTV,HasHairDryer,HasWiFi,Reservations,DataStasus,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Room room)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomNumber,Floor,Description,ImageUrl,RoomCapacity,RoomBreakfast,PricePerNight,HasBalcony,HasMinibar,Reservations,Type,PackageType,HasAirConditioning,HasTV,HasHairDryer,HasWiFi,DataStasus,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Room updatedRoom)
         {
-            if (id != room.Id)
+            if (id != updatedRoom.Id)
             {
                 return NotFound();
             }
-            ModelState.Remove("Reservation");
+
+            // Remove Reservations from ModelState if present  
+            ModelState.Remove("Reservations");
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
+                    // Use RoomService to update the room (which uses RoomRepo internally)  
+                    var originalRoom = _roomService.GetById(id);
+                    if (originalRoom == null)
+                    {
+                        return NotFound();
+                    }
+                    await _roomService.UptadeRoom(originalRoom, updatedRoom);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (!RoomExists(updatedRoom.Id))
                     {
                         return NotFound();
                     }
@@ -142,7 +156,7 @@ namespace Presentation.Areas.Dashboard.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(room);
+            return View(updatedRoom);
         }
 
         // GET: Dashboard/Rooms/Delete/5
@@ -181,6 +195,108 @@ namespace Presentation.Areas.Dashboard.Controllers
         private bool RoomExists(int id)
         {
             return _context.Rooms.Any(e => e.Id == id);
+        }
+        // This method allows a manager to update all properties of a room using RoomService and RoomRepo.
+        // It loads the room, populates ViewBag with its properties, and allows updating all fields.
+        [HttpGet]
+        public async Task<IActionResult> ManageRoom(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            var room = _roomService.GetById(id.Value);
+            if (room == null)
+                return NotFound();
+
+            // Populate ViewBag with all room properties for the view
+            ViewBag.RoomNumber = room.RoomNumber;
+            ViewBag.Floor = room.Floor;
+            ViewBag.Description = room.Description;
+            ViewBag.ImageUrl = room.ImageUrl;
+            ViewBag.RoomCapacity = room.RoomCapacity;
+            ViewBag.RoomBreakfast = room.RoomBreakfast;
+            ViewBag.PricePerNight = room.PricePerNight;
+            ViewBag.HasBalcony = room.HasBalcony;
+            ViewBag.HasMinibar = room.HasMinibar;
+            ViewBag.RoomType = room.Type;
+            ViewBag.PackageType = room.PackageType;
+            ViewBag.HasAirConditioning = room.HasAirConditioning;
+            ViewBag.HasTV = room.HasTV;
+            ViewBag.HasHairDryer = room.HasHairDryer;
+            ViewBag.HasWiFi = room.HasWiFi;
+            ViewBag.DataStasus = room.DataStasus;
+
+            return View(room);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageRoom(int id, Room updatedRoom)
+        {
+            if (id != updatedRoom.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Use RoomService to update the room (which uses RoomRepo internally)
+                    await _roomService.UpdateAsync(updatedRoom);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Rooms.Any(e => e.Id == updatedRoom.Id))
+                        return NotFound();
+                    else
+                        throw;
+                }
+                return RedirectToAction("Index");
+            }
+
+            // Repopulate ViewBag if model state is invalid
+            ViewBag.RoomNumber = updatedRoom.RoomNumber;
+            ViewBag.Floor = updatedRoom.Floor;
+            ViewBag.Description = updatedRoom.Description;
+            ViewBag.ImageUrl = updatedRoom.ImageUrl;
+            ViewBag.RoomCapacity = updatedRoom.RoomCapacity;
+            ViewBag.RoomBreakfast = updatedRoom.RoomBreakfast;
+            ViewBag.PricePerNight = updatedRoom.PricePerNight;
+            ViewBag.HasBalcony = updatedRoom.HasBalcony;
+            ViewBag.HasMinibar = updatedRoom.HasMinibar;
+            ViewBag.RoomType = updatedRoom.Type;
+            ViewBag.PackageType = updatedRoom.PackageType;
+            ViewBag.HasAirConditioning = updatedRoom.HasAirConditioning;
+            ViewBag.HasTV = updatedRoom.HasTV;
+            ViewBag.HasHairDryer = updatedRoom.HasHairDryer;
+            ViewBag.HasWiFi = updatedRoom.HasWiFi;
+            ViewBag.DataStasus = updatedRoom.DataStasus;
+
+            return View(updatedRoom);
+        }
+        // Boş odaları ve özelliklerini listele
+        public IActionResult AvailableRooms(DateTime? checkIn, DateTime? checkOut)
+        {
+            if (!checkIn.HasValue || !checkOut.HasValue)
+                return Json(new { data = new List<Room>(), message = "Check-in and check-out dates are required." });
+
+            var rooms = _roomService.GetAvailableRooms(checkIn.Value, checkOut.Value);
+            return Json(new { data = rooms });
+        }
+
+        // Oda durum takibi ve hatırlatma
+        public IActionResult RoomReminders()
+        {
+            var reminders = _roomService.GetRoomReminders();
+            return View(reminders);
+        }
+
+        // Fiyat hesaplama
+        public decimal CalculatePrice(int roomId, string packageType, int days)
+        {
+            var room = _roomService.GetById(roomId);
+            decimal basePrice = room.PricePerNight * days;
+            decimal packageMultiplier = packageType == "Herşey Dahil" ? 1.5m : 1.2m;
+            return basePrice * packageMultiplier;
         }
     }
 }

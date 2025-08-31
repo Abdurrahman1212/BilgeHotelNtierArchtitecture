@@ -9,11 +9,31 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ExpenseRepo:ManagerRepository<Expense>
+    public class ExpenseRepo : ManagerRepository<Expense>, IExpenseRepo
     {
-        public ExpenseRepo(ProjectDatabaseContext context):base (context)
+        private readonly ProjectDatabaseContext project;
+        public ExpenseRepo(ProjectDatabaseContext project) : base(project)
         {
-            
+            this.project = project;
         }
+        /// <summary>
+        /// Gets all expenses for a specific reservation.
+        /// </summary>
+        public IEnumerable<Expense> GetAllExpensesByReservationId(int reservationId)
+        {
+            return project.Expenses
+                .Where(e => e.ReservationId == reservationId)
+                .ToList();
+        }
+        /// <summary>
+        /// Gets an expense by its ID.
+        /// </summary>
+        public Expense GetExpenseById(int expense)
+        {
+            return project.Expenses
+                .FirstOrDefault(e => e.Id == expense);
+        }
+
+
     }
 }

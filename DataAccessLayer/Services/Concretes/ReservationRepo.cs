@@ -11,12 +11,36 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Services.Concretes
 {
-    public class ReservationRepo:ManagerRepository<Reservation>
+    public class ReservationRepo : ManagerRepository<Reservation>, IReservationsRepo
     {
-        public ReservationRepo(ProjectDatabaseContext context):base(context)
+        private readonly ProjectDatabaseContext project;
+        public ReservationRepo(ProjectDatabaseContext project) : base(project)
         {
-
+            this.project = project;
         }
-        
+        /// <summary>
+        /// Gets all reservations.
+        /// </summary>
+        public IEnumerable<Reservation> GetAllReservationsAsync()
+        {
+            return project.Reservations
+                .Include(r => r.Room)
+                .Include(r => r.Customer)
+                .Include(r => r.Expenses)
+                .AsNoTracking()
+                .ToList();
+        }
+        /// <summary>
+        /// Gets reservation by ID.
+        /// </summary>
+        public Reservation GetReservationById(int reservationId)
+        {
+            return project.Reservations
+                .Include(r => r.Room)
+                .Include(r => r.Customer)
+                .Include(r => r.Expenses)
+                .FirstOrDefault(r => r.Id == reservationId);
+        }
+
     }
 }

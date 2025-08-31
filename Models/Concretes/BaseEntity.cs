@@ -15,10 +15,8 @@ namespace Models.Abstracts
             CreatedDate = DateTime.Now;
             EntryDate = DateTime.Now;
             UpdatedDate = DateTime.Now;
-            SelectedStatus = DataStasus.Inserted;
             MasterId = Guid.NewGuid().ToString();
-            UpdatedComputerName=System.Environment.MachineName;
-
+            UpdatedComputerName = System.Environment.MachineName;
         }
         public int Id { get; set; }
         public string MasterId { get; set; }

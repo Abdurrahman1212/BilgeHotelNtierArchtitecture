@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccessLayer.Data.FakeData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Models.Entities;
 using System;
@@ -34,30 +35,11 @@ namespace DataAccessLayer.Configurations
 
 
             // Foreign Key  
-            builder.HasOne(p => p.Reservation)
-                .WithMany(r => r.Payment) // Fix: Use the correct navigation property
-                .HasForeignKey(p => p.ReservationId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+           
             //// Seed Data  
-            builder.HasData(
-                new Payment
-                {
-                    Id = 1,
-                    PaymentDate = DateTime.Now,
-                    PaymentAmount = 100.00m,
-                    PaymentMethod = Models.Enums.PaymentMethod.CreditCard,
-                    ReservationId = 1
-                },
-                new Payment
-                {
-                    Id = 2,
-                    PaymentDate = DateTime.Now.AddDays(-1),
-                    PaymentAmount = 200.00m,
-                    PaymentMethod = Models.Enums.PaymentMethod.Cash,
-                    ReservationId = 2
-                }
-            );
+            builder.HasData(PaymentFakeData.GetFakePayments());
         }
+
+
     }
 }

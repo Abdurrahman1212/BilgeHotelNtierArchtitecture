@@ -10,172 +10,192 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="Id" />
         <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="RoomNumber" class="control-label"></label>
-            <input asp-for="RoomNumber" class="form-control" />
-            <span asp-validation-for="RoomNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group col-6 p-2">
-            <label asp-for="Floor" class="control-label"></label>
-            <input asp-for="Floor" class="form-control" />
-            <span asp-validation-for="Floor" class="text-danger"></span>
-        </div>
+            <div class="form-group col-6">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="RoomNumber" class="control-label"></label>
+                <input asp-for="RoomNumber" class="form-control" />
+                <span asp-validation-for="RoomNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="Floor" class="control-label"></label>
+                <input asp-for="Floor" class="form-control" />
+                <span asp-validation-for="Floor" class="text-danger"></span>
+            </div>
         </div>
         <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="Description" class="control-label"></label>
-            <input asp-for="Description" class="form-control" />
-            <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="form-group col-6 p-2">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group col-6 p-2">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group col-6 p-2">
-            <label asp-for="ImageUrl" class="control-label"></label>
-            <input asp-for="ImageUrl" class="form-control" />
-            <span asp-validation-for="ImageUrl" class="text-danger"></span>
-        </div>
-        </div>
-        <div class="row" style="align-items:center;">
-        <div class="form-group col-6 p-2">
-            <label asp-for="RoomCapacity" class="control-label"></label>
-            <input asp-for="RoomCapacity" class="form-control" />
-            <span asp-validation-for="RoomCapacity" class="text-danger"></span>
-        </div>
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="RoomBreakfast" /> @Html.DisplayNameFor(model => model.RoomBreakfast)
-            </label>
-        </div>
-        </div>
-        <div class="row" style="align-items:center;">
-        <div class="form-group col-6 p-2">
-            <label asp-for="PricePerNight" class="control-label"></label>
-            <input asp-for="PricePerNight" class="form-control" />
-            <span asp-validation-for="PricePerNight" class="text-danger"></span>
-        </div>
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasBalcony" /> @Html.DisplayNameFor(model => model.HasBalcony)
-            </label>
-        </div>
-        </div>
-        <div class="row" style="align-items:center;">
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasMinibar" /> @Html.DisplayNameFor(model => model.HasMinibar)
-            </label>
-        </div>
-        <div class="form-group col-6 p-2">
-            <label asp-for="Type" class="control-label"></label>
-            <select asp-for="Type" class="form-control" required>
-                <option value="">-- Select Type --</option>
-                @* Example options, replace with your actual types *@
-                <option value="@Model.Type">Single</option>
-                <option value="@Model.Type">Double</option>
-                <option value="@Model.Type">Triple</option>
-                <option value="@Model.Type">Quad</option>
-                <option value="@Model.Type">KingSuite</option>
-            </select>
-            <span asp-validation-for="Type" class="text-danger"></span>
-        </div>
-        <div class="row" style="align-items:center;">
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasAirConditioning" /> @Html.DisplayNameFor(model => model.HasAirConditioning)
-            </label>
-        </div>
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasTV" /> @Html.DisplayNameFor(model => model.HasTV)
-            </label>
-        </div>
-        </div>
-        <div class="row" style="align-items:center;">
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasHairDryer" /> @Html.DisplayNameFor(model => model.HasHairDryer)
-            </label>
-        </div>
-        <div class="form-group form-check col-6 p-2">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="HasWiFi" /> @Html.DisplayNameFor(model => model.HasWiFi)
-            </label>
-        </div>
-                <div class="row" style="align-items:center;">
+            <div class="form-group col-6 p-2">
+                <label class="control-label">Reservations</label>
+                @if (Model.Reservations != null && Model.Reservations.Count > 0)
+                {
+                    <ul class="list-group">
+                        @foreach (var reservation in Model.Reservations)
+                        {
+                            <li class="list-group-item">
+                                <strong>Reservation ID:</strong> @reservation.Id <br />
+                                <strong>Status:</strong> @reservation.SelectedStatus <br />
+                                <strong>Check-in:</strong> @(reservation.CheckInDate != null ? reservation.CheckInDate.ToString("yyyy-MM-dd") : "-") <br />
+                                <strong>Check-out:</strong> @(reservation.CheckOutDate != null ? reservation.CheckOutDate.ToString("yyyy-MM-dd") : "-")
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <input class="form-control" value="No reservations" readonly />
+                }
+            </div>
+            <div class="row" style="align-items:center;">
+                <div class="form-group col-6 p-2">
+                    <label asp-for="RoomCapacity" class="control-label"></label>
+                    <input asp-for="RoomCapacity" class="form-control" />
+                    <span asp-validation-for="RoomCapacity" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check col-6 p-2">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="RoomBreakfast" /> @Html.DisplayNameFor(model => model.RoomBreakfast)
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="align-items:center;">
+                <div class="form-group col-6 p-2">
+                    <label asp-for="PricePerNight" class="control-label"></label>
+                    <input asp-for="PricePerNight" class="form-control" />
+                    <span asp-validation-for="PricePerNight" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check col-6 p-2">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="HasBalcony" /> @Html.DisplayNameFor(model => model.HasBalcony)
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="align-items:center;">
+                <div class="form-group form-check col-6 p-2">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="HasMinibar" /> @Html.DisplayNameFor(model => model.HasMinibar)
+                    </label>
+                </div>
+                <div class="form-group col-6 p-2">
                     <div class="form-group col-6 p-2">
-                        <label class="control-label">Reservation Status</label>
-                        @if (Model.Reservations != null && Model.Reservations.Any())
-                        {
-                            <ul class="list-group">
-                                @foreach (var reservation in Model.Reservations)
-                                {
-                                    <li class="list-group-item">
-                                        @* Adjust the following fields as per your Reservation entity *@
-                                        <strong>Reservation ID:</strong> @reservation.Id <br />
-                                        <strong>Status:</strong> @reservation.SelectedStatus <br />
-                                        <strong>Check-in:</strong> @reservation.CheckInDate.ToString("yyyy-MM-dd") <br />
-                                        <strong>Check-out:</strong> @reservation.CheckOutDate.ToString("yyyy-MM-dd")
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <span class="text-muted">No reservations for this room.</span>
-                        }
+                        <label asp-for="Type" class="control-label"></label>
+                        <select asp-for="Type" class="form-control" asp-items="Html.GetEnumSelectList<Models.Enums.RoomType>()" required>
+                            <option value="">-- Select Type --</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger"></span>
                     </div>
                 </div>
-        </div>
-        </div>
-        <div class="row">
-                <div class="form-group col-6 p-2">
-                    <label asp-for="@Model.DataStasus" class="control-label"></label>
-                    <select asp-for="@Model.DataStasus" class="form-control" required>
-                        <option value="">-- Select Type --</option>
-                        @* Example options, replace with your actual types *@
-                        <option value="@Model.DataStasus">Inserted</option>
-                        <option value="@Model.DataStasus">Updated</option>
-                        <option value="@Model.DataStasus">Deleted</option>
-                        <option value="@Model.DataStasus">Active</option>
-                        <option value="@Model.DataStasus">Passive</option>
-                    </select>
-                    <span asp-validation-for="Type" class="text-danger"></span>
+                <div class="row" style="align-items:center;">
+                    <div class="form-group form-check col-6 p-2">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="HasAirConditioning" /> @Html.DisplayNameFor(model => model.HasAirConditioning)
+                        </label>
+                    </div>
+                    <div class="form-group form-check col-6 p-2">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="HasTV" /> @Html.DisplayNameFor(model => model.HasTV)
+                        </label>
+                    </div>
                 </div>
-        <div class="form-group col-6 p-2">
-            <label asp-for="MasterId" class="control-label"></label>
-            <input asp-for="MasterId" class="form-control" />
-            <span asp-validation-for="MasterId" class="text-danger"></span>
-        </div>
-        </div>
-        <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="CreatedDate" class="control-label"></label>
-            <input asp-for="CreatedDate" class="form-control" />
-            <span asp-validation-for="CreatedDate" class="text-danger"></span>
-        </div>
-        <div class="form-group col-6 p-2">
-            <label asp-for="EntryDate" class="control-label"></label>
-            <input asp-for="EntryDate" class="form-control" />
-            <span asp-validation-for="EntryDate" class="text-danger"></span>
-        </div>
-        </div>
-        <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="UpdatedDate" class="control-label"></label>
-            <input asp-for="UpdatedDate" class="form-control" />
-            <span asp-validation-for="UpdatedDate" class="text-danger"></span>
-        </div>
-      
-        </div>
-        <div class="row">
-        <div class="form-group col-6 p-2">
-            <label asp-for="UpdatedComputerName" class="control-label"></label>
-            <input asp-for="UpdatedComputerName" class="form-control" />
-            <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
-        </div>
-        </div>
-        <div class="pt-6" style="text-align:end;">            
-            <button type="reset" class="btn btn-outline-secondary waves-effect">@Html.ActionLink("Iptal", "Index", "Rooms")</button>
-            <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
-        </div>
+                <div class="row" style="align-items:center;">
+                    <div class="form-group form-check col-6 p-2">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="HasHairDryer" /> @Html.DisplayNameFor(model => model.HasHairDryer)
+                        </label>
+                    </div>
+                    <div class="form-group form-check col-6 p-2">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="HasWiFi" /> @Html.DisplayNameFor(model => model.HasWiFi)
+                        </label>
+                    </div>
+                    <div class="row" style="align-items:center;">
+                        <div class="form-group col-6 p-2">
+                            <label class="control-label">Reservation Status</label>
+                            @if (Model.Reservations != null && Model.Reservations.Any())
+                            {
+                                <ul class="list-group">
+                                    @foreach (var reservation in Model.Reservations)
+                                    {
+                                        <li class="list-group-item">
+                                            @* Adjust the following fields as per your Reservation entity *@
+                                            <strong>Reservation ID:</strong> @reservation.Id <br />
+                                            <strong>Status:</strong> @reservation.SelectedStatus <br />
+                                            <strong>Check-in:</strong> @reservation.CheckInDate.ToString("yyyy-MM-dd") <br />
+                                            <strong>Check-out:</strong> @reservation.CheckOutDate.ToString("yyyy-MM-dd")
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No reservations for this room.</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-6 p-2">
+                    <div class="form-group col-6 p-2">
+                        <label asp-for="DataStasus" class="control-label"></label>
+                        <select asp-for="DataStasus" class="form-control" asp-items="Html.GetEnumSelectList<Models.Enums.DataStasus>()" required>
+                            <option value="">-- Select Type --</option>
+                        </select>
+                        <span asp-validation-for="DataStasus" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-6 p-2">
+                    <label asp-for="MasterId" class="control-label"></label>
+                    <input asp-for="MasterId" class="form-control" />
+                    <span asp-validation-for="MasterId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-6 p-2">
+                    <label asp-for="CreatedDate" class="control-label"></label>
+                    <input asp-for="CreatedDate" class="form-control" />
+                    <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-6 p-2">
+                    <label asp-for="EntryDate" class="control-label"></label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-6 p-2">
+                    <label asp-for="UpdatedDate" class="control-label"></label>
+                    <input asp-for="UpdatedDate" class="form-control" />
+                    <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-6 p-2">
+                    <label asp-for="UpdatedComputerName" class="control-label"></label>
+                    <input asp-for="UpdatedComputerName" class="form-control" />
+                    <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="pt-6" style="text-align:end;">
+                <button type="reset" class="btn btn-outline-secondary waves-effect">@Html.ActionLink("Iptal", "Index", "Rooms")</button>
+                <button type="submit" class="btn btn-primary me-4 waves-effect waves-light" asp-action="Edit" asp-route-id="@Model?.Id">Kaydet</button>
+            </div>
 
     </form>
 </div>

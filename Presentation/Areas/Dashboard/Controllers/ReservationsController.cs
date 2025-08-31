@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BussinessLogicLayer.Services.Abstracs;
+using DataAccessLayer.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
 using Models.Entities;
-using BussinessLogicLayer.Services.Abstracs;
-using Microsoft.AspNetCore.Authorization;
+using Models.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {
@@ -20,7 +22,7 @@ namespace Presentation.Areas.Dashboard.Controllers
         private readonly ProjectDatabaseContext _context;
         private readonly IReservationService _reservationService;
 
-        public ReservationsController(ProjectDatabaseContext context,IReservationService reservation)
+        public ReservationsController(ProjectDatabaseContext context, IReservationService reservation)
         {
             _context = context;
             _reservationService = reservation;
@@ -29,9 +31,26 @@ namespace Presentation.Areas.Dashboard.Controllers
         // GET: Dashboard/Reservations
         public IActionResult Index()
         {
-          
+
 
             return View(_reservationService.GetAll().ToList());
+        }
+        // Mevcut kullanıcının ID'sini al
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return 0;
+        }
+
+        private decimal CalculateTotalAmount(DateTime checkInDate, DateTime checkOutDate, decimal pricePerNight)
+        {
+            var days = (checkOutDate - checkInDate).Days;
+            if (days <= 0) days = 1; // En az 1 gün
+            return days * pricePerNight;
         }
 
 
@@ -83,6 +102,7 @@ namespace Presentation.Areas.Dashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CheckInDate,CheckOutDate,PackageType,TotalAmount,PaymentVerification,status,RoomId,CustomerId,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Reservation reservation)
         {
+            //ModelState.Remove("Payment");
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
@@ -93,66 +113,94 @@ namespace Presentation.Areas.Dashboard.Controllers
             ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Description", reservation.RoomId);
             return View(reservation);
         }
-
-        // GET: Dashboard/Reservations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: ReservationController/Edit/5
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                // Mevcut kullanıcının ID'sini al
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId == 0)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
 
-            var reservation = await _context.Reservations.FindAsync(id);
-            if (reservation == null)
-            {
-                return NotFound();
+                // Rezervasyonu getir
+                var reservation = _reservationService.GetById(id);
+                if (reservation == null)
+                {
+                    return NotFound();
+                }
+
+                // Kullanıcının sadece kendi rezervasyonunu düzenleyebilmesini sağla
+                if (reservation.CustomerId != currentUserId)
+                {
+                    return Forbid();
+                }
+
+                return View(reservation);
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "City", reservation.CustomerId);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Description", reservation.RoomId);
-            return View(reservation);
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Rezervasyon bilgileri alınırken hata oluştu: " + ex.Message;
+                return RedirectToAction("Index", "Home");
+            }
         }
 
-        // POST: Dashboard/Reservations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: ReservationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CheckInDate,CheckOutDate,PackageType,TotalAmount,PaymentVerification,status,RoomId,CustomerId,Id,MasterId,CreatedDate,EntryDate,UpdatedDate,SelectedStatus,UpdatedComputerName")] Reservation reservation)
+        public async Task<ActionResult> Edit(int id, Reservation model)
         {
-            if (id != reservation.Id)
+            try
             {
-                return NotFound();
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                // Mevcut kullanıcının ID'sini al
+                var currentUserId = GetCurrentUserId();
+                if (currentUserId == 0)
+                {
+                    return RedirectToAction("Login", "Account");
+                }
+
+                // Rezervasyonu getir
+                var existingReservation = _reservationService.GetById(id);
+                if (existingReservation == null)
+                {
+                    return NotFound();
+                }
+
+                // Kullanıcının sadece kendi rezervasyonunu düzenleyebilmesini sağla
+                if (existingReservation.CustomerId != currentUserId)
+                {
+                    return Forbid();
+                }
+
+                // Güncellenecek alanları güncelle
+                existingReservation.CheckInDate = model.CheckInDate;
+                existingReservation.CheckOutDate = model.CheckOutDate;
+                existingReservation.PackageType = model.PackageType;
+                existingReservation.TotalAmount = model.TotalAmount;
+                existingReservation.ReservationStatus = model.ReservationStatus;
+                existingReservation.PaymentMethod = model.PaymentMethod;
+                existingReservation.UpdatedDate = DateTime.Now;
+                existingReservation.UpdatedComputerName = Environment.MachineName;
+
+                // Rezervasyonu güncelle
+                await _reservationService.UpdateAsync(existingReservation);
+
+                TempData["SuccessMessage"] = "Rezervasyonunuz başarıyla güncellendi!";
+                return RedirectToAction("Reservasyonlarım", "Home");
             }
-
-            // Remove Payment validation errors if present
-            ModelState.Remove("Payment");
-            ModelState.Remove("Payment[]");
-
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                try
-                {
-                    _context.Update(reservation);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservationExists(reservation.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("", "Rezervasyon güncellenirken hata oluştu: " + ex.Message);
+                return View(model);
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "City", reservation.CustomerId);
-            ViewData["RoomId"] = new SelectList(_context.Rooms, "Id", "Description", reservation.RoomId);
-            return View(reservation);
         }
-
         // GET: Dashboard/Reservations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

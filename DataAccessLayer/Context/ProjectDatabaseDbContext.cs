@@ -7,19 +7,21 @@ using Models.Entities;
 
 namespace DataAccessLayer.Context
 {
-    public class ProjectDatabaseContext : IdentityDbContext<User, IdentityRole<int>,int>
+    public class ProjectDatabaseContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        // Constructor for design-time DbContext creation
-        public ProjectDatabaseContext(DbContextOptions<ProjectDatabaseContext> options) : base(options)
-        {
-        }
-        public ProjectDatabaseContext(DbContextOptionsBuilder<ProjectDatabaseContext> options)
+        public ProjectDatabaseContext()
         {
             
         }
 
+        public ProjectDatabaseContext(DbContextOptions<ProjectDatabaseContext> options) : base(options)
+        {
+                
+        }
+
         // DbSets for the models
-        public DbSet<Room>Rooms { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Expense> Expenses { get; set; }
@@ -32,7 +34,7 @@ namespace DataAccessLayer.Context
         {
             if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer("Server=DESKTOP-BC8DJ2E\\SQLEXPRESS;Database=BilgeHotelDbNtier;Trusted_Connection=true;TrustServerCertificate=True;");
             {
-               
+
             }
 
             base.OnConfiguring(optionsBuilder);
@@ -46,7 +48,7 @@ namespace DataAccessLayer.Context
             modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
             modelBuilder.ApplyConfiguration(new ShiftConfiguration());
             modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
-           modelBuilder.ApplyConfiguration(new ReservationConfiguration());
+            modelBuilder.ApplyConfiguration(new ReservationConfiguration());
 
             //here you can apply any specific configurations if needed, such as relationships or indexes
             base.OnModelCreating(modelBuilder);

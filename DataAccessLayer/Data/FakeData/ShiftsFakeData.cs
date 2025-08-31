@@ -14,13 +14,13 @@ namespace DataAccessLayer.Data.FakeData
     {
         public static List<Shift> GetFakeShifts()
         {
-            // Define shift time ranges
+            // Define shift time ranges as specified
             var shiftTimes = new List<(TimeSpan Start, TimeSpan End, ShiftType Type)>
-                {
-                    (new TimeSpan(8, 0, 0), new TimeSpan(16, 0, 0), ShiftType.Morning),
-                    (new TimeSpan(16, 0, 0), new TimeSpan(0, 0, 0), ShiftType.Evening),
-                    (new TimeSpan(0, 0, 0), new TimeSpan(8, 0, 0), ShiftType.Night)
-                };
+            {
+                (new TimeSpan(8, 0, 0), new TimeSpan(16, 0, 0), ShiftType.Morning),
+                (new TimeSpan(16, 0, 0), new TimeSpan(0, 0, 0), ShiftType.Evening),
+                (new TimeSpan(00, 0, 0), new TimeSpan(8, 0, 0), ShiftType.Night)
+            };
 
             var shifts = new List<Shift>();
             int shiftId = 1;
@@ -47,8 +47,8 @@ namespace DataAccessLayer.Data.FakeData
                             Id = shiftId++,
                             EmployeeId = availableReceptionists[recIndex++],
                             ShiftDate = day,
-                            StartTime = day.Date.Add(Start),
-                            EndTime = day.Date.Add(End == TimeSpan.Zero ? new TimeSpan(23, 59, 59) : End),
+                            StartTime = TimeOnly.FromTimeSpan(Start),
+                            EndTime = TimeOnly.FromTimeSpan(End),
                             ShiftType = Type
                         });
                     }
@@ -69,15 +69,15 @@ namespace DataAccessLayer.Data.FakeData
                             Id = shiftId++,
                             EmployeeId = staffId,
                             ShiftDate = day,
-                            StartTime = day.Date.Add(Start),
-                            EndTime = day.Date.Add(End == TimeSpan.Zero ? new TimeSpan(23, 59, 59) : End),
+                            StartTime = TimeOnly.FromTimeSpan(Start),
+                            EndTime = TimeOnly.FromTimeSpan(End),
                             ShiftType = Type
                         });
                     }
                 }
             }
 
-            // Electrician and IT staff: 8:00-18:00, sometimes with overtime
+            // Electrician and IT staff: 8:00-16:00, sometimes with overtime
             var specialStaff = new List<(int Id, string Role)> { (11, "Electrician"), (12, "IT") };
             var rand = new Random();
             foreach (var day in days)
@@ -89,8 +89,8 @@ namespace DataAccessLayer.Data.FakeData
                         Id = shiftId++,
                         EmployeeId = Id,
                         ShiftDate = day,
-                        StartTime = day.Date.Add(new TimeSpan(8, 0, 0)),
-                        EndTime = day.Date.Add(new TimeSpan(18, 0, 0)),
+                        StartTime = new TimeOnly(8, 0, 0),
+                        EndTime = new TimeOnly(16, 0, 0),
                         ShiftType = ShiftType.Morning // Use Morning as a placeholder for "Day"
                     });
 
@@ -102,10 +102,23 @@ namespace DataAccessLayer.Data.FakeData
                             Id = shiftId++,
                             EmployeeId = Id,
                             ShiftDate = day,
-                            StartTime = day.Date.Add(new TimeSpan(18, 0, 0)),
-                            EndTime = day.Date.Add(new TimeSpan(20, 0, 0)),
+                            StartTime = new TimeOnly(16, 0, 0),
+                            EndTime = new TimeOnly(00, 0, 0),
                             ShiftType = ShiftType.Evening // Use Evening as a placeholder for "Overtime"
                         });
+                        if (rand.NextDouble() > 0.5)
+                        {
+                            shifts.Add(new Shift
+                            {
+                                Id = shiftId++,
+                                EmployeeId = Id,
+                                ShiftDate = day,
+                                StartTime = new TimeOnly(00, 0, 0),
+                                EndTime = new TimeOnly(8, 0, 0),
+                                ShiftType = ShiftType.Night // Use Night as a placeholder for "Overtime"
+                            });
+                        }
+
                     }
                 }
             }

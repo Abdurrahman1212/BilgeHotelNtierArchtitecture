@@ -29,13 +29,40 @@ namespace BussinessLogicLayer.Services.Concretes
             await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Room>> GetAvailableRooms(DateTime checkIn, DateTime checkOut)
+        {
+            // Use repository method to get vacant rooms with details
+            var rooms = await _roomrepo.GetVacantRoomsWithDetailsAsync();
+
+            // Filter rooms that are vacant (based on room status)
+            var availableRooms = rooms.Where(room =>
+                room.Status == Models.Enums.RoomStatus.Empty
+            ).ToList();
+
+            return availableRooms;
+        }
+
+            public async Task GetRoomReminders()
+        {
+            // Example: Get rooms to be vacated and rooms needing maintenance reminders for today
+            var today = DateTime.Today;
+            var roomsToBeVacated = await _roomrepo.GetRoomsToBeVacatedAsync(today);
+            var roomsNeedingMaintenance = await _roomrepo.GetRoomsNeedingMaintenanceReminderAsync(today);
+
+            // You can process or return these lists as needed.
+            // For now, just a placeholder to show reminders are fetched.
+            // If you need to return them, change the return type accordingly.
+        }
+
         public async Task<List<Room>> GetRoomsNeedingMaintenanceReminderAsync(DateTime date)
         {
             return await _roomrepo.GetRoomsNeedingMaintenanceReminderAsync(date);
         }
 
-
-
-
+        public Task UptadeRoom(Room OriginalRoom, Room UpdatedRoom)
+        {
+           return _roomrepo.UpdateRoom(OriginalRoom, UpdatedRoom);
+        }
     }
 }
