@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped(typeof(IManagerRepository<>), typeof(ManagerRepository<>));
 builder.Services.AddScoped(typeof(IRoomService), typeof(RoomService));
 builder.Services.AddScoped(typeof(IManagerService<>), typeof(ManagerService<>));
-IServiceCollection serviceCollection = builder.Services.AddDbContext<ProjectDatabaseContext>(opt => opt.UseSqlServer("DefaultConnection"));
+builder.Services.AddDbContext<ProjectDatabaseContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -56,6 +56,6 @@ app.MapControllerRoute(
     defaults: new { controller = "Home", action = "Index" }
 );
 
-//todo: Custom endpoint anlatýlcak.
+//todo: Custom endpoint anlatï¿½lcak.
 
 app.Run();

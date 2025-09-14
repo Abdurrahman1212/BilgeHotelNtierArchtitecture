@@ -32,11 +32,7 @@ namespace DataAccessLayer.Context
         // OnConfiguring method for setting up the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer("Server=DESKTOP-BC8DJ2E\\SQLEXPRESS;Database=BilgeHotelDbNtier;Trusted_Connection=true;TrustServerCertificate=True;");
-            {
-
-            }
-
+            // Connection string is now configured via dependency injection in Program.cs
             base.OnConfiguring(optionsBuilder);
         }
 
