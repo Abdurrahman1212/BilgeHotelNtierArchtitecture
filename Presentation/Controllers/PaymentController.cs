@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Presentation.Models;
 using Models.Entities;
-using Models.Enums;
+using PaymentMethodEnum = Models.Enums.PaymentMethod;
 using System.Text;
 using System.Text.Json;
 
@@ -45,7 +45,7 @@ namespace Presentation.Controllers
             }
 
             // Kredi kartı seçilmediğinde kart bilgileri zorunlu değil
-            if (model.PaymentMethod == PaymentMethod.CreditCard)
+            if (model.PaymentMethod == PaymentMethodEnum.CreditCard)
             {
                 if (string.IsNullOrEmpty(model.CardNumber) || string.IsNullOrEmpty(model.CardHolderName) ||
                     model.ExpiryMonth <= 0 || model.ExpiryYear <= 0 || string.IsNullOrEmpty(model.CVV))

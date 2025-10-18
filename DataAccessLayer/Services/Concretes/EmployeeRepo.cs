@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿﻿using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Services.Abstracs;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +27,7 @@ namespace DataAccessLayer.Services.Concretes
         public async Task<decimal> CalculateManagerMonthlySalaryAsync(int managerId, int year, int month)
         {
             var manager = await project.Employees
-                .FirstOrDefaultAsync(e => e.Id == managerId && e.Position.ToLower().Contains("manager"));
+                .FirstOrDefaultAsync(e => e.Id == managerId && e.Position == EmployeePosition.Manager);
             return manager?.MonthlyWage ?? 0m;
         }
 
@@ -83,7 +83,7 @@ namespace DataAccessLayer.Services.Concretes
         /// <summary>
         /// Gets employees by position.
         /// </summary>
-        public async Task<ICollection<Employee>> GetEmployeesByPositionAsync(string position)
+        public async Task<ICollection<Employee>> GetEmployeesByPositionAsync(EmployeePosition position)
         {
             return await project.Employees.Where(e => e.Position == position).ToListAsync();
         }

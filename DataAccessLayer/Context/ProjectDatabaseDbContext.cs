@@ -1,14 +1,16 @@
-﻿using DataAccessLayer.Configurations;
+﻿﻿﻿﻿using DataAccessLayer.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Models.Entities;
 
-namespace DataAccessLayer.Context
+namespace DataAccessLayer.Configurations.Context
 {
     public class ProjectDatabaseContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
+        internal readonly object DatabaseConfigu;
+
         public ProjectDatabaseContext()
         {
             
@@ -29,6 +31,10 @@ namespace DataAccessLayer.Context
         public DbSet<Employee> Employees { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<ExtraCharge> ExtraCharges { get; set; }
+        public DbSet<CheckoutSummary> CheckoutSummaries { get; set; }
+        public DbSet<DatabaseConfiguration> DatabaseConfigurations { get; set; }
+        public DbSet<DatabaseBackup> DatabaseBackups { get; set; }
         // OnConfiguring method for setting up the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

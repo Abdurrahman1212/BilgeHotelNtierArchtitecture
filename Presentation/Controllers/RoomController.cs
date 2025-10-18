@@ -1,5 +1,5 @@
-﻿using BussinessLogicLayer.Services.Abstracs;
-using DataAccessLayer.Context;
+﻿﻿using BussinessLogicLayer.Services.Abstracs;
+using DataAccessLayer.Configurations.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -90,7 +90,7 @@ namespace Presentation.Controllers
 
             // Tarih bilgilerini kullanıcıdan al
             reservation.CreatedDate = DateTime.Now;
-            reservation.status = (DataStasus)RoomStatus.Reserved;
+            reservation.Status = (DataStasus)RoomStatus.Reserved;
 
             // Kullanıcıdan CheckIn ve CheckOut tarihlerini al
             reservation.CheckInDate = reservation.CheckInDate; // Kullanıcının girdiği tarihler

@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Contracts.Interfaces;
+﻿﻿using DataAccessLayer.Contracts.Interfaces;
 using Models.Entities;
 using Models.Enums;
 using Models.Interfaces;
@@ -34,7 +34,7 @@ namespace DataAccessLayer.Services.Abstracs
         Task<ICollection<Employee>> GetEmployeesByStatusAsync(DataStasus status);
 
         // Get Employees By Position  
-        Task<ICollection<Employee>> GetEmployeesByPositionAsync(string position);
+        Task<ICollection<Employee>> GetEmployeesByPositionAsync(EmployeePosition position);
 
         // Gets employee by id  
         Task<Employee> GetEmployeeByIdAsync(int employeeId);

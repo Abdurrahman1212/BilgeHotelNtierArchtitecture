@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using System;
@@ -42,7 +42,7 @@ namespace DataAccessLayer.Configurations
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(r => r.status)
+            builder.Property(r => r.Status)
                 .IsRequired();
 
             // Relationships

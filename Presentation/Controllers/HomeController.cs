@@ -4,7 +4,7 @@ using BussinessLogicLayer.DependencyResolvers;
 using BussinessLogicLayer.DtoClasses;
 using BussinessLogicLayer.Services.Abstracs;
 using BussinessLogicLayer.Services.Concretes;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

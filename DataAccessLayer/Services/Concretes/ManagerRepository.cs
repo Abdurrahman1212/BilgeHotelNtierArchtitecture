@@ -1,5 +1,5 @@
 using DataAccessLayer.Configurations;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Data.FakeData;
 using Microsoft.EntityFrameworkCore;

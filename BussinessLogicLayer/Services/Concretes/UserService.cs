@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Models.Entities;
 using BusinessLogicLayer.Services;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 
 namespace BussinessLogicLayer.Services.Concretes
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿﻿﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Abstracts;
 using System;
@@ -21,6 +21,13 @@ namespace Models.Entities
         public string CustomerAddress { get; set; }
         public string CustomerIdentityNumber { get; set; }
         public string CustomerPaymentDetails { get; set; }
+        public DateTime? FirstVisitDate { get; set; }
+        public DateTime? LastVisitDate { get; set; }
+        public int TotalVisits { get; set; }
+        public int TotalNightsStayed { get; set; }
+        public decimal TotalSpent { get; set; }
+        public bool IsVIPCustomer { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<CustomerVisit> VisitHistory { get; set; }
     }
 }

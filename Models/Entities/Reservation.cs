@@ -1,4 +1,4 @@
-﻿using Models.Abstracts;
+﻿﻿﻿using Models.Abstracts;
 using Models.Enums;
 using Models.Entities;
 using System;
@@ -16,13 +16,13 @@ namespace Models.Entities
         public PackageType PackageType { get; set; }
         public decimal TotalAmount { get; set; }
 
-        public DataStasus status { get; set; }
+        public DataStasus Status { get; set; }
         //Relational Properties
         public int RoomId { get; set; }
         public Room? Room { get; set; } // Navigation property
         public Customer? Customer { get; set; } // Navigation property
         public int CustomerId { get; set; }
-        public PaymentMethod PaymentMethod { get; set; } // Enum for payment method (e.g., Credit Card, Cash, Bank Transfer)
+        public Models.Enums.PaymentMethod PaymentMethod { get; set; } // Enum for payment method (e.g., Credit Card, Cash, Bank Transfer)
         public ReservationStatus ReservationStatus { get; set; } // Enum for reservation status (e.g., Confirmed, Cancelled, Completed)
         
 

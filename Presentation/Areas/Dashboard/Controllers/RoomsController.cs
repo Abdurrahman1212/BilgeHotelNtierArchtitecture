@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
 using Models.Entities;
 using BussinessLogicLayer.Services.Abstracs;
 using BussinessLogicLayer.Services.Concretes;
@@ -18,7 +17,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-    
+using DataAccessLayer.Configurations.Context;
+
 namespace Presentation.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]

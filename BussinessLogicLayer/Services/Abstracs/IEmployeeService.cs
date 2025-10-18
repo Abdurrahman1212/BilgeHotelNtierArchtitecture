@@ -1,4 +1,4 @@
-﻿using Models.Entities;
+﻿﻿using Models.Entities;
 using Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace BussinessLogicLayer.Services.Abstracs
 
         //Get All Employees
         IEnumerable<Employee> GetAllEmployeesAsync();
-        Task<IEnumerable<Employee>> GetEmployeesByPositionAsync(string position);
+        Task<IEnumerable<Employee>> GetEmployeesByPositionAsync(EmployeePosition position);
         Task<Employee> GetEmployeeByEmailAsync(string email);
         Task<IEnumerable<Employee>> GetEmployeesByCityAsync(string city);
         Task<IEnumerable<Employee>> GetEmployeesWithOvertimeAsync();

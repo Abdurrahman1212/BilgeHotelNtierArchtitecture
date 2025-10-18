@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿﻿using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Services.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

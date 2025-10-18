@@ -1,4 +1,4 @@
-﻿using Models.Abstracts;
+﻿﻿﻿﻿using Models.Abstracts;
 using Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Models.Entities
         public  string EmployeeLastName { get; set; }
         public  string EmployeePhoneNumber { get; set; }
         public  string Email { get; set; }
-        public string Position { get; set; }
+        public EmployeePosition Position { get; set; }
         public  string EmployeeAddres { get; set; }
         public  string City { get; set; }
         public  string Country { get; set; }
@@ -29,6 +29,15 @@ namespace Models.Entities
 
         public decimal HourlyWage { get; set; }
         public decimal MonthlyWage { get; set; }
+        public EmployeeType EmployeeType { get; set; }
+        public StandardShift StandardShift { get; set; }
+        public decimal OvertimeRate { get; set; }
+        public int MinWeeklyHours { get; set; }
+        public int MaxWeeklyHours { get; set; }
+        public int RequiredShiftsPerWeek { get; set; }
+        public int OvertimeHours { get; set; }
+        public bool HasOvertime { get; set; }
+        public DateTime? OffDay { get; set; }
 
         public DataStasus Status { get; set; }
         //Relational Properties

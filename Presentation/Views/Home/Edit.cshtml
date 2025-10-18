@@ -43,9 +43,9 @@
                 <span asp-validation-for="TotalAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="status" class="control-label"></label>
-                <select asp-for="status" class="form-control"></select>
-                <span asp-validation-for="status" class="text-danger"></span>
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class="form-control"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RoomId" class="control-label"></label>
@@ -59,34 +59,28 @@
             </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="MasterId" class="control-label"></label>
+                <label for="MasterId" class="control-label">Master Id</label>
                 <input asp-for="MasterId" class="form-control" />
-                <span asp-validation-for="MasterId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
+                <label for="CreatedDate" class="control-label">Created Date</label>
                 <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EntryDate" class="control-label"></label>
+                <label for="EntryDate" class="control-label">Entry Date</label>
                 <input asp-for="EntryDate" class="form-control" />
-                <span asp-validation-for="EntryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedDate" class="control-label"></label>
+                <label for="UpdatedDate" class="control-label">Updated Date</label>
                 <input asp-for="UpdatedDate" class="form-control" />
-                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SelectedStatus" class="control-label"></label>
+                <label for="SelectedStatus" class="control-label">Selected Status</label>
                 <select asp-for="SelectedStatus" class="form-control"></select>
-                <span asp-validation-for="SelectedStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedComputerName" class="control-label"></label>
+                <label for="UpdatedComputerName" class="control-label">Updated Computer Name</label>
                 <input asp-for="UpdatedComputerName" class="form-control" />
-                <span asp-validation-for="UpdatedComputerName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

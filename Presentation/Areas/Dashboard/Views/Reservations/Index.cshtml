@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Reservation>
+@model IEnumerable<Reservation>
 
 @{
     ViewData["Title"] = "Rezervasyonlar";
@@ -16,49 +16,20 @@
 
                 <thead>
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model=>model.Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CheckInDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CheckOutDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PackageType)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TotalAmount)
-                        </th>
-
-                        <th>
-                            @Html.DisplayNameFor(model => model.status)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.RoomId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.MasterId)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreatedDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.EntryDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.UpdatedDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.SelectedStatus)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.UpdatedComputerName)
-                        </th>
+                        <th>Id</th>
+                        <th>Check In Date</th>
+                        <th>Check Out Date</th>
+                        <th>Package Type</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Room Id</th>
+                        <th>Customer Id</th>
+                        <th>Master Id</th>
+                        <th>Created Date</th>
+                        <th>Entry Date</th>
+                        <th>Updated Date</th>
+                        <th>Selected Status</th>
+                        <th>Updated Computer Name</th>
                         <th></th>
                     </tr>
                 </thead>

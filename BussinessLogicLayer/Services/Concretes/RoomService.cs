@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
 using DataAccessLayer.Services.Abstracs;
 using DataAccessLayer.Services.Concretes;
+using DataAccessLayer.Configurations.Context;
 namespace BussinessLogicLayer.Services.Concretes
 {
     public class RoomService : ManagerService<Room>, IRoomService

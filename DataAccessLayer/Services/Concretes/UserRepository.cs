@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Services.Abstracs;
 using DataAccessLayer.Services.Concretes;

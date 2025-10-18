@@ -1,4 +1,4 @@
-﻿using BussinessLogicLayer.Services.Abstracs;
+﻿﻿using BussinessLogicLayer.Services.Abstracs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Entities;
@@ -141,7 +141,7 @@ namespace Presentation.Controllers
                     CheckOutDate = viewModel.CheckOutDate,
                     CustomerId = viewModel.CustomerId,
                     CreatedDate = DateTime.Now,
-                    status = DataStasus.Active,
+                    Status = DataStasus.Active,
                 };
 
                 await _reservationService.CreateAsync(reservation);

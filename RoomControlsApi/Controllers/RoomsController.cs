@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.Enums;
 using RoomControlsApi.Models.RequestModels;
 using RoomControlsApi.Models.Entities;
+using DataAccessLayer.Configurations.Context;
 
 namespace RoomControlsApi.Controllers
 {

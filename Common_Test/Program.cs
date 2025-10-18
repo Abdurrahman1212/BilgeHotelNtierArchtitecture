@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.Services.Concretes;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using System;

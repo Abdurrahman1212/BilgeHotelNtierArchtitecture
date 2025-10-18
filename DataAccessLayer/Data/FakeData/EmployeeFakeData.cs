@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using Models.Entities;
+using Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace DataAccessLayer.Data.FakeData
                  .RuleFor(e => e.EmployeeAddres, f => f.Address.FullAddress())
                 .RuleFor(e => e.Country, f => f.Address.Country())
                  .RuleFor(e => e.PostalCode, f => f.Random.Number().ToString())
-                .RuleFor(e => e.Position, f => "Resepsiyon Görevlisi");
+                .RuleFor(e => e.Position, f => EmployeePosition.Receptionist);
             employees.AddRange(receptionistFaker.Generate(7));
 
             // Temizlik Görevlisi (Cleaner) - 11
@@ -40,7 +41,7 @@ namespace DataAccessLayer.Data.FakeData
                  .RuleFor(e => e.PostalCode, f => f.Random.Number().ToString())
                  .RuleFor(e => e.EmployeeAddres, f => f.Address.FullAddress())
                 .RuleFor(e => e.Country, f => f.Address.Country())
-                .RuleFor(e => e.Position, f => "Temizlik Görevlisi");
+                .RuleFor(e => e.Position, f => EmployeePosition.CleaningStaff);
             employees.AddRange(cleanerFaker.Generate(11));
 
             // Aşçı (Chef) - 11
@@ -54,7 +55,7 @@ namespace DataAccessLayer.Data.FakeData
                 .RuleFor(e => e.Email, f => f.Internet.Email())
                 .RuleFor(e=>e.PostalCode,f=>f.Random.Number().ToString())
                 .RuleFor(e => e.Country, f => f.Address.Country())
-                .RuleFor(e => e.Position, f => "Aşçı");
+                .RuleFor(e => e.Position, f => EmployeePosition.Chef);
             employees.AddRange(chefFaker.Generate(11));
 
             // Garson (Waiter) - 13
@@ -68,7 +69,7 @@ namespace DataAccessLayer.Data.FakeData
                 .RuleFor(e => e.Email, f => f.Internet.Email())
                  .RuleFor(e => e.PostalCode, f => f.Random.Number().ToString())
                   .RuleFor(e => e.Country, f => f.Address.Country())
-                .RuleFor(e => e.Position, f => "Garson");
+                .RuleFor(e => e.Position, f => EmployeePosition.Waiter);
             employees.AddRange(waiterFaker.Generate(13));
 
             // Elektrikçi (Electrician) - 1
@@ -82,7 +83,7 @@ namespace DataAccessLayer.Data.FakeData
                  .RuleFor(e => e.PostalCode, f => f.Random.Number().ToString())
                  .RuleFor(e => e.EmployeeAddres, f => f.Address.FullAddress())
                 .RuleFor(e => e.Country, f => f.Address.Country())
-                .RuleFor(e => e.Position, f => "Elektrikçi");
+                .RuleFor(e => e.Position, f => EmployeePosition.Electrician);
             employees.Add(electricianFaker.Generate());
 
             // Bilgi İşlem Sorumlusu (IT Responsible) - 1
@@ -96,7 +97,7 @@ namespace DataAccessLayer.Data.FakeData
                 .RuleFor(e => e.EmployeePhoneNumber, f => f.Phone.PhoneNumber())
                 .RuleFor(e => e.Email, f => f.Internet.Email())
                 .RuleFor(e => e.City, f => f.Address.City())
-                .RuleFor(e => e.Position, f => "Bilgi İşlem Sorumlusu");
+                .RuleFor(e => e.Position, f => EmployeePosition.ITManager);
             employees.Add(itFaker.Generate());
 
             return employees;

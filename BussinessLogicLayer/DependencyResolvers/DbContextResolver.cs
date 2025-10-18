@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿using DataAccessLayer.Configurations.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

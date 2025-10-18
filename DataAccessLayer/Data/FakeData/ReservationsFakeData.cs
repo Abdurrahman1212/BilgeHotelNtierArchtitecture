@@ -1,4 +1,4 @@
-﻿using Bogus;
+﻿﻿using Bogus;
 using Models.Entities;
 using Models.Enums;
 using System;
@@ -26,11 +26,11 @@ namespace DataAccessLayer.Data.FakeData
                     Id = i + 1,
                     CheckInDate = checkInDate,
                     CheckOutDate = checkOutDate,
-                    PaymentMethod= (PaymentMethod)(i % Enum.GetValues(typeof(PaymentMethod)).Length),
+                    PaymentMethod= (Models.Enums.PaymentMethod)(i % Enum.GetValues(typeof(Models.Enums.PaymentMethod)).Length),
                     ReservationStatus = (ReservationStatus)(i % Enum.GetValues(typeof(ReservationStatus)).Length),
                     PackageType = (PackageType)(i % Enum.GetValues(typeof(PackageType)).Length),
                     TotalAmount = decimal.Parse(faker.Commerce.Price(1500, 2500)),
-                    status = (DataStasus)(i % Enum.GetValues(typeof(DataStasus)).Length),
+                    Status = (DataStasus)(i % Enum.GetValues(typeof(DataStasus)).Length),
                     CustomerId = faker.Random.Int(1, 10),
                     RoomId = faker.Random.Int(1, 50),
                     Expenses=new List<Expense>(),

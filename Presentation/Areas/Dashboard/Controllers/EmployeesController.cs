@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Context;
 using Models.Entities;
 using BussinessLogicLayer.Services.Abstracs;
 using Microsoft.AspNetCore.Authorization;
 using Models.Enums;
+using DataAccessLayer.Configurations.Context;
 
 namespace Presentation.Areas.Dashboard.Controllers
 {

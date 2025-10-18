@@ -1,4 +1,4 @@
-﻿using BusinessLogicLayer.Services;
+﻿﻿using BusinessLogicLayer.Services;
 using BussinessLogicLayer.Services.Abstracs;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Services.Abstracs;
@@ -40,7 +40,7 @@ namespace BussinessLogicLayer.Services.Concretes
             return result;
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployeesByPositionAsync(string position)
+        public async Task<IEnumerable<Employee>> GetEmployeesByPositionAsync(EmployeePosition position)
         {
             var result = await _employeeRepo.GetEmployeesByPositionAsync(position);
             return result;

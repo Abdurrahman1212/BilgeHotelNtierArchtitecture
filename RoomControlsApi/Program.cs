@@ -1,4 +1,4 @@
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

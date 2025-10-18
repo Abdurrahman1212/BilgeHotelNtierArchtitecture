@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Models.Abstracts;
 using Models.Enums;
 using System;
@@ -30,6 +30,11 @@ namespace Models.Entities
         public bool HasTV { get; set; }
         public bool HasHairDryer { get; set; }
         public bool HasWiFi { get; set; }
+        public int BedCount { get; set; }
+        public decimal BasePricePerNight { get; set; }
+        public decimal AllInclusivePricePerNight { get; set; }
+        public bool IsAvailable { get; set; }
+        public DataStasus DataStatus { get; set; }
         public DataStasus DataStasus { get; set; }
         public ICollection<Reservation> Reservations { get; set; } // One-to-many relationship with Reservation
     }

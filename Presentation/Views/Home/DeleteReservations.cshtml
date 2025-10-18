@@ -11,85 +11,33 @@
     <h4>Reservation</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckInDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CheckInDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CheckOutDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CheckOutDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PackageType)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PackageType)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
+        <dt class="col-sm-2">Check In Date</dt>
+        <dd class="col-sm-10">@Model.CheckInDate</dd>
+        <dt class="col-sm-2">Check Out Date</dt>
+        <dd class="col-sm-10">@Model.CheckOutDate</dd>
+        <dt class="col-sm-2">Package Type</dt>
+        <dd class="col-sm-10">@Model.PackageType</dd>
+        <dt class="col-sm-2">Total Amount</dt>
+        <dd class="col-sm-10">@Model.TotalAmount</dd>
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Customer.City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MasterId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MasterId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EntryDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EntryDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SelectedStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SelectedStatus)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedComputerName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedComputerName)
-        </dd>
+        <dt class="col-sm-2">Status</dt>
+        <dd class="col-sm-10">@Model.Status</dd>
+        <dt class="col-sm-2">Room</dt>
+        <dd class="col-sm-10">@Model.Room?.Description</dd>
+        <dt class="col-sm-2">Customer</dt>
+        <dd class="col-sm-10">@Model.Customer?.City</dd>
+        <dt class="col-sm-2">Master Id</dt>
+        <dd class="col-sm-10">@Model.MasterId</dd>
+        <dt class="col-sm-2">Created Date</dt>
+        <dd class="col-sm-10">@Model.CreatedDate</dd>
+        <dt class="col-sm-2">Entry Date</dt>
+        <dd class="col-sm-10">@Model.EntryDate</dd>
+        <dt class="col-sm-2">Updated Date</dt>
+        <dd class="col-sm-10">@Model.UpdatedDate</dd>
+        <dt class="col-sm-2">Selected Status</dt>
+        <dd class="col-sm-10">@Model.SelectedStatus</dd>
+        <dt class="col-sm-2">Updated Computer Name</dt>
+        <dd class="col-sm-10">@Model.UpdatedComputerName</dd>
     </dl>
 
     <form asp-action="Delete">

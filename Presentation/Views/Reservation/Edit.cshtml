@@ -1,4 +1,4 @@
-﻿@using Models.Enums
+﻿﻿@using Models.Enums
 @model Reservation
 
 @{
@@ -92,7 +92,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label asp-for="PaymentMethod" class="control-label fw-bold">Ödeme Yöntemi</label>
-                                    <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<PaymentMethod>()">
+                                    <select asp-for="PaymentMethod" class="form-select" asp-items="Html.GetEnumSelectList<Models.Enums.PaymentMethod>()">
                                         <option value="">-- Ödeme Yöntemi Seçiniz --</option>
                                     </select>
                                     <span asp-validation-for="PaymentMethod" class="text-danger"></span>

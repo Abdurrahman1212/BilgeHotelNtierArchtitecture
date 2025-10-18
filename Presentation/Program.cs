@@ -2,7 +2,7 @@ using BusinessLogicLayer.Services;
 using BussinessLogicLayer.DependencyResolvers;
 using BussinessLogicLayer.Services.Abstracs;
 using BussinessLogicLayer.Services.Concretes;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using DataAccessLayer.Services.Concretes;
 using Microsoft.AspNetCore.Identity;

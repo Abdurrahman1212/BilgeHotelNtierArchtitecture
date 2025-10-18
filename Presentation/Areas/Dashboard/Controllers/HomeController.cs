@@ -1,5 +1,5 @@
 ﻿using BussinessLogicLayer.Services.Abstracs;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

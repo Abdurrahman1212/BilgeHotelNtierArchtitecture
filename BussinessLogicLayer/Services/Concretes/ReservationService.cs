@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.Services;
 using BussinessLogicLayer.Services.Abstracs;
-using DataAccessLayer.Context;
+using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;

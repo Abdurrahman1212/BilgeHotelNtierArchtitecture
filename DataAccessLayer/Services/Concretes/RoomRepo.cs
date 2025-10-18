@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿﻿using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Services.Abstracs;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
@@ -49,11 +49,11 @@ namespace DataAccessLayer.Services.Concretes
                 .Where(room =>
                     room.Reservations.Any(r =>
                         r.CheckOutDate.Date == date.Date &&
-                        r.status == Models.Enums.DataStasus.Active
+                        r.Status == Models.Enums.DataStasus.Active
                     )
                     ||
                     !room.Reservations.Any(r =>
-                        r.CheckInDate <= date && r.CheckOutDate > date && r.status == Models.Enums.DataStasus.Active
+                        r.CheckInDate <= date && r.CheckOutDate > date && r.Status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();
@@ -68,7 +68,7 @@ namespace DataAccessLayer.Services.Concretes
                 .Where(room =>
                     room.Reservations.Any(r =>
                         r.CheckOutDate.Date == date.Date &&
-                        r.status == Models.Enums.DataStasus.Active
+                        r.Status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();
@@ -83,7 +83,7 @@ namespace DataAccessLayer.Services.Concretes
             var vacantRooms = await context.Rooms
                 .Where(room =>
                     !room.Reservations.Any(r =>
-                        r.CheckInDate <= today && r.CheckOutDate > today && r.status == Models.Enums.DataStasus.Active
+                        r.CheckInDate <= today && r.CheckOutDate > today && r.Status == Models.Enums.DataStasus.Active
                     )
                 )
                 .ToListAsync();

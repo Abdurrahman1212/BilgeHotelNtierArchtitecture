@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿using DataAccessLayer.Configurations.Context;
 using DataAccessLayer.Services.Abstracs;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;

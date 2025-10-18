@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Context;
+﻿using DataAccessLayer.Configurations.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Entities;
